@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/serach_maingrey"
+        android:width="@dimen/search_icon_width"
+        android:height="@dimen/search_icon_height">
+    </item>
+</layer-list>
