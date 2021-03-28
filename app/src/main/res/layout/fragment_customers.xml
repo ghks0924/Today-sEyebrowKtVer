@@ -85,7 +85,11 @@
         android:includeFontPadding="false"
         android:hint="이름 또는 전화번호로 검색해주세요"
         android:textColorHint="@color/mainGreyFor50"
+        android:textSize="@dimen/search_textsize"
         android:textColor="@color/mainGrey"
+
+        android:inputType="text"
+        android:maxLines="1"
         />
     
     <androidx.recyclerview.widget.RecyclerView

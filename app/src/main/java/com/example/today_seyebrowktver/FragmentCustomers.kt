@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
 
 class FragmentCustomers : Fragment() {
-    private var fragmentCustomersBinding:FragmentCustomersBinding? = null;
+    private var fragmentCustomersBinding:FragmentCustomersBinding? = null //onDestory를 위한 변수
 
     override fun onCreateView(
         inflater: LayoutInflater,

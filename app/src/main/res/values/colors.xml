@@ -25,4 +25,5 @@
     <color name="mainGreyForCalendarCell">#80e5e5e5</color>
 
     <color name="transparent">#00000000</color>
+    <color name="weakGrey">#dfdfdf</color>
 </resources>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/prev_cardview"
+            android:layout_width="@dimen/arrow_background_width"
+            android:layout_height="@dimen/arrow_background_height"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/current_date_cardview"
+            android:backgroundTint="@color/transparent"
+            app:cardElevation="0dp"
+            android:clickable="true"
+            app:rippleColor="@color/weakGrey">
+
+            <ImageView
+                android:layout_width="@dimen/arrow_icon_width"
+                android:layout_height="@dimen/arrow_icon_height"
+                android:src="@drawable/thin_left_arrow"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="asdasdasdasd"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/current_date_cardview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            android:layout_centerInParent="true"
+
+            app:cardElevation="0dp"
+            android:clickable="true"
+            app:rippleColor="@color/weakGrey"
+
+            app:cardCornerRadius="10dp">
+
+            <TextView
+                android:id="@+id/current_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                android:fontFamily="@font/notosansmonocjkkrbold"
+                android:includeFontPadding="false"
+                android:text="2021.03"
+                android:textSize="18sp"
+                android:textColor="@color/mainGrey"
+
+                android:layout_gravity="center"
+
+                android:paddingRight="@dimen/activity_small_horizontal_margin"
+                android:paddingLeft="@dimen/activity_small_horizontal_margin"/>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/next_cardview"
+            android:layout_width="@dimen/arrow_background_width"
+            android:layout_height="@dimen/arrow_background_height"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintLeft_toRightOf="@id/current_date_cardview"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/transparent"
+            app:cardElevation="0dp"
+            android:clickable="true"
+            app:rippleColor="@color/weakGrey"
+
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/current_date_cardview">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/maingrey_simplearrow"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </RelativeLayout>
+
+
+
+        <TextView
+            android:id="@+id/menuIv"
+            android:layout_width="@dimen/hamburger_icon_width"
+            android:layout_height="@dimen/hamburger_icon_height"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+            android:background="@drawable/menu"
+
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            />
+
+
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
