@@ -65,6 +65,7 @@
     </RelativeLayout>
 
     <EditText
+        android:id="@+id/edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/headerRl"
@@ -84,6 +85,17 @@
         android:includeFontPadding="false"
         android:hint="이름 또는 전화번호로 검색해주세요"
         android:textColorHint="@color/mainGreyFor50"
+        android:textColor="@color/mainGrey"
         />
+    
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/edittext"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/edittext"
+        app:layout_constraintRight_toRightOf="@+id/edittext"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
