@@ -22,7 +22,7 @@ class BottomSheetFragmentCustomer : BottomSheetDialogFragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        val view = inflater.inflate(R.layout.bottomsheet_addcus, container, false)
+        val view = inflater.inflate(R.layout.bottomsheet_create_cus, container, false)
         val manualCreateBtn: MaterialButton = view.findViewById(R.id.manuallyAdd)
         val fromBookBtn: MaterialButton = view.findViewById(R.id.fromPhonebook)
 

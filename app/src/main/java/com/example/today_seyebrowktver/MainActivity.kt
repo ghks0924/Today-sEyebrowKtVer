@@ -187,11 +187,16 @@ class MainActivity : BaseActivity() {
     }
 
     fun mSelectHowToCreateCustomer(){
-        mShowShortToast("이건?")
+
 
         val frag = BottomSheetFragmentCustomer()
         frag.show(supportFragmentManager, frag.tag)
 
+    }
+
+    fun mSelectTypeOfCustomer(){
+        val frag = BottomSheetFragmentEvent()
+        frag.show(supportFragmentManager, frag.tag)
     }
 
 

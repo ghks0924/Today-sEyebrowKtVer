@@ -28,6 +28,10 @@ class FragmentHome : Fragment() {
 
         })
 
+        binding.fab.setOnClickListener(View.OnClickListener {
+            (activity as MainActivity).mSelectTypeOfCustomer()
+        })
+
         return binding.root
     }
 

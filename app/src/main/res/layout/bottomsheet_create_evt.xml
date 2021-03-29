@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="@dimen/activity_big_vertical_margin"
+            android:fontFamily="@font/gilroyextrabold"
+            android:includeFontPadding="false"
+
+            android:text="예약등록하기"
+
+            android:textColor="#4f4f4f"
+            android:textSize="@dimen/title_textsize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/new_cus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_big_vertical_margin"
+            android:layout_marginRight="@dimen/activity_big_horizontal_margin"
+
+            android:backgroundTint="@color/white"
+            android:elevation="1dp"
+            android:fontFamily="@font/notosanscjkkrmedium"
+
+            android:includeFontPadding="false"
+            android:stateListAnimator="@null"
+            android:text="신규 고객"
+            android:textColor="@color/mainGrey"
+            android:textSize="18sp"
+
+            app:cornerRadius="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_title"
+            app:rippleColor="@color/weakGrey" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/old_cus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_small_vertical_margin"
+            android:layout_marginRight="@dimen/activity_big_horizontal_margin"
+
+            android:backgroundTint="@color/white"
+            android:elevation="1dp"
+            android:fontFamily="@font/notosanscjkkrmedium"
+
+            android:includeFontPadding="false"
+            android:text="기존 고객"
+            android:textColor="@color/mainGrey"
+
+            android:textSize="18sp"
+            app:cornerRadius="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_cus" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/skip_cus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_small_vertical_margin"
+            android:layout_marginRight="@dimen/activity_big_horizontal_margin"
+
+            android:backgroundTint="@color/white"
+            android:elevation="1dp"
+            android:fontFamily="@font/notosanscjkkrmedium"
+
+            android:includeFontPadding="false"
+            android:text="고객등록 건너뛰기"
+            android:textColor="@color/mainGrey"
+
+            android:textSize="18sp"
+            app:cornerRadius="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/old_cus" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.cardview.widget.CardView>
