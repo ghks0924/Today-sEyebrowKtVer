@@ -1,11 +1,11 @@
 package com.example.today_seyebrowktver
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 
@@ -25,15 +25,21 @@ class BottomSheetFragmentEvent : BottomSheetDialogFragment(){
         val skipCusBtn: MaterialButton = view.findViewById(R.id.skip_cus)
 
         newCusBtn.setOnClickListener(View.OnClickListener {
-            (activity as BaseActivity).mShowLongToast("new CUs")
+            val intent = Intent(context, ActivityCreateCustomer::class.java)
+            startActivity(intent)
+            dismiss()
         })
 
         oldCusBtn.setOnClickListener(View.OnClickListener {
-            (activity as BaseActivity).mShowLongToast("old CUs")
+            val intent = Intent(context, ActivityCreateEventOldCus::class.java)
+            startActivity(intent)
+            dismiss()
         })
 
         skipCusBtn.setOnClickListener(View.OnClickListener {
-            (activity as BaseActivity).mShowLongToast("skip CUs")
+            val intent = Intent(context, ActivityCreateEventSkipCus::class.java)
+            startActivity(intent)
+            dismiss()
         })
 
         return view

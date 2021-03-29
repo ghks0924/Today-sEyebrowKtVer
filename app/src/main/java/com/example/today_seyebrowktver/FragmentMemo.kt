@@ -10,17 +10,18 @@ import com.example.today_seyebrowktver.databinding.FragmentMemoBinding
 
 class FragmentMemo:Fragment() {
 
-    private var fragmentMemoBinding: FragmentMemoBinding? = null //onDestory를 위한 변수
+    private var _binding: FragmentMemoBinding? = null //onDestory를 위한 변수
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val binding = FragmentMemoBinding.inflate(inflater, container, false)
+        _binding = FragmentMemoBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
     override fun onDestroyView() {
-        fragmentMemoBinding = null
         super.onDestroyView()
+        _binding = null
     }
 }

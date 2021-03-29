@@ -11,13 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer">
-        <activity android:name=".CreateCustomerActivity"></activity>
-        <activity android:name=".HomeMenuActivity" />
+        <activity android:name=".ActivityCreateEventSkipCus"></activity>
+        <activity android:name=".ActivityCreateEventOldCus" />
+        <activity android:name=".ActivityCreateEventNewCus" />
+        <activity android:name=".ActivityCreateCustomer" />
+        <activity android:name=".ActivityHomeMenu" />
         <activity
-            android:name=".BaseActivity"
+            android:name=".ActivityBase"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

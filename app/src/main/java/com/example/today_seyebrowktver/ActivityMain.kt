@@ -1,23 +1,17 @@
 package com.example.today_seyebrowktver
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
+import com.example.today_seyebrowktver.databinding.ActivityCreateEventSkipCusBinding
 import com.example.today_seyebrowktver.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
 
 
-class MainActivity : BaseActivity() {
+class ActivityMain : ActivityBase() {
 
     //viewBinding
-    private var mBinding: ActivityMainBinding? = null
-
-    private val binding get() = mBinding!!
+    private lateinit var binding: ActivityMainBinding
 
     //fragment
     val fm = supportFragmentManager
@@ -32,7 +26,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setFragments()//초기 프래그먼트 생성
@@ -200,10 +194,6 @@ class MainActivity : BaseActivity() {
     }
 
 
-    override fun onDestroy() {
-        // onDestroy 에서 binding class 인스턴스 참조를 정리해주어야 한다.
-        mBinding = null
-        super.onDestroy()
-    }
+
 }
 

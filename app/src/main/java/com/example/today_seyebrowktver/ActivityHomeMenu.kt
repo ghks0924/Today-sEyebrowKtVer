@@ -2,11 +2,17 @@ package com.example.today_seyebrowktver
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.today_seyebrowktver.databinding.ActivityHomeMenuBinding
 
-class HomeMenuActivity : AppCompatActivity() {
+class ActivityHomeMenu : AppCompatActivity() {
+
+    //viewBinding
+    private lateinit var binding: ActivityHomeMenuBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home_menu)
+        binding = ActivityHomeMenuBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         overridePendingTransition(R.anim.horizon_enter, R.anim.fadeout)
     }

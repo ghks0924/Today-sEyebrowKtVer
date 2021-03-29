@@ -9,19 +9,19 @@ import com.example.today_seyebrowktver.databinding.FragmentAccountingBinding
 
 class FragmentAccounting:Fragment() {
 
-    private var fragmentAccountingBinding: FragmentAccountingBinding? = null
+    private var _binding: FragmentAccountingBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val binding = FragmentAccountingBinding.inflate(inflater, container, false)
-
+        _binding = FragmentAccountingBinding.inflate(inflater, container, false)
 
         return binding.root
 
     }
 
     override fun onDestroyView() {
-        fragmentAccountingBinding = null
         super.onDestroyView()
+        _binding = null
     }
 }

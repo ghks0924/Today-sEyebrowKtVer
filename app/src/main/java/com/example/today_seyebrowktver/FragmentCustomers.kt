@@ -1,8 +1,6 @@
 package com.example.today_seyebrowktver
 
-import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,19 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
 
 
 class FragmentCustomers : Fragment() {
-    private var mBinding:FragmentCustomersBinding? = null //onDestory를 위한 변수
 
-    private val binding get() = mBinding!!
+    private var _binding:FragmentCustomersBinding? = null //onDestory를 위한 변수
+
+    private val binding get() = _binding!!
 
     var data = ArrayList<CustomersData>()
     var adapter: RvCustomerAdapter? = null
 
-    private var mainActivity: MainActivity? = null
+    private var activityMain: ActivityMain? = null
 
 
 
@@ -33,12 +30,12 @@ class FragmentCustomers : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = FragmentCustomersBinding.inflate(inflater, container, false)
+        _binding = FragmentCustomersBinding.inflate(inflater, container, false)
 
         setData()
         setRv()
 
-        mainActivity = MainActivity()
+        activityMain = ActivityMain()
 
         binding.abcTv.setOnClickListener(
             View.OnClickListener
@@ -58,7 +55,7 @@ class FragmentCustomers : Fragment() {
 
         binding.fab.setOnClickListener(View.OnClickListener {
 
-            (activity as MainActivity).mSelectHowToCreateCustomer()
+            (activity as ActivityMain).mSelectHowToCreateCustomer()
 
         })
 
@@ -92,7 +89,7 @@ class FragmentCustomers : Fragment() {
     }
 
     override fun onDestroyView() {
-        mBinding = null;
         super.onDestroyView()
+        _binding = null;
     }
 }
