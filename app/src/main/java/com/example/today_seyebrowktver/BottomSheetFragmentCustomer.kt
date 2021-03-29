@@ -33,7 +33,7 @@ class BottomSheetFragmentCustomer : BottomSheetDialogFragment() {
         })
 
         fromBookBtn.setOnClickListener(View.OnClickListener {
-            val intent = Intent(context, ActivityCreateCustomer::class.java)
+            val intent = Intent(context, ActivityCreateCustomerFromBook::class.java)
             startActivity(intent)
             dismiss()
         })

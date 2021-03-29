@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.today_seyebrowktver.databinding.ActivityCreateEventSkipCusBinding
 
-class ActivityCreateEventSkipCus : AppCompatActivity() {
+class ActivityCreateEventSkipCus : ActivityBase() {
 
     //viewBinding
     private lateinit var binding: ActivityCreateEventSkipCusBinding
@@ -13,7 +13,11 @@ class ActivityCreateEventSkipCus : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateEventSkipCusBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setLayout()
     }
 
-
+    private fun setLayout() {
+        mChangeStatusBarColor("#ebbdc5")
+    }
 }

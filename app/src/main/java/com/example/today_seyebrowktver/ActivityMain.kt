@@ -27,17 +27,11 @@ class ActivityMain : ActivityBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val view = binding.root
+        setContentView(view)
 
         setFragments()//초기 프래그먼트 생성
 
-
-
-//        binding.bottomNavigation.menu.findItem(R.id.nav_home).isChecked = true
-
-//
-//        //FrameLayout에 fragment.xml 띄우기
-//        binding.bottomNavigation.getMenu().findItem(R.id.nav_home).setChecked(true)
 
     }
 

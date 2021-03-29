@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.today_seyebrowktver.databinding.ActivityCreateEventNewCusBinding
 
-class ActivityCreateEventNewCus : AppCompatActivity() {
+class ActivityCreateEventNewCus : ActivityBase() {
 
     //viewBinding
     private lateinit var binding: ActivityCreateEventNewCusBinding
@@ -14,7 +14,12 @@ class ActivityCreateEventNewCus : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateEventNewCusBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setLayout()
     }
 
+    private fun setLayout() {
+        mChangeStatusBarColor("#ebbdc5")
+    }
 
 }
