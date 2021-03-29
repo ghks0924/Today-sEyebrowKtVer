@@ -1,12 +1,15 @@
 package com.example.today_seyebrowktver
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.example.today_seyebrowktver.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 
 
 class MainActivity : BaseActivity() {
@@ -61,6 +64,7 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().add(R.id.frame_container, fragmentMessage, "message")
                 .addToBackStack("message").hide(fragmentMessage).commit()
 
+        binding.bottomNavigation.menu.findItem(R.id.nav_home).setChecked(true)
 
 
         //바텀 네비게이션뷰 안의 아이템 설정
@@ -179,6 +183,14 @@ class MainActivity : BaseActivity() {
             }
         })
 
+
+    }
+
+    fun mSelectHowToCreateCustomer(){
+        mShowShortToast("이건?")
+
+        val frag = BottomSheetFragmentCustomer()
+        frag.show(supportFragmentManager, frag.tag)
 
     }
 

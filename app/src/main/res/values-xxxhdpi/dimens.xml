@@ -9,9 +9,12 @@
 
     //toolbar title text size
     <dimen name="title_textsize">18sp</dimen>
+    <dimen name="textsize_default">14sp</dimen>
 
     //search text size
-    <dimen name="search_textsize">13sp</dimen>
+    <dimen name="search_edit_thirteen_textsize">13sp</dimen>
+
+    <dimen name="fifteen_textsize">15sp</dimen>
 
     //======================Margin=========================
     //margin
@@ -25,6 +28,14 @@
     <dimen name="margin_two_dp">2dp</dimen>
     <dimen name="margin_three_dp">3dp</dimen>
     <dimen name="margin_four_dp">4dp</dimen>
+    <dimen name="margin_five_dp">5dp</dimen>
+    <dimen name="margin_eight_dp">8dp</dimen>
+
+    //rv_item_customers_margin
+    <dimen name="rv_card_margin">8dp</dimen>
+
+    //fab margin
+    <dimen name="fab_margin">16dp</dimen>
 
     //=====================Image Size=======================
 
@@ -40,6 +51,10 @@
     <dimen name="arrow_background_width">28dp</dimen>
     <dimen name="arrow_background_height">28dp</dimen>
 
+    //half_arrow_background_size
+    <dimen name="half_arrow_background_width">14dp</dimen>
+    <dimen name="half_arrow_background_height">14dp</dimen>
+
     //back imageview
     <dimen name="back_iv_width">14dp</dimen>
     <dimen name="back_iv_height">22.5dp</dimen>
@@ -48,6 +63,20 @@
     //edittext search icon image size
     <dimen name="search_icon_width">17dp</dimen>
     <dimen name="search_icon_height">17dp</dimen>
+
+    //profile icon image size
+    <dimen name="profile_iv_width">35dp</dimen>
+    <dimen name="profile_iv_height">35dp</dimen>
+    <dimen name="profile_iv_background_width">50dp</dimen>
+    <dimen name="profile_iv_background_height">50dp</dimen>
+    <dimen name="half_profile_iv_background_height">25dp</dimen>
+    <dimen name="half_profile_iv_background_width">25dp</dimen>
+
+    //===================Cursor==========================
+    <dimen name="cursor_width">2dp</dimen>
+    <dimen name="cursor_padding">-10dp</dimen>
+
+
 
 
 </resources>

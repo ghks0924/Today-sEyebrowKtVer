@@ -26,4 +26,14 @@
     <style name="Theme.TodaysEyebrowKtVer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.TodaysEyebrowKtVer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    //Custom BottomSheetDialog
+    <style name="CustomBottomSheetDialog"
+        parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+    </style>
 </resources>

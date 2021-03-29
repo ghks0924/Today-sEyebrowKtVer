@@ -32,8 +32,8 @@
             android:layout_toLeftOf="@+id/current_date_cardview"
             android:backgroundTint="@color/transparent"
             android:clickable="true"
+            app:cardCornerRadius="@dimen/half_arrow_background_height"
 
-            app:cardCornerRadius="100dp"
             app:cardElevation="0dp"
             app:rippleColor="@color/weakGrey">
 
@@ -88,17 +88,17 @@
             android:layout_height="@dimen/arrow_background_height"
             android:layout_centerVertical="true"
 
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/activity_small_vertical_margin"
             android:layout_toRightOf="@+id/current_date_cardview"
             android:backgroundTint="@color/transparent"
             android:clickable="true"
             app:cardElevation="0dp"
             app:rippleColor="@color/weakGrey"
-            app:cardCornerRadius="100dp">
+            app:cardCornerRadius="@dimen/half_arrow_background_height">
 
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="@dimen/back_iv_width"
+                android:layout_height="@dimen/back_iv_height"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
@@ -108,6 +108,22 @@
 
 
     </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:src="@drawable/white_cross"
+        android:backgroundTint="@color/mainRed"
+        android:adjustViewBounds="true"
+        app:borderWidth="0dp"
+        android:elevation="1dp"
+        app:tint="@null"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

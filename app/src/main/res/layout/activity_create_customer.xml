@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateCustomerActivity">
+
+    <RelativeLayout
+        android:id="@+id/headerRl"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/backIv"
+            android:layout_width="14dp"
+            android:layout_height="22.5dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:background="#dfdfdf" />
+
+        <TextView
+            android:id="@+id/joinTv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/notosansmonocjkkrbold"
+            android:gravity="center"
+            android:text="고객등록"
+            android:textColor="#211f1f"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/nameTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_small_vertical_margin"
+        android:fontFamily="@font/notosanscjkkrmedium"
+
+        android:includeFontPadding="false"
+        android:text="이름"
+        android:textColor="@color/mainGrey"
+        android:textSize="@dimen/fifteen_textsize"
+        app:layout_constraintTop_toBottomOf="@+id/headerRl" />
+
+    <EditText
+        android:id="@+id/nameEt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_small_vertical_margin"
+        android:layout_marginRight="@dimen/activity_big_horizontal_margin"
+
+        android:background="@drawable/edittext_frame_grey"
+
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:hint="고객 이름"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/margin_five_dp"
+        android:textColor="@color/mainGrey"
+
+        android:textColorHint="@color/mainGreyFor50"
+        android:textCursorDrawable="@drawable/cursor_edittext"
+        android:textSize="@dimen/search_edit_thirteen_textsize"
+
+        app:layout_constraintTop_toBottomOf="@+id/nameTv" />
+
+    <TextView
+        android:id="@+id/numberTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_small_vertical_margin"
+
+        android:fontFamily="@font/notosanscjkkrmedium"
+
+        android:includeFontPadding="false"
+        android:text="전화번호"
+        android:textColor="@color/mainGrey"
+        android:textSize="@dimen/fifteen_textsize"
+        app:layout_constraintTop_toBottomOf="@+id/nameEt" />
+
+    <EditText
+        android:id="@+id/numberEt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_small_vertical_margin"
+        android:layout_marginRight="@dimen/activity_big_horizontal_margin"
+
+        android:background="@drawable/edittext_frame_grey"
+
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:hint=" - 없이 숫자만 입력"
+        android:inputType="phone"
+        android:maxLength="13"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/margin_five_dp"
+
+        android:textColor="@color/mainGrey"
+        android:textColorHint="@color/mainGreyFor50"
+        android:textCursorDrawable="@drawable/cursor_edittext"
+        android:textSize="@dimen/search_edit_thirteen_textsize"
+
+        app:layout_constraintTop_toBottomOf="@id/numberTv" />
+
+    <TextView
+        android:id="@+id/memoTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_small_vertical_margin"
+
+        android:fontFamily="@font/notosanscjkkrmedium"
+
+        android:text="메모 (선택)"
+        android:textColor="@color/mainGrey"
+        android:textSize="@dimen/fifteen_textsize"
+        app:layout_constraintTop_toBottomOf="@+id/numberEt" />
+
+    <EditText
+        android:id="@+id/memoEt"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_small_vertical_margin"
+        android:layout_marginRight="@dimen/activity_big_horizontal_margin"
+
+        android:background="@drawable/edittext_frame_grey"
+
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:gravity="top"
+        android:hint="고객의 특이사항을 입력해주세요"
+        android:paddingLeft="@dimen/margin_five_dp"
+        android:textColor="@color/mainGrey"
+        android:inputType="text"
+        android:maxLines="5"
+
+        android:textColorHint="@color/mainGreyFor50"
+        android:textCursorDrawable="@drawable/cursor_edittext"
+        android:textSize="@dimen/search_edit_thirteen_textsize"
+
+        app:layout_constraintTop_toBottomOf="@+id/memoTv" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/completeBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_small_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_big_horizontal_margin"
+
+        app:layout_constraintTop_toBottomOf="@+id/memoEt"
+
+        android:fontFamily="@font/notosansmonocjkkrbold"
+        android:includeFontPadding="false"
+        android:text="확인"
+        android:textSize="13sp"
+        android:textColor="@color/mainGrey"
+        android:backgroundTint="@color/mainPink"
+
+        android:stateListAnimator="@null"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
