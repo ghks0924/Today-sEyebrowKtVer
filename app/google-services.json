@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "338284423989",
+    "firebase_url": "https://today-s-eyebrow-kt-ver-default-rtdb.firebaseio.com",
+    "project_id": "today-s-eyebrow-kt-ver",
+    "storage_bucket": "today-s-eyebrow-kt-ver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338284423989:android:9f2f07c847f6e7a116fa7c",
+        "android_client_info": {
+          "package_name": "com.example.today_seyebrowktver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338284423989-fkk13cev7jf96v89bv9vq91l47slba5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7FjwpmmkjL08vi6mGngv7frqWkTrpXaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338284423989-fkk13cev7jf96v89bv9vq91l47slba5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

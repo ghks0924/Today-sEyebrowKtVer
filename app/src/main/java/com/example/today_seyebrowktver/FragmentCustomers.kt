@@ -21,12 +21,6 @@ class FragmentCustomers : Fragment() {
     var data = ArrayList<CustomersData>()
     var adapter: RvCustomerAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("lifecycle Check", "customers onCreate")
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +29,7 @@ class FragmentCustomers : Fragment() {
         _binding = FragmentCustomersBinding.inflate(inflater, container, false)
 
         setData() //customer 데이터 받아와서 arrayList에 넣기
-        setRv() //recyclerview와 어댑터 세팅
+
 
         setLayout() //화면요소 클릭리스너 등 세팅
 
@@ -75,15 +69,17 @@ class FragmentCustomers : Fragment() {
     }
 
     private fun setData() {
-        for (index in 1..5) {
+        for (index in 1 until 5) {
             data.add(CustomersData("가나다", "01030445454", "3회"))
         }
+
+        setRv() //recyclerview와 어댑터 세팅
 
     }
 
     private fun setRv() {
         adapter = RvCustomerAdapter(data)
-        binding.recyclerview.setLayoutManager(LinearLayoutManager(context))
+        binding.recyclerview.layoutManager = LinearLayoutManager(context)
         binding.recyclerview.adapter = adapter
 
         val dividerDecoration: DividerItemDecoration =
