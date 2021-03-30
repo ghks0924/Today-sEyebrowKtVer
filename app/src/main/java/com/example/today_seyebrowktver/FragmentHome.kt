@@ -2,6 +2,7 @@ package com.example.today_seyebrowktver
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,13 @@ class FragmentHome : Fragment() {
     //viewBinding
     private var _binding: FragmentHomeBinding? = null //onDestory를 위한 변수
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        Log.d("lifecycle Check", "home onCreate")
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +39,11 @@ class FragmentHome : Fragment() {
 
         binding.fab.setOnClickListener(View.OnClickListener {
             (activity as ActivityMain).mSelectTypeOfCustomer()
+
         })
+
+        Log.d("lifecycle Check", "home onCreateView")
+
 
         return binding.root
     }
@@ -39,5 +51,6 @@ class FragmentHome : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Log.d("lifecycle Check", "home destroy")
     }
 }

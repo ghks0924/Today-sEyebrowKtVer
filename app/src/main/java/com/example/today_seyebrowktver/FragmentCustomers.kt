@@ -2,6 +2,7 @@ package com.example.today_seyebrowktver
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,11 @@ class FragmentCustomers : Fragment() {
     var data = ArrayList<CustomersData>()
     var adapter: RvCustomerAdapter? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("lifecycle Check", "customers onCreate")
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +39,8 @@ class FragmentCustomers : Fragment() {
 
         setLayout() //화면요소 클릭리스너 등 세팅
 
+
+        Log.d("lifecycle Check", "customers onCreateView")
 
 
 
@@ -93,6 +101,12 @@ class FragmentCustomers : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null;
+        _binding = null
+        Log.d("lifecycle Check", "customers destroyView")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("lifecycle Check", "customers destroy")
     }
 }

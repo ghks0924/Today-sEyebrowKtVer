@@ -41,5 +41,4 @@ class BottomSheetFragmentCustomer : BottomSheetDialogFragment() {
         return view
     }
 
-
 }

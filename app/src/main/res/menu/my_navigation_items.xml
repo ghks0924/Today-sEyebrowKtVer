@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_memo"
-        android:title="메모"
+        android:title="메모장"
         android:icon="@drawable/memo2"/>
 
     <item
         android:id="@+id/nav_message"
-        android:title="메세지"
+        android:title="문자"
         android:icon="@drawable/message2"/>
 
     <item
@@ -17,11 +17,11 @@
 
     <item
         android:id="@+id/nav_accountings"
-        android:title="추가메뉴"
+        android:title="매출"
         android:icon="@drawable/graph2"/>
 
     <item
         android:id="@+id/nav_customers"
-        android:title="추가메뉴"
+        android:title="고객"
         android:icon="@drawable/customer2"/>
 </menu>
