@@ -1,15 +1,17 @@
 package com.example.today_seyebrowktver
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.today_seyebrowktver.databinding.ActivityCreateEventSkipCusBinding
 import com.example.today_seyebrowktver.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -19,9 +21,13 @@ class ActivityMain : ActivityBase() {
     //viewBinding
     private lateinit var binding: ActivityMainBinding
 
+    //viewModel
+    private lateinit var mainViewModel: ViewModelMain
+
     //fragment
     val fm = supportFragmentManager
     val fmTransaction: FragmentTransaction = fm.beginTransaction()
+
 
     //bottomNavigationView만 사용했을 때
 //    var fragmentCustomers = FragmentCustomers()
@@ -37,6 +43,7 @@ class ActivityMain : ActivityBase() {
     var fragmentAccounting = FragmentAccounting()
     var fragmentCustomers = FragmentCustomers()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -48,15 +55,15 @@ class ActivityMain : ActivityBase() {
         binding.viewpager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
         binding.viewpager.registerOnPageChangeCallback(ViewPagerPageChangeCallBack())
         binding.viewpager.offscreenPageLimit = 2
-        binding.viewpager.setCurrentItem(2)
+        binding.viewpager.currentItem = 2
+
+        mainViewModel = ViewModelProvider(this)[ViewModelMain::class.java]
+
 
 
     }
 
-
-    //화면 녹화 테스트입니다.
-
-
+    //fragment 세팅
     fun setFragments() {
         //viewpager 없는버전
 //        supportFragmentManager.beginTransaction().add(R.id.frame_container, fragmentCustomers, "customers")
@@ -252,6 +259,13 @@ class ActivityMain : ActivityBase() {
         }
     }
 
+//    //Room Library Methods...
+//    fun addMemo(){
+//        db?.getMemeDao()?.insert(MemoData2("19:00", "제목", "내용"))
+//        for (i in 0 until memoList?.size!!){
+//            Log.d("Room Memo Check", "title : " + memoList!![i].memoTitle)
+//        }
+//    }
 
 }
 

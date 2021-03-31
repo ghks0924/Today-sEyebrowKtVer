@@ -15,7 +15,7 @@ class RvCustomerAdapter : RecyclerView.Adapter<RvCustomerAdapter.ViewHolder> {
 
     override fun onCreateViewHolder(
             parent: ViewGroup,
-            viewType: Int,
+            viewType: Int
     ): RvCustomerAdapter.ViewHolder {
         val binding: RvItemCustomersBinding =
                 RvItemCustomersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,7 +24,7 @@ class RvCustomerAdapter : RecyclerView.Adapter<RvCustomerAdapter.ViewHolder> {
 
     override fun onBindViewHolder(
             holder: com.example.today_seyebrowktver.RvCustomerAdapter.ViewHolder,
-            position: Int,
+            position: Int
     ) {
         holder.bind(data!![position])
     }

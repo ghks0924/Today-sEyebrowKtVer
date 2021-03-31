@@ -35,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            app:layout_constraintTop_toBottomOf="@+id/customer_name"
-            app:layout_constraintLeft_toLeftOf="@+id/customer_name"
+            app:layout_constraintTop_toBottomOf="@+id/memo_title"
+            app:layout_constraintLeft_toLeftOf="@+id/memo_title"
 
             android:fontFamily="@font/notosanscjkkrregular"
             android:includeFontPadding="false"
@@ -49,8 +49,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            app:layout_constraintLeft_toLeftOf="@+id/customer_name"
-            app:layout_constraintTop_toBottomOf="@+id/customer_number"
+            app:layout_constraintLeft_toLeftOf="@+id/memo_title"
+            app:layout_constraintTop_toBottomOf="@+id/memo_date"
 
             android:fontFamily="@font/notosanscjkkrregular"
             android:includeFontPadding="false"

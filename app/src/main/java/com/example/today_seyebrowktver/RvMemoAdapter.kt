@@ -7,9 +7,9 @@ import com.example.today_seyebrowktver.databinding.RvItemMemoBinding
 
 class RvMemoAdapter: RecyclerView.Adapter<RvMemoAdapter.ViewHolder> {
 
-    var data: ArrayList<MemoData>? = null
+    var data: ArrayList<MemoData2>? = null
 
-    constructor(data: ArrayList<MemoData>){
+    constructor(data: ArrayList<MemoData2>){
         this.data = data
     }
 
@@ -32,14 +32,14 @@ class RvMemoAdapter: RecyclerView.Adapter<RvMemoAdapter.ViewHolder> {
     class ViewHolder(binding: RvItemMemoBinding) : RecyclerView.ViewHolder(binding.root){
         var binding: RvItemMemoBinding
 
-        fun bind(memoData: MemoData){
+        fun bind(memoData: MemoData2){
 //            binding.memoTitle.text = memoData.memoTitle
 //            binding.memoDate.text = memoData.memoDate
 //            binding.memoContent.text = memoData.memoContent
 
-            binding.memoTitle.text = "제목"
-            binding.memoDate.text = "시간"
-            binding.memoContent.text = "내용"
+            binding.memoTitle.text = memoData.memoTitle
+            binding.memoDate.text = memoData.memoDate
+            binding.memoContent.text = memoData.memoContent
 
         }
 

@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer">
-        <activity android:name=".ActivityCreateCustomerFromBook"></activity>
+        <activity android:name=".ActivityCreateMemo"></activity>
+        <activity android:name=".ActivityCreateCustomerFromBook" />
         <activity android:name=".ActivityJoin2" />
         <activity android:name=".ActivityJoin1" />
         <activity android:name=".ActivityJoin0" />

@@ -1,15 +1,14 @@
 package com.example.today_seyebrowktver
 
-import android.app.Activity
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 
 open class ActivityBase : AppCompatActivity() {
 
@@ -25,7 +24,7 @@ open class ActivityBase : AppCompatActivity() {
     }
 
 
-    //Toast 띄우기
+    //===================================Toast 띄우기===================================
     fun mShowShortToast(toast: String){
         Toast.makeText(applicationContext, toast, Toast.LENGTH_SHORT).show()
     }
@@ -34,8 +33,7 @@ open class ActivityBase : AppCompatActivity() {
         Toast.makeText(applicationContext, toast, Toast.LENGTH_LONG).show()
     }
 
-    //statusBar 색깔 바꾸기
-
+    //==================================statusBar 색깔 바꾸기=============================
     fun mChangeStatusBarColor(colorStr: String){
         val window = window
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -44,6 +42,21 @@ open class ActivityBase : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = Color.parseColor(colorStr)
         }
+    }
+
+
+    //================================키보드 관련 메서드===================================
+
+    fun mKeyboardDown(){
+        //키보드 내리기
+        val immhide = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        immhide.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+    }
+
+    fun mKeyboardUp(){
+        // 키보드 띄우기
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
     }
 
 

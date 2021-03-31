@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityCreateMemo"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:id="@+id/headerRl"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/back_cardview"
+            android:layout_width="@dimen/arrow_background_width"
+            android:layout_height="@dimen/arrow_background_height"
+            android:backgroundTint="@color/transparent"
+            app:cardCornerRadius="@dimen/half_arrow_background_height"
+            app:cardElevation="0dp"
+            android:clickable="true"
+            app:rippleColor="@color/weakGrey"
+            android:layout_centerVertical="true"
+
+            android:layout_marginLeft="@dimen/margin_back_iv_left">
+
+            <ImageView
+                android:id="@+id/backIv"
+                android:layout_width="@dimen/back_iv_width"
+                android:layout_height="@dimen/back_iv_height"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:src="@drawable/revised_backarrow" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <EditText
+            android:id="@+id/memoTitleEt"
+            android:layout_width="wrap_content"
+            android:minWidth="100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+
+            android:gravity="center"
+            android:fontFamily="@font/notosansmonocjkkrbold"
+            android:includeFontPadding="false"
+            android:inputType="text"
+            android:maxLines="1"
+            android:maxLength="25"
+            android:textColor="@color/mainGreyFor50"
+            android:textSize="17sp"
+            android:hint="제목"
+            android:textColorHint="@color/mainGreyFor50"
+            android:background="@null"/>
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/mainGreyForLine"/>
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/content_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerRl"
+
+        android:fontFamily="@font/notosansmonocjkkrbold"
+        android:includeFontPadding="false"
+        android:textColor="@color/mainGreyFor50"
+        android:textSize="15sp"
+        android:background="@null"
+
+
+        tools:text="내용입력칸"
+        android:gravity="top"
+        android:paddingLeft="20dp"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
