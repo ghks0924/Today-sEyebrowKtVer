@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [MemoData2::class], version = 2)
+@Database(entities = [MemoData::class], version = 2)
 abstract class MemoDatabase : RoomDatabase() {
 
-    abstract fun getMemeDao() : MemoDao2
+    abstract fun getMemeDao() : MemoDao
 
     companion object{
 
