@@ -7,7 +7,7 @@
     tools:context=".ActivityCreateEventSkipCus">
 
     <RelativeLayout
-        android:id="@+id/headerRl"
+        android:id="@+id/header_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/mainPink"
@@ -32,7 +32,7 @@
             android:layout_marginLeft="@dimen/margin_back_iv_left">
 
             <ImageView
-                android:id="@+id/backIv"
+                android:id="@+id/back_iv"
                 android:layout_width="@dimen/back_iv_width"
                 android:layout_height="@dimen/back_iv_height"
                 android:adjustViewBounds="true"
@@ -80,7 +80,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerRl">
+        app:layout_constraintTop_toBottomOf="@+id/header_relative_layout">
 
         <TextView
             android:id="@+id/rsv_type_tv"

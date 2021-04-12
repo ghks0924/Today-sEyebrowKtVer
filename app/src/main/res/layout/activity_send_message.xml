@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivitySendMessage"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:id="@+id/header_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/back_cardview"
+            android:layout_width="@dimen/arrow_background_width"
+            android:layout_height="@dimen/arrow_background_height"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_back_iv_left"
+            android:backgroundTint="@color/transparent"
+            android:clickable="true"
+            app:cardCornerRadius="@dimen/half_arrow_background_height"
+            app:cardElevation="0dp"
+
+            app:rippleColor="@color/weakGrey">
+
+            <ImageView
+                android:id="@+id/back_iv"
+                android:layout_width="@dimen/back_iv_width"
+                android:layout_height="@dimen/back_iv_height"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:src="@drawable/revised_backarrow" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/notosanscjkkrbold"
+
+            android:includeFontPadding="false"
+            android:text="문자 보내기"
+            android:textColor="@color/black"
+
+            android:textSize="20sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:clickable="true"
+
+            android:elevation="0dp"
+            app:cardCornerRadius="25dp"
+            app:rippleColor="@color/weakGrey">
+
+            <ImageView
+                android:id="@+id/send_iv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:src="@drawable/outline_send_black" />
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/mainGreyForLine" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/select_customer_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_rounded_mainblueborder"
+        android:fontFamily="@font/notosanscjkkrmedium"
+
+        android:includeFontPadding="false"
+        android:paddingLeft="15dp"
+        android:paddingTop="8dp"
+
+        android:paddingRight="15dp"
+        android:paddingBottom="8dp"
+        android:text="고객 선택"
+        android:textColor="@color/mainBlue"
+        android:textSize="@dimen/textsize_default"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_relative_layout"
+        />
+
+    <TextView
+        android:id="@+id/message_title_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+
+        android:background="@drawable/edittext_frame_grey"
+
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:hint="제목을 입력하세요"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:paddingLeft="10dp"
+
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_customer_tv" />
+
+    <TextView
+        android:id="@+id/message_content_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/notosanscjkkrmedium"
+
+        android:text="문자 내용"
+        android:textColor="@color/mainGrey"
+
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_title_et" />
+
+    <EditText
+        android:id="@+id/message_content_et"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+
+        android:background="@drawable/edittext_frame_grey"
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:gravity="top"
+        android:hint="문자 내용을 입력하세요"
+        android:includeFontPadding="false"
+        android:inputType="textMultiLine"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_content_tv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

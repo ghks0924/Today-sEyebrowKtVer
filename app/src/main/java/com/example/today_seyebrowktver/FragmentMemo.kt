@@ -1,16 +1,14 @@
 package com.example.today_seyebrowktver
 
-import android.R
 import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -33,8 +31,7 @@ class FragmentMemo : Fragment() {
     var memoDataList = ArrayList<MemoData>()
     var adapter: RvMemoAdapter? = null
 
-    private lateinit var mainViewModel: ViewModelMain
-
+    private lateinit var mainViewModel : ViewModelMain
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -48,19 +45,23 @@ class FragmentMemo : Fragment() {
     ): View? {
         _binding = FragmentMemoBinding.inflate(inflater, container, false)
 
-        setData()
 
-        //memo 추가 메서드
-        mCreateMemo()
 
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        mainViewModel = ViewModelProvider(requireActivity()).get(ViewModelMain::class.java)
+        super.onViewCreated(view, savedInstanceState)
+
+        setData()
+        //memo 추가 메서드
+        mCreateMemo()
+    }
+
     private fun mCreateMemo() {
         binding.addMemoCardview.setOnClickListener(View.OnClickListener {
-            val intent = Intent(context, ActivityCreateMemo::class.java)
-            intent.putExtra("type", "new")
-            startActivityForResult(intent, REQUEST_CREATE_MEMO)
+            (activity as ActivityMain).mGoToCreateMemoActivity()
         })
     }//memo 추가 메서드
 
@@ -70,27 +71,17 @@ class FragmentMemo : Fragment() {
         //adapter의 itemClick의 onClick override
         adapter!!.itemClick = object : RvMemoAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-                var tempMemoDate: String? = null
-                var tempMemoTitle: String? = ""
-                var tempMemoContent: String? = null
 
-                // 일단 클릭된 놈 찾기
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val memoData: MemoData =
-                        mainViewModel.findByDate(memoDataList[position].memoDate)
-                    tempMemoDate = memoData.memoDate
-                    tempMemoTitle = memoData.memoTitle.toString()
-                    tempMemoContent = memoData.memoContent
-                }
+                mainViewModel.sendMemoData(
+                    memoDataList[position].memoTitle,
+                    memoDataList[position].memoContent,
+                    memoDataList[position].memoDate)
 
-                val intent = Intent(context, ActivityCreateMemo::class.java)
-                //찾은 놈 데이터 보내주기
-                intent.putExtra("type", "update")
-                intent.putExtra("memoTitle", tempMemoTitle)
-                intent.putExtra("memoDate", tempMemoDate)
-                intent.putExtra("memoContent", tempMemoContent)
-                startActivityForResult(intent, REQUEST_UPDATE_MEMO)
+                (activity as ActivityMain).mGoToUpdateMemoActivity()
+
             }
+
+
         }
 
         //adapter의 itemLongClick의 onLongClick override
@@ -101,7 +92,7 @@ class FragmentMemo : Fragment() {
 
                 //일단 클릭된 놈 찾기
                 lifecycleScope.launch(Dispatchers.IO) {
-                    memoData = mainViewModel.findByDate(memoDataList[position].memoDate)
+                    memoData = mainViewModel.findMemoByDate(memoDataList[position].memoDate)
                 }
 
 
@@ -110,7 +101,7 @@ class FragmentMemo : Fragment() {
                 ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
 
                     lifecycleScope.launch(Dispatchers.IO) {
-                        memoData = mainViewModel.findByDate(memoDataList[position].memoDate)
+                        memoData = mainViewModel.findMemoByDate(memoDataList[position].memoDate)
                         mainViewModel.delete(memoData)
                     }
 
@@ -129,8 +120,6 @@ class FragmentMemo : Fragment() {
     } //RecyclerView 세팅 메서드
 
     private fun setData() {
-        mainViewModel = ViewModelProvider(activity as ActivityMain)[ViewModelMain::class.java]
-
 
         mainViewModel.getAll().observe(activity as ActivityMain, Observer { memos ->
             var tempMemoDataList = ArrayList<MemoData>()
@@ -162,30 +151,9 @@ class FragmentMemo : Fragment() {
 
         when (requestCode) {
             REQUEST_CREATE_MEMO -> {
-                //ActivirtCreateMemo에서 넘겨준 데이터 받아오기
-                val memoDate: String = data!!.getStringExtra("memoDate")
-                val memoTitle: String = data!!.getStringExtra("memoTitle")
-                val memoContent: String = data!!.getStringExtra("memoContent")
 
-                lifecycleScope.launch(Dispatchers.IO) {
-                    mainViewModel.insert(MemoData(memoDate, memoTitle, memoContent))
 
-                }
-                mainViewModel.getAll().observe(activity as ActivityMain, Observer { memos ->
-                    var tempMemoDataList = ArrayList<MemoData>()
-                    for (i in 0 until memos.size) {
-                        tempMemoDataList.add(
-                            MemoData(
-                                memos[i].memoDate,
-                                memos[i].memoTitle,
-                                memos[i].memoContent
-                            )
-                        )
-                    }
-                    memoDataList.clear()
-                    memoDataList.addAll(tempMemoDataList)
 
-                })
 
             }
 
@@ -197,7 +165,7 @@ class FragmentMemo : Fragment() {
                 val memoContent: String = data!!.getStringExtra("memoContent")
 
                 lifecycleScope.launch(Dispatchers.IO) {
-                    val memoData: MemoData = mainViewModel.findByDate(prevDate) //이전 메모 객체 찾기
+                    val memoData: MemoData = mainViewModel.findMemoByDate(prevDate) //이전 메모 객체 찾기
                     mainViewModel.delete(memoData) //이전 메모 지우고
                     mainViewModel.insert(MemoData(memoDate, memoTitle, memoContent)) //새로 생성
 

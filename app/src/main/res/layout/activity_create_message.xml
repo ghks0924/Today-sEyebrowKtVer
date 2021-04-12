@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityCreateMessage">
+
+    <RelativeLayout
+        android:id="@+id/header_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/back_cardview"
+            android:layout_width="@dimen/arrow_background_width"
+            android:layout_height="@dimen/arrow_background_height"
+            android:backgroundTint="@color/transparent"
+            app:cardCornerRadius="@dimen/half_arrow_background_height"
+            app:cardElevation="0dp"
+            android:clickable="true"
+            app:rippleColor="@color/weakGrey"
+            android:layout_centerVertical="true"
+
+            android:layout_marginLeft="@dimen/margin_back_iv_left">
+
+            <ImageView
+                android:id="@+id/back_iv"
+                android:layout_width="@dimen/back_iv_width"
+                android:layout_height="@dimen/back_iv_height"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:src="@drawable/revised_backarrow" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/notosanscjkkrbold"
+            android:includeFontPadding="false"
+
+            android:text="문자템플릿 만들기"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+
+            android:layout_centerInParent="true"/>
+
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/mainGreyForLine"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/message_type_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_relative_layout"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:text="문자 유형"
+        android:textColor="@color/mainGrey"
+        android:textSize="15sp" />
+
+
+    <TextView
+        android:id="@+id/select_type_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintLeft_toLeftOf="@+id/message_type_tv"
+        app:layout_constraintRight_toRightOf="@+id/message_type_tv"
+        app:layout_constraintTop_toBottomOf="@+id/message_type_tv"
+
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+
+        android:background="@drawable/rounded_corner_hintgrey"
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:gravity="center"
+        android:hint="유형 선택"
+        android:textColor="@color/mainGrey"
+        android:textColorHint="@color/mainGreyFor50"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/message_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_type_tv"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:text="문자 제목"
+        android:textColor="@color/mainGrey"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/message_title_et"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_title_tv"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:paddingLeft="10dp"
+        android:textSize="15sp"
+
+        android:background="@drawable/edittext_frame_grey"
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:includeFontPadding="false"
+        android:hint="제목을 입력하세요"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/message_content_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_title_et"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:text="문자 내용"
+        android:textColor="@color/mainGrey"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/message_content_et"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_content_tv"
+        app:layout_constraintBottom_toTopOf="@+id/save_message_button"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="top"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:textSize="15sp"
+
+        android:background="@drawable/edittext_frame_grey"
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:includeFontPadding="false"
+        android:hint="문자 내용을 입력하세요"
+        android:inputType="textMultiLine"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/save_message_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:text="저장"
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:includeFontPadding="false"
+        android:textSize="15sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@color/mainBlue"/>
+
+
+
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
