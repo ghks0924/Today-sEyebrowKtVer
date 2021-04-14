@@ -55,6 +55,7 @@
             android:textSize="20sp" />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/send_cardview"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
@@ -88,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_rounded_mainblueborder"
         android:fontFamily="@font/notosanscjkkrmedium"
@@ -102,47 +103,46 @@
         android:text="고객 선택"
         android:textColor="@color/mainBlue"
         android:textSize="@dimen/textsize_default"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_relative_layout"
         />
 
     <TextView
-        android:id="@+id/message_title_et"
-        android:layout_width="match_parent"
+        android:id="@+id/customer_list_tv"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
 
         android:background="@drawable/edittext_frame_grey"
 
         android:fontFamily="@font/notosanscjkkrmedium"
-        android:hint="제목을 입력하세요"
+        tools:hint="고객을 선택해주세요zxvlkznxvnajvnjanvajsasdasfasgnakjnsraslkdnalsngjlnjkasnfasjfnajsfnkjasnfkjasfkjasf"
         android:includeFontPadding="false"
-        android:inputType="text"
         android:paddingLeft="10dp"
 
         android:textSize="15sp"
-        android:visibility="gone"
+
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select_customer_tv" />
+        app:layout_constraintRight_toLeftOf="@+id/select_customer_tv"
+        app:layout_constraintTop_toBottomOf="@+id/header_relative_layout" />
 
     <TextView
-        android:id="@+id/message_content_tv"
+        android:id="@+id/message_title_display_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/notosanscjkkrmedium"
 
-        android:text="문자 내용"
+        android:text="문자 제목이 들어갈 칸"
         android:textColor="@color/mainGrey"
 
         android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message_title_et" />
+        app:layout_constraintTop_toBottomOf="@+id/customer_list_tv" />
 
     <EditText
         android:id="@+id/message_content_et"
@@ -166,6 +166,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message_content_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/message_title_display_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

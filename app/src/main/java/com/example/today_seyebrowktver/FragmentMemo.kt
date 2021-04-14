@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -44,9 +43,6 @@ class FragmentMemo : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMemoBinding.inflate(inflater, container, false)
-
-
-
         return binding.root
     }
 
@@ -56,10 +52,10 @@ class FragmentMemo : Fragment() {
 
         setData()
         //memo 추가 메서드
-        mCreateMemo()
+        mGoToCreateMemo()
     }
 
-    private fun mCreateMemo() {
+    private fun mGoToCreateMemo() {
         binding.addMemoCardview.setOnClickListener(View.OnClickListener {
             (activity as ActivityMain).mGoToCreateMemoActivity()
         })
@@ -78,7 +74,6 @@ class FragmentMemo : Fragment() {
                     memoDataList[position].memoDate)
 
                 (activity as ActivityMain).mGoToUpdateMemoActivity()
-
             }
 
 
@@ -111,7 +106,6 @@ class FragmentMemo : Fragment() {
                 ab.setCancelable(true)
                 ab.show()
             }
-
         }
 
 

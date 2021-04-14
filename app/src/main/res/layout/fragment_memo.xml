@@ -40,7 +40,7 @@
             app:rippleColor="@color/weakGrey">
 
             <ImageView
-                android:id="@+id/smsIv"
+                android:id="@+id/filter_iv"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/plus"

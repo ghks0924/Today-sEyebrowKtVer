@@ -1,6 +1,7 @@
 package com.example.today_seyebrowktver
 
 import android.app.Activity.RESULT_OK
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -84,47 +85,13 @@ class FragmentMessage : Fragment() {
         //itemClick event
         adapter!!.itemClick = object : RvMessageAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-
                 mainViewModel.sendMessageData(
                     messageDataList[position].messageType,
                     messageDataList[position].messageTitle,
                     messageDataList[position].messageContent,
                     messageDataList[position].messageDate
                 )
-
-//                //찾아
-//                lifecycleScope.launch(Dispatchers.IO) {
-//                    val messageData =
-//                        mainViewModel.findMessageByDate(messageDataList[position].messageDate)
-//                    Log.d("mainviewmodel", "found type: " + messageData!!.messageType)
-//                    Log.d("mainviewmodel", "found title: " + messageData!!.messageTitle)
-//                    Log.d("mainviewmodel", "found content: " + messageData!!.messageContent)
-//                    Log.d("mainviewmodel", "found date: " + messageData!!.messageDate)
-//
-//                    tempType = messageData.messageType
-//                    tempTitle = messageData.messageTitle
-//                    tempContent = messageData.messageContent
-//                    tempDate = messageData.messageDate
-//
-//
-////                    tempMessageData = MessageData(messageData.messageType, messageData.messageTitle, messageData.messageContent, messageData.messageDate)
-//                }
-
-
-//                mainViewModel.sendMessageData(
-//                    tempMessageData.messageType,
-//                    tempMessageData.messageTitle, tempMessageData.messageContent, tempMessageData.messageDate
-//                )
-
-
-
                 (activity as ActivityMain).mGoToSendMessageActivity()
-
-
-
-                //찾은 놈 데이터 보내주기
-                Toast.makeText(context, "message click", Toast.LENGTH_SHORT).show()
-
             }
         }
 
@@ -132,7 +99,21 @@ class FragmentMessage : Fragment() {
         //itemLongClick event
         adapter!!.itemLongClick = object : RvMessageAdapter.ItemLongClick {
             override fun onLongClick(view: View, position: Int) {
-                Toast.makeText(context, "message Longclick", Toast.LENGTH_SHORT).show()
+
+                val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
+                ab.setMessage("문자를 삭제 하시겠습니까??")
+                ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val messageData = mainViewModel.findMessageByDate(messageDataList[position].messageDate)
+                        mainViewModel.delete(messageData)
+                    }
+
+
+                })
+                ab.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which -> })
+                ab.setCancelable(true)
+                ab.show()
             }
         }
 
@@ -150,7 +131,7 @@ class FragmentMessage : Fragment() {
         })
 
         //send click event
-        binding.smsIv.setOnClickListener(View.OnClickListener {
+        binding.filterCardview.setOnClickListener(View.OnClickListener {
 //            val intent = Intent("android.intent.action.MAIN")
 //            intent.addCategory("android.intent.category.DEFAULT")
 //            intent.type = "vnd.android-dir/mms-sms"

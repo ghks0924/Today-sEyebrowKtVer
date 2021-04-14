@@ -2,6 +2,8 @@ package com.example.today_seyebrowktver
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
+import com.google.firebase.database.*
 
 
 class FragmentCustomers : Fragment() {
@@ -18,7 +21,9 @@ class FragmentCustomers : Fragment() {
 
     private val binding get() = _binding!!
 
+    val database:DatabaseReference = FirebaseDatabase.getInstance().reference
     var data = ArrayList<CustomersData>()
+    var dataForSearch = ArrayList<CustomersData>()
     var adapter: RvCustomerAdapter? = null
 
     override fun onCreateView(
@@ -27,19 +32,13 @@ class FragmentCustomers : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCustomersBinding.inflate(inflater, container, false)
-
-        setData() //customer 데이터 받아와서 arrayList에 넣기
-
-
-        setLayout() //화면요소 클릭리스너 등 세팅
-
-
-        Log.d("lifecycle Check", "customers onCreateView")
-
-
-
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setData() //customer 데이터 받아와서 arrayList에 넣기
+        setLayout() //화면요소 클릭리스너 등 세팅
     }
 
     private fun setLayout() {
@@ -66,15 +65,46 @@ class FragmentCustomers : Fragment() {
             (activity as ActivityMain).mSelectHowToCreateCustomer()
 
         })
+
+        binding.edittext.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                var searchText: String = binding.edittext.text.toString().toLowerCase()
+                search(searchText)
+            }
+
+        })
     }
 
     private fun setData() {
-        for (index in 1 until 5) {
-            data.add(CustomersData("가나다", "01030445454", "3회"))
-        }
+        database.child("customers").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val newData: ArrayList<CustomersData> = ArrayList()
+                for (ds in dataSnapshot.children) {
+                    val idolData: CustomersData? = ds.getValue(CustomersData::class.java)
+                    if (idolData != null) {
+                        newData.add(idolData)
+                    }
+                }
+                data.clear() //for문이 끝내기전까지 데이터를 유지하기 위해
+                dataForSearch.clear()
 
-        setRv() //recyclerview와 어댑터 세팅
+                data.addAll(newData)
+                dataForSearch.addAll(newData)
+                setRv() //일반적인 위치는 아님..  db접근, 파일접근은 비동기처리 해야함. fb는 자동적으로 비동기적으로 돈다
+            }
 
+
+
+            //addListener sing은 한번만 불러오고
+            //addValue는 데이터가 바꿀때마다 datachage 돈다.
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 
     private fun setRv() {
@@ -98,11 +128,30 @@ class FragmentCustomers : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Log.d("lifecycle Check", "customers destroyView")
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("lifecycle Check", "customers destroy")
+    //검색 기능 메소드 생성
+    fun search(charText: String) {
+        //문자 입력시마다 리스트를 지우고 새로 뿌려준다.
+        dataForSearch.clear() // 원본 비워! 왜냐면 Adapter가 원본이랑 연결되어 있거든
+        //문자입력이 없을때는 모든 데이터를 보여준다.
+        if (charText.length == 0) {
+            adapter = RvCustomerAdapter(data)
+            binding.recyclerview.adapter = adapter
+        } else { //문자입력시
+            for (i in data.indices) { //리소스의 모든 데이터를 검색한다.
+                if (data.get(i).customerName!!.toLowerCase().contains(charText)
+                    || data.get(i).customerNumber!!.contains(charText)) {
+                    //검색된 데이터를 리스트에 추가한다.
+                    //list.add(arraylist.get(i));
+                    dataForSearch.add(data.get(i))
+                }
+            }
+
+            adapter = RvCustomerAdapter(dataForSearch)
+            binding.recyclerview.adapter = adapter
+        }
     }
+
+
 }

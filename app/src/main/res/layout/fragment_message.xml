@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/filter_cardview"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:cardCornerRadius="25dp"
@@ -27,11 +28,12 @@
             android:elevation="0dp">
 
             <ImageView
-                android:id="@+id/smsIv"
+                android:id="@+id/filter_iv"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/outline_filter_black"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:clickable="false"/>
         </com.google.android.material.card.MaterialCardView>
 
 

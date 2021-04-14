@@ -1,21 +1,13 @@
 package com.example.today_seyebrowktver
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.example.today_seyebrowktver.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +43,7 @@ class ActivityMain : ActivityBase() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
+        setPermittionCheck() //권한체크
         //뷰모델 생성
         mainViewModel = ViewModelProvider(this)[ViewModelMain::class.java]
         setContentView(view)
@@ -236,9 +229,11 @@ class ActivityMain : ActivityBase() {
     }
 
     fun mGoToSendMessageActivity() {
-
         val intent = Intent(this, ActivitySendMessage::class.java)
+        intent.putExtra("type", mainViewModel.messageType.value)
+        intent.putExtra("title", mainViewModel.messageTitle.value)
         intent.putExtra("content", mainViewModel.messageContent.value)
+        intent.putExtra("date", mainViewModel.messageDate.value)
         startActivityForResult(intent, REQUEST_SEND_MESSAGE)
 
     }
@@ -297,6 +292,29 @@ class ActivityMain : ActivityBase() {
                     mainViewModel.insert(MemoData(newMemoDate, memoTitle, memoContent))
                 }
             }
+
+            REQUEST_SEND_MESSAGE -> {
+                val messageType = data!!.getStringExtra("type")
+                val oldMessageDate = data!!.getStringExtra("oldDate")
+                val newMessageDate = data!!.getStringExtra("newDate")
+                val newMessageTitle = data!!.getStringExtra("title")
+                val newMessageContent = data!!.getStringExtra("content")
+                lifecycleScope.launch(Dispatchers.IO) {
+                    mainViewModel.delete(mainViewModel.findMessageByDate(oldMessageDate))
+                    mainViewModel.insert(MessageData(messageType, newMessageTitle,
+                        newMessageContent, newMessageDate))
+                }
+            }
+        }
+    }
+
+    private var time: Long = 0
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() - time >= 2000) {
+            time = System.currentTimeMillis()
+            Toast.makeText(applicationContext, "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show()
+        } else if (System.currentTimeMillis() - time < 2000) {
+            finish()
         }
     }
 

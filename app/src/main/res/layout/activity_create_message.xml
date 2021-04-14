@@ -134,7 +134,7 @@
         android:inputType="text" />
 
     <TextView
-        android:id="@+id/message_content_tv"
+        android:id="@+id/message_title_display_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -155,7 +155,7 @@
         android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message_content_tv"
+        app:layout_constraintTop_toBottomOf="@+id/message_title_display_tv"
         app:layout_constraintBottom_toTopOf="@+id/save_message_button"
 
         android:layout_marginLeft="20dp"

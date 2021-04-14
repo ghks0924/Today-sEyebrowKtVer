@@ -7,7 +7,8 @@ import com.example.today_seyebrowktver.databinding.RvItemCustomersBinding
 
 class RvCustomerAdapter : RecyclerView.Adapter<RvCustomerAdapter.ViewHolder> {
 
-    var data: ArrayList<CustomersData>? = null
+
+    var data: ArrayList<CustomersData>?= null
 
     constructor(data: ArrayList<CustomersData>) {
         this.data = data
@@ -37,9 +38,9 @@ class RvCustomerAdapter : RecyclerView.Adapter<RvCustomerAdapter.ViewHolder> {
         var binding: RvItemCustomersBinding
 
         fun bind(customerData: CustomersData) {
-            binding.customerName.text = "김순자"
-            binding.customerNumber.text = "01030773637"
-            binding.customerHistory.text = "1회"
+            binding.customerName.text = customerData.customerName
+            binding.customerNumber.text = customerData.customerNumber
+            binding.customerHistory.text = customerData.history.toString() + "회 방문"
         }
 
         init {

@@ -1,9 +1,11 @@
 package com.example.today_seyebrowktver
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Keep
 @Entity(tableName = "messages")
 data class MessageData(
     @ColumnInfo(name = "type") var messageType: String,

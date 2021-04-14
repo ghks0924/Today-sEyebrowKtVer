@@ -14,13 +14,29 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/back_iv"
-            android:layout_width="14dp"
-            android:layout_height="22.5dp"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/back_cardview"
+            android:layout_width="@dimen/arrow_background_width"
+            android:layout_height="@dimen/arrow_background_height"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:background="#dfdfdf" />
+            android:layout_marginLeft="@dimen/margin_back_iv_left"
+            android:backgroundTint="@color/transparent"
+            android:clickable="true"
+            app:cardCornerRadius="@dimen/half_arrow_background_height"
+            app:cardElevation="0dp"
+
+            app:rippleColor="@color/weakGrey">
+
+            <ImageView
+                android:id="@+id/back_iv"
+                android:layout_width="@dimen/back_iv_width"
+                android:layout_height="@dimen/back_iv_height"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:src="@drawable/revised_backarrow" />
+
+        </com.google.android.material.card.MaterialCardView>
+
 
         <TextView
             android:id="@+id/joinTv"
@@ -63,12 +79,10 @@
         android:hint="고객 이름"
         android:includeFontPadding="false"
         android:inputType="text"
-        android:maxLines="1"
         android:paddingLeft="@dimen/margin_five_dp"
         android:textColor="@color/mainGrey"
 
         android:textColorHint="@color/mainGreyFor50"
-        android:textCursorDrawable="@drawable/cursor_edittext"
         android:textSize="@dimen/search_edit_thirteen_textsize"
 
         app:layout_constraintTop_toBottomOf="@+id/nameTv" />
@@ -100,14 +114,13 @@
 
         android:fontFamily="@font/notosanscjkkrmedium"
         android:hint=" - 없이 숫자만 입력"
+        android:includeFontPadding="false"
         android:inputType="phone"
         android:maxLength="13"
-        android:maxLines="1"
         android:paddingLeft="@dimen/margin_five_dp"
 
         android:textColor="@color/mainGrey"
         android:textColorHint="@color/mainGreyFor50"
-        android:textCursorDrawable="@drawable/cursor_edittext"
         android:textSize="@dimen/search_edit_thirteen_textsize"
 
         app:layout_constraintTop_toBottomOf="@id/numberTv" />
@@ -139,10 +152,9 @@
         android:fontFamily="@font/notosanscjkkrmedium"
         android:gravity="top"
         android:hint="고객의 특이사항을 입력해주세요"
+        android:inputType="textMultiLine"
         android:paddingLeft="@dimen/margin_five_dp"
         android:textColor="@color/mainGrey"
-        android:inputType="text"
-        android:maxLines="5"
 
         android:textColorHint="@color/mainGreyFor50"
         android:textCursorDrawable="@drawable/cursor_edittext"
@@ -154,21 +166,20 @@
         android:id="@+id/completeBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_small_vertical_margin"
         android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_small_vertical_margin"
         android:layout_marginRight="@dimen/activity_big_horizontal_margin"
 
-        app:layout_constraintTop_toBottomOf="@+id/memoEt"
+        android:backgroundTint="@color/mainPink"
 
         android:fontFamily="@font/notosansmonocjkkrbold"
         android:includeFontPadding="false"
-        android:text="확인"
-        android:textSize="13sp"
-        android:textColor="@color/mainGrey"
-        android:backgroundTint="@color/mainPink"
-
         android:stateListAnimator="@null"
-        />
+        android:text="확인"
+        android:textColor="@color/mainGrey"
+        android:textSize="13sp"
+
+        app:layout_constraintTop_toBottomOf="@+id/memoEt" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

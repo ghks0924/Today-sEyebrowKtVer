@@ -53,7 +53,6 @@ class ActivityUpdateMemo : ActivityBase() {
                 mUpdateMemo()
                 mKeyboardDown()
             }
-
         })
 
         binding.contentEdittext.addTextChangedListener(object : TextWatcher {
@@ -84,9 +83,7 @@ class ActivityUpdateMemo : ActivityBase() {
 
         } else {
 
-            Log.d("getMemo", "update? :")
             //메인 액티비티로 저장할 메모 데이터와 RESULT_OK 보내기
-
             // 현재시간을 msec 으로 구한다.
             val now = System.currentTimeMillis()
             // 현재시간을 date 변수에 저장한다.

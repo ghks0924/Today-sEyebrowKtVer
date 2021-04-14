@@ -75,4 +75,6 @@ dependencies {
     //==============coroutine================================
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
 
+    //===========================Ted Permission=======================================
+    implementation 'gun0912.ted:tedpermission:2.2.3'
 }
