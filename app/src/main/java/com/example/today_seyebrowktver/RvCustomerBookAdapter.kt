@@ -58,7 +58,15 @@ class RvCustomerBookAdapter : RecyclerView.Adapter<RvCustomerBookAdapter.ViewHol
             this.item = contactData
             binding.firstChar.text = item!!.name!!.substring(0,1)
             binding.customerName.text = item!!.name
-            binding.customerNumber.text = item!!.phoneNumber
+
+            if (item!!.phoneNumber.toString().contains("-")){
+                binding.customerNumber.text = item!!.phoneNumber
+            } else{
+                binding.customerNumber.text = item!!.phoneNumber!!.substring(0,3) +
+                        "-" + item!!.phoneNumber!!.substring(3,7) +
+                        "-" + item!!.phoneNumber!!.substring(7)
+            }
+
             binding.checkbox.isChecked = item!!.isChecked
         }
         init {
@@ -71,6 +79,8 @@ class RvCustomerBookAdapter : RecyclerView.Adapter<RvCustomerBookAdapter.ViewHol
         }
 
     }
+
+
 
 
 }

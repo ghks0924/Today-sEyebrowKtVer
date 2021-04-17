@@ -2,6 +2,7 @@ package com.example.today_seyebrowktver
 
 import android.content.Context
 import android.provider.ContactsContract
+import android.util.Log
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -9,7 +10,7 @@ class ContactUtil {
 
     private var context: Context? = null
 
-    constructor(context:Context){
+    constructor(context: Context) {
         this.context = context
     }
 
@@ -27,12 +28,17 @@ class ContactUtil {
         val contactlist: ArrayList<ContactData> = ArrayList<ContactData>()
         if (contactCursor!!.moveToFirst()) {
             do {
-                val phonenumber = contactCursor.getString(1).replace("-".toRegex(), "")
                 val contact = ContactData()
                 contact.id = contactCursor.getLong(0)
-                contact.phoneNumber = phonenumber
+                contact.phoneNumber = contactCursor.getString(1)
                 contact.name = contactCursor.getString(2)
-                contactlist.add(contact)
+                if (!contact.phoneNumber.toString().startsWith("01")) {
+                    contactCursor.moveToNext()
+                } else {
+                    contactlist.add(contact)
+                }
+
+
             } while (contactCursor.moveToNext())
         }
         return contactlist

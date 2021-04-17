@@ -3,7 +3,6 @@ package com.example.today_seyebrowktver
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.ActivityCreateCustomerFromBookBinding
@@ -14,7 +13,12 @@ class ActivityCreateCustomerFromBook : ActivityBase() {
     private lateinit var binding: ActivityCreateCustomerFromBookBinding
 
     private lateinit var contactUtil: ContactUtil
-    private lateinit var contactList: ArrayList<ContactData>
+
+    companion object{
+        private lateinit var contactList: ArrayList<ContactData>
+        private lateinit var checkboxList: ArrayList<CheckboxData>
+    }
+
     private lateinit var contactListForSearch: ArrayList<ContactData>
     private lateinit var adapter: RvCustomerBookAdapter
 
@@ -119,11 +123,16 @@ class ActivityCreateCustomerFromBook : ActivityBase() {
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         binding.recyclerview.adapter = adapter
 
-//        adapter!!.itemClick = object : RvCustomerBookAdapter.ItemClick {
-//            override fun onClick(view: View, position: Int) {
-//                checkCount++
-//            }
-//        }
+        adapter!!.itemClick = object : RvCustomerBookAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                binding.recyclerview.getChildAt(position)
+            }
+        }
     }
+
+    class CheckboxData(
+        var id:Long,
+        var checked:Boolean
+    )
 
 }

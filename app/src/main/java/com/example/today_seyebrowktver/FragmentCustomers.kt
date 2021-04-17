@@ -15,7 +15,7 @@ import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
 import com.google.firebase.database.*
 
 
-class FragmentCustomers : Fragment() {
+class   FragmentCustomers : Fragment() {
 
     private var _binding: FragmentCustomersBinding? = null //onDestory를 위한 변수
 

@@ -1,8 +1,11 @@
 package com.example.today_seyebrowktver
 
+import android.app.Activity
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -112,6 +115,20 @@ open class ActivityBase : AppCompatActivity() {
             )
             .check();
     }
+
+    //액티비티 상태바 수정하기
+    fun setStatusBarColor(activity : Activity, color : Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = activity.window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.statusBarColor = color
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+    }
+
+
 
 
 }
