@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityJoin1">
+    tools:context=".ActivityJoin1"
+    android:id="@+id/parent_layout"
+    android:focusable="true">
 
     <RelativeLayout
         android:id="@+id/header_relative_layout"
@@ -58,14 +60,15 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
 
-            android:layout_marginEnd="19dp"
-            android:layout_marginRight="19dp"
+            android:layout_marginRight="10dp"
+
             android:fontFamily="@font/notosanscjkkrmedium"
             android:includeFontPadding="false"
             android:text="다음"
             android:textColor="@color/mainPink"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:padding="10dp"/>
 
         <View
 
@@ -86,7 +89,8 @@
         app:layout_constraintTop_toBottomOf="@+id/header_relative_layout"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
 
 
 
@@ -183,10 +187,10 @@
 
 
                 android:maxLength="13"
-                android:paddingLeft="5dp"
+                android:paddingLeft="10dp"
                 android:textColor="@color/mainGrey"
                 android:textColorHint="@color/mainGreyFor50"
-               
+
 
                 android:textSize="13sp" />
 
@@ -214,12 +218,12 @@
                 android:fontFamily="@font/notosanscjkkrmedium"
                 android:includeFontPadding="false"
                 android:hint="속눈썹 연장샵"
-                android:paddingLeft="5dp"
+                android:paddingLeft="10dp"
                 android:inputType="text"
 
                 android:textColor="@color/mainGrey"
                 android:textColorHint="@color/mainGreyFor50"
-               
+
                 android:textSize="13sp" />
 
             <TextView
@@ -286,11 +290,11 @@
                 android:inputType="number"
 
                 android:maxLength="8"
-                android:paddingLeft="5dp"
+                android:paddingLeft="10dp"
                 android:textColor="@color/mainGrey"
                 android:textColorHint="@color/mainGreyFor50"
 
-               
+
                 android:textSize="13sp" />
 
 

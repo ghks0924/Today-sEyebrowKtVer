@@ -1,19 +1,26 @@
 package com.example.today_seyebrowktver
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.telephony.PhoneNumberUtils
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.Toast
 import com.example.today_seyebrowktver.databinding.ActivityJoin1Binding
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ActivityJoin1 : ActivityBase(), View.OnClickListener {
+
+    private val REQUEST_SELECT_REGION = 1111
 
     //viewBinding
     private lateinit var binding: ActivityJoin1Binding
@@ -22,12 +29,21 @@ class ActivityJoin1 : ActivityBase(), View.OnClickListener {
     private lateinit var email: String
     private lateinit var password: String
 
+    //data to next Activity
+    private lateinit var number: String
+    private lateinit var shopName: String
+    private lateinit var region: String
+    private lateinit var birth: String
+    private lateinit var gender: String
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityJoin1Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        getDataFromPrevAct() //이전액티비티에서 넘긴 데이터 받기
+
+        getDataFromPrevAct() //이전액티비티에서 넘긴 데이터 받기
         setLayout()
     }
 
@@ -38,6 +54,15 @@ class ActivityJoin1 : ActivityBase(), View.OnClickListener {
     }
 
     private fun setLayout() {
+
+        binding.phoneNbEt.clearFocus()
+        binding.parentLayout.requestFocus()
+
+        //test
+        binding.shopNmEt.setText("test")
+        binding.birthEt.setText("19930624")
+
+
         //click event
         binding.backCardview.setOnClickListener(this)
         binding.nextTv.setOnClickListener(this)
@@ -69,14 +94,52 @@ class ActivityJoin1 : ActivityBase(), View.OnClickListener {
 
             binding.nextTv -> {
                 if (isValid()) {
-                    mShowShortToast("아몰랑")
+
+                    val intent = Intent(this, ActivityJoin2::class.java)
+                    intent.putExtra("email", email)
+                    intent.putExtra("password", password)
+                    intent.putExtra("privacyTerm", "true")
+                    intent.putExtra("serviceTerm", "true")
+                    intent.putExtra("number", number)
+                    intent.putExtra("region", region)
+                    intent.putExtra("shopName", shopName)
+                    intent.putExtra("birth", birth)
+                    if (binding.maleRb.isChecked) {
+                        intent.putExtra("gender", "male")
+                    } else {
+                        intent.putExtra("gender", "female")
+                    }
+                    startActivity(intent)
+
+
                 } else {
-                    mShowShortToast("안되는데용")
                 }
             }
 
             binding.regionTv -> {
+                val intent2 = Intent(applicationContext, ActivitySelectRegion::class.java)
+                startActivityForResult(intent2, REQUEST_SELECT_REGION)
+            }
+        }
+    }
 
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != RESULT_OK) {
+            return
+        }
+
+        when (requestCode) {
+            REQUEST_SELECT_REGION -> {
+                var selectedRegion = data!!.getStringExtra("region")
+                binding.regionTv.text = selectedRegion
+                region = selectedRegion
+                Log.d("initValue", "region : " + region)
+
+                binding.birthEt.requestFocus()
             }
         }
     }
@@ -116,26 +179,36 @@ class ActivityJoin1 : ActivityBase(), View.OnClickListener {
             mShowShortToast("약관에 동의해주세요")
             return false
         }
+
         var numberStr = binding.phoneNbEt.text.toString().trim()
         if (!isValidCellPhoneNumber(numberStr)) {
             mShowShortToast("휴대폰번호를 확인해주세요")
             return false
         }
-        var refinedNumberStr = numberStr.replace("-", "")
-        val shopNm: String = binding.shopNmEt.text.toString().trim { it <= ' ' }
-        if (shopNm.isEmpty()) {
+        number = numberStr.replace("-", "")
+
+
+        shopName = binding.shopNmEt.text.toString().trim()
+        if (shopName.isNullOrEmpty()) {
             mShowShortToast("가게명을 입력해주세요")
             return false
         }
-        val regionStr: String = binding.regionTv.getText().toString().trim { it <= ' ' }
-        if (regionStr.isEmpty()) {
+
+        region = binding.regionTv.text.toString().trim()
+        if (region.isNullOrEmpty()) {
             mShowShortToast("지역을 선택해주세요.")
             return false
         }
-        val birth: String = binding.birthEt.getText().toString().trim { it <= ' ' }
-        if (!isVaildBirth(birth)) {
+        birth = binding.birthEt.text.toString().trim()
+        if (birth.isNullOrEmpty()) {
+            mShowShortToast("생년월일을 입력해주세요")
             return false
+        } else {
+            if (!isVaildBirth(birth)) {
+                return false
+            }
         }
+
         if (!binding.maleRb.isChecked() && !binding.femaleRb.isChecked()) {
             mShowShortToast("성별을 선택해주세요.")
             return false

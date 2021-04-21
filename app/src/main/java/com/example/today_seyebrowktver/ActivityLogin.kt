@@ -89,7 +89,9 @@ class ActivityLogin : ActivityBase() {
                     startActivity(intent)
 
 
-//                    val user = auth.currentUser
+                    val user = auth.currentUser
+                    user.uid
+                    Log.d("uid", user.uid+"?")
 //                    updateUI(user)
 
 //                    currentUser = mAuth.getCurrentUser()

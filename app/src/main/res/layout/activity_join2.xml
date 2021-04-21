@@ -81,6 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="22dp"
+                android:clickable="true"
 
                 android:fontFamily="@font/notosanscjkkrmedium"
                 android:includeFontPadding="false"
@@ -128,7 +129,7 @@
 
                 android:background="@drawable/edittext_frame_grey"
                 android:textCursorDrawable="@drawable/cursor_edittext"
-                android:paddingLeft="5dp"
+                android:paddingLeft="10dp"
 
                 android:hint="2,000,000"
                 android:fontFamily="@font/notosanscjkkrmedium"
@@ -167,7 +168,7 @@
 
                 android:background="@drawable/edittext_frame_grey"
                 android:textCursorDrawable="@drawable/cursor_edittext"
-                android:paddingLeft="5dp"
+                android:paddingLeft="10dp"
 
                 android:hint="abc@naver.com"
                 android:fontFamily="@font/notosanscjkkrmedium"
@@ -194,6 +195,8 @@
                 android:backgroundTint="@color/mainPink"
 
                 android:stateListAnimator="@null"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 />
 
         </LinearLayout>

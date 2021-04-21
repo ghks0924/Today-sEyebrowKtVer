@@ -9,6 +9,8 @@ import android.text.TextWatcher
 import android.util.Patterns
 import android.view.View
 import com.example.today_seyebrowktver.databinding.ActivityJoin0Binding
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import java.util.regex.Pattern
 
 class ActivityJoin0 : ActivityBase(), View.OnClickListener {
@@ -26,12 +28,23 @@ class ActivityJoin0 : ActivityBase(), View.OnClickListener {
         binding = ActivityJoin0Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         setLayout()
     }
 
     private fun setLayout() {
         binding.backCardview.setOnClickListener(this)
         binding.nextTv.setOnClickListener(this)
+
+        //초기화
+        emailStr = binding.idEt.text.toString().trim()
+        passwordStr = binding.pwdEt.text.toString().trim()
+        rePasswordStr = binding.rePwdEt.text.toString().trim()
+
+        //test
+        binding.idEt.setText("test1@test.com")
+        binding.pwdEt.setText("123qwe")
+        binding.rePwdEt.setText("123qwe")
 
         //ID 입력 확인
         binding.idEt.addTextChangedListener(object : TextWatcher {
@@ -105,6 +118,7 @@ class ActivityJoin0 : ActivityBase(), View.OnClickListener {
                     intent.putExtra("email", emailStr)
                     intent.putExtra("password", passwordStr)
                     startActivity(intent)
+
                 } else {
 
                 }
@@ -113,6 +127,7 @@ class ActivityJoin0 : ActivityBase(), View.OnClickListener {
 
         }
     }
+
 
     //===================입력값 유효성 검사=====================
 

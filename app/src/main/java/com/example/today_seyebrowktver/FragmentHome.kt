@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.today_seyebrowktver.databinding.FragmentHomeBinding
 
@@ -31,6 +32,13 @@ class FragmentHome : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.menuIv.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, ActivityHomeMenu::class.java)
             startActivity(intent)
@@ -42,10 +50,15 @@ class FragmentHome : Fragment() {
 
         })
 
-        Log.d("lifecycle Check", "home onCreateView")
+        binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            val msg = "Selected date is " + dayOfMonth + "/" + (month + 1) + "/" + year
+
+            binding.listTv.text = msg
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+
+        }
 
 
-        return binding.root
     }
 
     override fun onDestroyView() {

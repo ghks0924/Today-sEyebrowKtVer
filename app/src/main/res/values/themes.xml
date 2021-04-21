@@ -37,4 +37,16 @@
         <item name="cornerSizeBottomRight">20dp</item>
         <item name="cornerSizeBottomLeft">20dp</item>
     </style>
+
+    //PopUp Activity theme
+    <style name="popupTheme" parent="Theme.AppCompat.Light.Dialog">
+
+        <item name="colorPrimary">@color/mainGrey</item>
+        <item name="colorPrimaryDark">@color/mainBlue</item>
+        <item name="colorAccent">@color/mainPink</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 </resources>

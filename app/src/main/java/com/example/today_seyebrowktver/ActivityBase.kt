@@ -96,7 +96,7 @@ open class ActivityBase : AppCompatActivity() {
     //====권한설정 TedPermission===
     var permissionlistener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-            mShowShortToast("권한 설정 완료")
+//            mShowShortToast("권한 설정 완료")
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
