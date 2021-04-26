@@ -5,119 +5,131 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:id="@+id/header_relative_layout"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/header_relative_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
 
-        <TextView
-            android:id="@+id/menuIv"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
-            android:adjustViewBounds="true"
-            android:background="@drawable/menu"
-            android:scaleType="fitXY"
-            />
+<!--        <ImageView-->
+<!--            android:id="@+id/menuIv"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginLeft="@dimen/activity_big_horizontal_margin"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            android:background="@drawable/outline_menu_black_36"-->
+<!--            android:scaleType="fitXY"-->
+<!--            />-->
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/prev_cardview"
-            android:layout_width="@dimen/arrow_background_width"
-            android:layout_height="@dimen/arrow_background_height"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/current_date_cardview"
-            android:backgroundTint="@color/transparent"
-            android:clickable="true"
-            app:cardCornerRadius="@dimen/half_arrow_background_height"
+<!--        <com.google.android.material.card.MaterialCardView-->
+<!--            android:id="@+id/prev_cardview"-->
+<!--            android:layout_width="@dimen/arrow_background_width"-->
+<!--            android:layout_height="@dimen/arrow_background_height"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_toLeftOf="@+id/current_date_cardview"-->
+<!--            android:backgroundTint="@color/transparent"-->
+<!--            android:clickable="true"-->
+<!--            app:cardCornerRadius="@dimen/half_arrow_background_height"-->
 
-            app:cardElevation="0dp"
-            app:rippleColor="@color/weakGrey">
+<!--            app:cardElevation="0dp"-->
+<!--            app:rippleColor="@color/weakGrey">-->
 
-            <ImageView
-                android:layout_width="@dimen/arrow_icon_width"
-                android:layout_height="@dimen/arrow_icon_height"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/thin_left_arrow" />
+<!--            <ImageView-->
+<!--                android:layout_width="@dimen/arrow_icon_width"-->
+<!--                android:layout_height="@dimen/arrow_icon_height"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/thin_left_arrow" />-->
 
-        </com.google.android.material.card.MaterialCardView>
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/current_date_cardview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_centerInParent="true"
-
-            android:clickable="true"
-            android:padding="3dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp"
-
-            app:rippleColor="@color/weakGrey">
-
-            <TextView
-                android:id="@+id/current_date_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+<!--        </com.google.android.material.card.MaterialCardView>-->
 
 
-                android:layout_gravity="center"
-                android:fontFamily="@font/notosansmonocjkkrbold"
-                android:includeFontPadding="false"
-                android:paddingLeft="@dimen/activity_small_horizontal_margin"
-                android:paddingRight="@dimen/activity_small_horizontal_margin"
+<!--        <com.google.android.material.card.MaterialCardView-->
+<!--            android:id="@+id/current_date_cardview"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
 
-                android:text="2021.03"
+<!--            android:layout_centerInParent="true"-->
 
-                android:textColor="@color/mainGrey"
-                android:textSize="18sp" />
+<!--            android:clickable="true"-->
+<!--            android:padding="3dp"-->
+<!--            app:cardCornerRadius="10dp"-->
+<!--            app:cardElevation="0dp"-->
 
+<!--            app:rippleColor="@color/weakGrey">-->
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/next_cardview"
-            android:layout_width="@dimen/arrow_background_width"
-            android:layout_height="@dimen/arrow_background_height"
-            android:layout_centerVertical="true"
-
-            android:layout_marginTop="@dimen/activity_small_vertical_margin"
-            android:layout_toRightOf="@+id/current_date_cardview"
-            android:backgroundTint="@color/transparent"
-            android:clickable="true"
-            app:cardElevation="0dp"
-            app:rippleColor="@color/weakGrey"
-            app:cardCornerRadius="@dimen/half_arrow_background_height">
-
-            <ImageView
-                android:layout_width="@dimen/back_iv_width"
-                android:layout_height="@dimen/back_iv_height"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/maingrey_simplearrow" />
-
-        </com.google.android.material.card.MaterialCardView>
+<!--            <TextView-->
+<!--                android:id="@+id/current_date_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
 
 
-    </RelativeLayout>
+<!--                android:layout_gravity="center"-->
+<!--                android:fontFamily="@font/notosansmonocjkkrbold"-->
+<!--                android:includeFontPadding="false"-->
+<!--                android:paddingLeft="@dimen/activity_small_horizontal_margin"-->
+<!--                android:paddingRight="@dimen/activity_small_horizontal_margin"-->
 
-    <CalendarView
+<!--                android:text="2021.03"-->
+
+<!--                android:textColor="@color/mainGrey"-->
+<!--                android:textSize="18sp" />-->
+
+
+<!--        </com.google.android.material.card.MaterialCardView>-->
+
+<!--        <com.google.android.material.card.MaterialCardView-->
+<!--            android:id="@+id/next_cardview"-->
+<!--            android:layout_width="@dimen/arrow_background_width"-->
+<!--            android:layout_height="@dimen/arrow_background_height"-->
+<!--            android:layout_centerVertical="true"-->
+
+<!--            android:layout_marginTop="@dimen/activity_small_vertical_margin"-->
+<!--            android:layout_toRightOf="@+id/current_date_cardview"-->
+<!--            android:backgroundTint="@color/transparent"-->
+<!--            android:clickable="true"-->
+<!--            app:cardElevation="0dp"-->
+<!--            app:rippleColor="@color/weakGrey"-->
+<!--            app:cardCornerRadius="@dimen/half_arrow_background_height">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="@dimen/back_iv_width"-->
+<!--                android:layout_height="@dimen/back_iv_height"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/maingrey_simplearrow" />-->
+
+<!--        </com.google.android.material.card.MaterialCardView>-->
+
+
+<!--    </RelativeLayout>-->
+
+<!--    <CalendarView-->
+<!--        android:id="@+id/calendar_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/header_relative_layout"/>-->
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
+        app:mcv_showOtherDates="other_months"
+        app:mcv_calendarMode="month"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_relative_layout"/>
+        
+        app:mcv_selectionColor="@color/mainPink"/>
 
     <TextView
         android:id="@+id/list_tv"

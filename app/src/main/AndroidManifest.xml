@@ -16,9 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer">
+        <activity android:name=".ActivityEachEvent"></activity>
+        <activity android:name=".ActivityEachCustomer" />
         <activity
             android:name=".ActivitySelectShopType"
-            android:theme="@style/popupTheme"></activity>
+            android:theme="@style/popupTheme" />
         <activity
             android:name=".ActivitySelectRegion"
             android:theme="@style/popupTheme" />
@@ -29,14 +31,10 @@
         <activity android:name=".ActivityCreateMessage" />
         <activity android:name=".ActivityCreateMemo" />
         <activity android:name=".ActivityCreateCustomerFromBook" />
-        <activity android:name=".ActivityJoin2"></activity>
+        <activity android:name=".ActivityJoin2" />
         <activity android:name=".ActivityJoin1" />
-        <activity android:name=".ActivityJoin0">
-
-        </activity>
-        <activity android:name=".ActivityLogin">
-
-        </activity>
+        <activity android:name=".ActivityJoin0" />
+        <activity android:name=".ActivityLogin" />
         <activity android:name=".ActivityLoadCustomers" />
         <activity android:name=".ActivityCreateEventSkipCus" />
         <activity android:name=".ActivityCreateEventOldCus" />

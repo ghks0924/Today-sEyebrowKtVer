@@ -1,7 +1,10 @@
 package com.example.today_seyebrowktver
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +12,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.today_seyebrowktver.databinding.FragmentHomeBinding
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
+import com.prolificinteractive.materialcalendarview.DayViewFacade
+import java.util.*
 
 class FragmentHome : Fragment() {
 
@@ -39,25 +46,29 @@ class FragmentHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.menuIv.setOnClickListener(View.OnClickListener {
-            val intent = Intent(context, ActivityHomeMenu::class.java)
-            startActivity(intent)
-
-        })
+//        binding.menuIv.setOnClickListener(View.OnClickListener {
+//            val intent = Intent(context, ActivityHomeMenu::class.java)
+//            startActivity(intent)
+//
+//        })
 
         binding.fab.setOnClickListener(View.OnClickListener {
             (activity as ActivityMain).mSelectTypeOfCustomer()
 
         })
 
-        binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            val msg = "Selected date is " + dayOfMonth + "/" + (month + 1) + "/" + year
+//        binding.calendarView.setOnDateChangedListener() { view, year, month, dayOfMonth ->
+//            val msg = "Selected date is " + dayOfMonth + "/" + (month + 1) + "/" + year
+//
+//            binding.listTv.text = msg
+//            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+//
+//        }
 
-            binding.listTv.text = msg
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 
-        }
+        val todayDecorator = TodayDecorator(requireContext())
 
+        binding.calendarView.addDecorator(todayDecorator)
 
     }
 
@@ -66,4 +77,18 @@ class FragmentHome : Fragment() {
         _binding = null
         Log.d("lifecycle Check", "home destroy")
     }
+
+
+    class TodayDecorator(context: Context): DayViewDecorator {
+        private var date = CalendarDay.today()
+        val drawable = context.resources.getDrawable(R.drawable.rounded_corner_pink)
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            return day?.equals(date)!!
+        }
+        override fun decorate(view: DayViewFacade?) {
+            view?.setBackgroundDrawable(drawable)
+        }
+    }
+
+
 }

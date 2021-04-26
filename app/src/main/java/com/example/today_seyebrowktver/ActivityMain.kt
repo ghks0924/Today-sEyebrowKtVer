@@ -50,7 +50,6 @@ class ActivityMain : ActivityBase() {
 
         setFragments()//초기 프래그먼트 생성
 
-
     }
 
     //fragment 세팅
