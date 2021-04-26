@@ -19,7 +19,7 @@ import java.util.regex.Pattern
 
 open class ActivityBase : AppCompatActivity() {
 
-    val gittest : String = "가나다"
+    val gittest : String = "가나다151"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
