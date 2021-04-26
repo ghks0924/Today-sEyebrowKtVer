@@ -21,7 +21,7 @@ class ActivityMain : ActivityBase() {
     private val REQUEST_SEND_MESSAGE = 3333
 
     //viewBinding
-    private lateinit var binding: ActivityMainBinding
+    internal lateinit var binding: ActivityMainBinding
 
     //viewModel
     private lateinit var mainViewModel: ViewModelMain
@@ -37,6 +37,7 @@ class ActivityMain : ActivityBase() {
     var fragmentMemo = FragmentMemo()
     var fragmentMessage = FragmentMessage()
     var fragmentAccounting = FragmentAccounting()
+    var fragmentCalendar = Example5Fragment()
 
     //onCreate
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +49,7 @@ class ActivityMain : ActivityBase() {
         mainViewModel = ViewModelProvider(this)[ViewModelMain::class.java]
         setContentView(view)
 
+        setStatusBarColor(this, R.color.white)
         setFragments()//초기 프래그먼트 생성
 
     }
@@ -62,7 +64,7 @@ class ActivityMain : ActivityBase() {
         supportFragmentManager.beginTransaction().add(R.id.frame_container, fragmentMemo, "memo")
             .addToBackStack("memo").hide(fragmentMemo).commit()
 
-        supportFragmentManager.beginTransaction().add(R.id.frame_container, fragmentHome, "home")
+        supportFragmentManager.beginTransaction().add(R.id.frame_container, fragmentCalendar, "home")
             .addToBackStack("home").commit()
 
         supportFragmentManager.beginTransaction()
@@ -94,8 +96,8 @@ class ActivityMain : ActivityBase() {
                         if (fragmentMessage != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
                         }
-                        if (fragmentHome != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentHome).commit()
+                        if (fragmentCalendar != null) {
+                            supportFragmentManager.beginTransaction().hide(fragmentCalendar).commit()
                         }
                         if (fragmentAccounting != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentAccounting)
@@ -119,8 +121,8 @@ class ActivityMain : ActivityBase() {
                         if (fragmentMemo != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
                         }
-                        if (fragmentHome != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentHome).commit()
+                        if (fragmentCalendar != null) {
+                            supportFragmentManager.beginTransaction().hide(fragmentCalendar).commit()
                         }
                         if (fragmentAccounting != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentAccounting)
@@ -133,13 +135,13 @@ class ActivityMain : ActivityBase() {
                         return true
                     }
                     R.id.nav_home -> {
-                        if (fragmentHome == null) {
-                            fragmentHome = FragmentHome()
+                        if (fragmentCalendar == null) {
+                            fragmentCalendar = Example5Fragment()
                             supportFragmentManager.beginTransaction()
-                                .add(R.id.frame_container, fragmentHome).commit()
+                                .add(R.id.frame_container, fragmentCalendar).commit()
                         }
-                        if (fragmentHome != null) {
-                            supportFragmentManager.beginTransaction().show(fragmentHome).commit()
+                        if (fragmentCalendar != null) {
+                            supportFragmentManager.beginTransaction().show(fragmentCalendar).commit()
                         }
                         if (fragmentMemo != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
@@ -173,8 +175,8 @@ class ActivityMain : ActivityBase() {
                         if (fragmentMessage != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
                         }
-                        if (fragmentHome != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentHome).commit()
+                        if (fragmentCalendar != null) {
+                            supportFragmentManager.beginTransaction().hide(fragmentCalendar).commit()
                         }
                         if (fragmentCustomers != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentCustomers)
@@ -202,8 +204,8 @@ class ActivityMain : ActivityBase() {
                             supportFragmentManager.beginTransaction().hide(fragmentAccounting)
                                 .commit()
                         }
-                        if (fragmentHome != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentHome).commit()
+                        if (fragmentCalendar != null) {
+                            supportFragmentManager.beginTransaction().hide(fragmentCalendar).commit()
                         }
                         return true
                     }

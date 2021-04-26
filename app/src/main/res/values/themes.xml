@@ -25,7 +25,6 @@
     </style>
 
     <style name="Theme.TodaysEyebrowKtVer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="Theme.TodaysEyebrowKtVer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     //Custom BottomSheetDialog
@@ -48,5 +47,16 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    //calendar
+
+    <style name="NoActionBar"
+        parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+<!--    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />-->
+<!--    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />-->
 
 </resources>

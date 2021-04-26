@@ -34,4 +34,6 @@
     <string name="rsv_menu_tv">시술메뉴</string>
     <string name="rsv_pay_tv">결제방법</string>
     <string name="rsv_ok_btn">완료</string>
+
+    <string name="example_5_title">Example 5</string>
 </resources>

@@ -12,9 +12,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.today_seyebrowktver.databinding.FragmentHomeBinding
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.DayViewDecorator
-import com.prolificinteractive.materialcalendarview.DayViewFacade
 import java.util.*
 
 class FragmentHome : Fragment() {
@@ -37,7 +34,6 @@ class FragmentHome : Fragment() {
     ):
             View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
 
 
 
@@ -66,9 +62,6 @@ class FragmentHome : Fragment() {
 //        }
 
 
-        val todayDecorator = TodayDecorator(requireContext())
-
-        binding.calendarView.addDecorator(todayDecorator)
 
     }
 
@@ -79,16 +72,6 @@ class FragmentHome : Fragment() {
     }
 
 
-    class TodayDecorator(context: Context): DayViewDecorator {
-        private var date = CalendarDay.today()
-        val drawable = context.resources.getDrawable(R.drawable.rounded_corner_pink)
-        override fun shouldDecorate(day: CalendarDay?): Boolean {
-            return day?.equals(date)!!
-        }
-        override fun decorate(view: DayViewFacade?) {
-            view?.setBackgroundDrawable(drawable)
-        }
-    }
 
 
 }
