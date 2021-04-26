@@ -19,6 +19,8 @@ import java.util.regex.Pattern
 
 open class ActivityBase : AppCompatActivity() {
 
+    val gittest : String = "가나다"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
