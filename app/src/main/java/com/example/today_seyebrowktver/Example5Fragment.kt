@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.children
@@ -31,6 +32,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 
 data class Flight(
@@ -209,7 +211,7 @@ class Example5Fragment : Fragment() {
                                 eventAdapter = RvEventAdapter(data)
                                 binding.exFiveRv.layoutManager = LinearLayoutManager(context)
                                 binding.exFiveRv.adapter = eventAdapter
-                            } else{
+                            } else {
                                 eventAdapter = RvEventAdapter(data)
                                 binding.exFiveRv.layoutManager = LinearLayoutManager(context)
                                 binding.exFiveRv.adapter = eventAdapter
@@ -218,11 +220,16 @@ class Example5Fragment : Fragment() {
                             Log.d("dateMap", mapByDate!![day.date.toString()].toString() + "?")
 
 
-
+                        } else{
+                            (activity as ActivityMain).mSelectTypeOfCustomer()
                         }
                     }
+
                 }
+
+
             }
+
         }
         binding.exFiveCalendar.dayBinder = object : DayBinder<DayViewContainer> {
             override fun create(view: View) = DayViewContainer(view)
@@ -231,12 +238,18 @@ class Example5Fragment : Fragment() {
                 val textView = container.binding.exFiveDayText
                 val layout = container.binding.exFiveDayLayout
                 textView.text = day.date.dayOfMonth.toString()
-//
-//                val flightTopView = container.binding.exFiveDayFlightTop
-//                val flightBottomView = container.binding.exFiveDayFlightBottom
+
+                val newContainer = container.binding.newDot
+                val oldContainer = container.binding.oldDot
+                val retouchContainer = container.binding.retouchDot
+                val skipContainer = container.binding.skipDot
+
                 val eventCountTextView = container.binding.countTv
-//                flightTopView.background = null
-//                flightBottomView.background = null
+                newContainer.background = null
+                oldContainer.background = null
+                retouchContainer.background = null
+                skipContainer.background = null
+
 
                 if (day.owner == DayOwner.THIS_MONTH) {
                     textView.setTextColorRes(R.color.black)
@@ -246,7 +259,11 @@ class Example5Fragment : Fragment() {
                     val flights = flights[day.date]
                     val events = mapByDate!![day.date.toString()]
                     if (events != null) {
-                        eventCountTextView.text = events.size.toString()+"개 예약"
+                        eventCountTextView.text = events.size.toString() + "개 예약"
+
+                        newContainer.setBackgroundColor(view.context.getColorCompat(R.color.mainYellow))
+                        oldContainer.setBackgroundColor(view.context.getColorCompat(R.color.mainGreen))
+
                     }
 
 //                    if (flights != null) {
@@ -258,7 +275,7 @@ class Example5Fragment : Fragment() {
 //                        }
 //                    }
                 } else {
-                    textView.setTextColorRes(R.color.mainGreyForLine)
+                    textView.setTextColorRes(R.color.mainGreyFor30)
                     layout.background = null
                 }
             }
@@ -318,9 +335,11 @@ class Example5Fragment : Fragment() {
             startActivity(intent)
         }
 
-        binding.exFiveMonthYearText.setOnClickListener{
+        binding.exFiveMonthYearText.setOnClickListener {
 
         }
+
+
     }
 
     override fun onStart() {
@@ -357,6 +376,20 @@ class Example5Fragment : Fragment() {
         events.add(
             EventData(
                 "2021-04-21", "1800", true, "나계환", "01030773637", "new", false,
+                "eye", "20000", "cash", "없음", "20210420"
+            )
+        )
+
+        events.add(
+            EventData(
+                "2021-05-12", "1800", true, "나계환", "01030773637", "old", false,
+                "eye", "20000", "cash", "없음", "20210420"
+            )
+        )
+
+        events.add(
+            EventData(
+                "2021-04-30", "1800", true, "나계환", "01030773637", "old", true,
                 "eye", "20000", "cash", "없음", "20210420"
             )
         )
