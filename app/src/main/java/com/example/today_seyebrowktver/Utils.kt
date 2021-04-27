@@ -1,8 +1,10 @@
 package com.example.today_seyebrowktver
 
+import android.provider.CalendarContract
 import java.time.YearMonth
 
 private typealias Airport = Flight.Airport
+
 
 fun generateFlights(): List<Flight> {
     val list = mutableListOf<Flight>()

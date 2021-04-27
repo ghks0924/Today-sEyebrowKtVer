@@ -14,10 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.today_seyebrowktver.databinding.Example5CalendarDayBinding
-import com.example.today_seyebrowktver.databinding.Example5CalendarHeaderBinding
-import com.example.today_seyebrowktver.databinding.Example5EventItemViewBinding
-import com.example.today_seyebrowktver.databinding.Example5FragmentBinding
+import com.example.today_seyebrowktver.databinding.*
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -35,6 +32,37 @@ import java.util.*
 
 data class Flight(val time: LocalDateTime, val departure: Airport, val destination: Airport, @ColorRes val color: Int) {
     data class Airport(val city: String, val code: String)
+}
+
+data class Event(val date: String, val complete: Boolean, val customerName: String,
+                 val customerNumber : String, val customerGrade:String, val isRetouch:Boolean, val menu:String, val price:String,
+                 val payment:String, val reservMemo :String, val savedate: String)
+
+class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>(){
+
+    val events = mutableListOf<Event>()
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): EventsAdapter.EventsViewHolder {
+        return EventsViewHolder(RvItemEventBinding.inflate(parent.context.layoutInflater, parent, false))
+    }
+
+    override fun onBindViewHolder(holder: EventsAdapter.EventsViewHolder, position: Int) {
+        holder.bind(events[position])
+    }
+
+    override fun getItemCount(): Int = events.size
+
+    inner class EventsViewHolder(val binding : RvItemEventBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(event : Event){
+            binding.dateTv.text = event.date
+            binding.nameTv.text = event.customerName
+        }
+
+    }
+
 }
 
 class Example5FlightsAdapter : RecyclerView.Adapter<Example5FlightsAdapter.Example5FlightsViewHolder>() {
@@ -82,6 +110,9 @@ class Example5Fragment : Fragment() {
     private val flightsAdapter = Example5FlightsAdapter()
     private val flights = generateFlights().groupBy { it.time.toLocalDate() }
 
+    private val eventsAdapter = EventsAdapter()
+    private val events = getEvents()
+
     private lateinit var binding: Example5FragmentBinding
 
     override fun onCreateView(
@@ -100,8 +131,14 @@ class Example5Fragment : Fragment() {
         binding.exFiveRv.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             adapter = flightsAdapter
+//            adapter = eventsAdapter
             addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         }
+
+        binding.fab.setOnClickListener(View.OnClickListener {
+            (activity as ActivityMain).mSelectTypeOfCustomer()
+
+        })
         flightsAdapter.notifyDataSetChanged()
 
         val daysOfWeek = daysOfWeekFromLocale()
@@ -226,5 +263,19 @@ class Example5Fragment : Fragment() {
         flightsAdapter.flights.clear()
         flightsAdapter.flights.addAll(flights[date].orEmpty())
         flightsAdapter.notifyDataSetChanged()
+    }
+
+    fun getEvents(): List<Event>{
+        val events = mutableListOf<Event>()
+        val currentMonth = YearMonth.now()
+
+        val currentMonth17 = currentMonth.atDay(17)
+        events.add(Event(currentMonth17.atTime(14, 0).toString(), true, "김순자", "01030773637", "new", false,
+            "eye","20000", "cash", "없음", "20210420") )
+
+        events.add(Event(currentMonth17.atTime(21, 30).toString(), true, "나계환", "01030773637", "new", false,
+            "eye","20000", "cash", "없음", "20210420"))
+
+        return events
     }
 }
