@@ -2,6 +2,7 @@ package com.example.today_seyebrowktver
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -29,43 +30,61 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.LinkedHashMap
 
-data class Flight(val time: LocalDateTime, val departure: Airport, val destination: Airport, @ColorRes val color: Int) {
+data class Flight(
+    val time: LocalDateTime,
+    val departure: Airport,
+    val destination: Airport,
+    @ColorRes val color: Int
+) {
     data class Airport(val city: String, val code: String)
 }
 
-data class Event(val date: String, val complete: Boolean, val customerName: String,
-                 val customerNumber : String, val customerGrade:String, val isRetouch:Boolean, val menu:String, val price:String,
-                 val payment:String, val reservMemo :String, val savedate: String)
+data class Event(
+    val date: LocalDateTime,
+    val complete: Boolean,
+    val customerName: String,
+    val customerNumber: String,
+    val customerGrade: String,
+    val isRetouch: Boolean,
+    val menu: String,
+    val price: String,
+    val payment: String,
+    val reservMemo: String,
+    val savedate: String
+)
+//
+//class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>(){
+//
+//    val events = mutableListOf<Event>()
+//
+//    override fun onCreateViewHolder(
+//        parent: ViewGroup,
+//        viewType: Int
+//    ): EventsAdapter.EventsViewHolder {
+//        return EventsViewHolder(RvItemEventBinding.inflate(parent.context.layoutInflater, parent, false))
+//    }
+//
+//    override fun onBindViewHolder(holder: EventsAdapter.EventsViewHolder, position: Int) {
+//        holder.bind(events[position])
+//    }
+//
+//    override fun getItemCount(): Int = events.size
+//
+//    inner class EventsViewHolder(val binding : RvItemEventBinding) : RecyclerView.ViewHolder(binding.root){
+//        fun bind(event : Event){
+//            binding.dateTv.text = event.date
+//            binding.nameTv.text = event.customerName
+//        }
+//
+//    }
+//
+//}
 
-class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>(){
-
-    val events = mutableListOf<Event>()
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): EventsAdapter.EventsViewHolder {
-        return EventsViewHolder(RvItemEventBinding.inflate(parent.context.layoutInflater, parent, false))
-    }
-
-    override fun onBindViewHolder(holder: EventsAdapter.EventsViewHolder, position: Int) {
-        holder.bind(events[position])
-    }
-
-    override fun getItemCount(): Int = events.size
-
-    inner class EventsViewHolder(val binding : RvItemEventBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(event : Event){
-            binding.dateTv.text = event.date
-            binding.nameTv.text = event.customerName
-        }
-
-    }
-
-}
-
-class Example5FlightsAdapter : RecyclerView.Adapter<Example5FlightsAdapter.Example5FlightsViewHolder>() {
+class Example5FlightsAdapter :
+    RecyclerView.Adapter<Example5FlightsAdapter.Example5FlightsViewHolder>() {
 
     val flights = mutableListOf<Flight>()
 
@@ -110,8 +129,13 @@ class Example5Fragment : Fragment() {
     private val flightsAdapter = Example5FlightsAdapter()
     private val flights = generateFlights().groupBy { it.time.toLocalDate() }
 
-    private val eventsAdapter = EventsAdapter()
-    private val events = getEvents()
+    //    private val eventsAdapter = EventsAdapter()
+//    private val events = getEvents()
+    var allEventsData = ArrayList<EventData>()
+    var data = ArrayList<EventData>()
+    var data2 = arrayListOf<EventData>()
+    var mapByDate: LinkedHashMap<String, MutableList<EventData>>? = null
+    var eventAdapter: RvEventAdapter? = null
 
     private lateinit var binding: Example5FragmentBinding
 
@@ -122,29 +146,43 @@ class Example5Fragment : Fragment() {
     ): View? {
         binding = Example5FragmentBinding.inflate(inflater, container, false)
 
+        allEventsData = getEvents()
+
+        mapByDate = allEventsData.groupByTo(LinkedHashMap(), { it.date })
+        Log.d("dateMap", "init : " + mapByDate)
+
+
+
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.exFiveRv.apply {
-            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            adapter = flightsAdapter
-//            adapter = eventsAdapter
-            addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
-        }
+
+//        binding.exFiveRv.apply {
+//            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+////            adapter = flightsAdapter
+////            adapter = eventsAdapter
+//            addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
+//        }
 
         binding.fab.setOnClickListener(View.OnClickListener {
             (activity as ActivityMain).mSelectTypeOfCustomer()
 
         })
-        flightsAdapter.notifyDataSetChanged()
+//        eventsAdapter.notifyDataSetChanged()
+//        flightsAdapter.notifyDataSetChanged()
 
         val daysOfWeek = daysOfWeekFromLocale()
 
         val currentMonth = YearMonth.now()
-        binding.exFiveCalendar.setup(currentMonth.minusMonths(100), currentMonth.plusMonths(100), daysOfWeek.first())
+        binding.exFiveCalendar.setup(
+            currentMonth.minusMonths(100),
+            currentMonth.plusMonths(100),
+            daysOfWeek.first()
+        )
         binding.exFiveCalendar.scrollToMonth(currentMonth)
 
         class DayViewContainer(view: View) : ViewContainer(view) {
@@ -160,7 +198,27 @@ class Example5Fragment : Fragment() {
                             val binding = this@Example5Fragment.binding
                             binding.exFiveCalendar.notifyDateChanged(day.date)
                             oldDate?.let { binding.exFiveCalendar.notifyDateChanged(it) }
-                            updateAdapterForDate(day.date)
+//                            updateAdapterForDate(day.date)
+
+                            data.clear()
+                            if (mapByDate!![day.date.toString()]?.size ?: 0 != 0) {
+                                for (i in 0 until mapByDate!![day.date.toString()]!!.size) {
+                                    data.add(mapByDate!![day.date.toString()]!!.get(i))
+                                }
+
+                                eventAdapter = RvEventAdapter(data)
+                                binding.exFiveRv.layoutManager = LinearLayoutManager(context)
+                                binding.exFiveRv.adapter = eventAdapter
+                            } else{
+                                eventAdapter = RvEventAdapter(data)
+                                binding.exFiveRv.layoutManager = LinearLayoutManager(context)
+                                binding.exFiveRv.adapter = eventAdapter
+                            }
+
+                            Log.d("dateMap", mapByDate!![day.date.toString()].toString() + "?")
+
+
+
                         }
                     }
                 }
@@ -173,25 +231,32 @@ class Example5Fragment : Fragment() {
                 val textView = container.binding.exFiveDayText
                 val layout = container.binding.exFiveDayLayout
                 textView.text = day.date.dayOfMonth.toString()
-
-                val flightTopView = container.binding.exFiveDayFlightTop
-                val flightBottomView = container.binding.exFiveDayFlightBottom
-                flightTopView.background = null
-                flightBottomView.background = null
+//
+//                val flightTopView = container.binding.exFiveDayFlightTop
+//                val flightBottomView = container.binding.exFiveDayFlightBottom
+                val eventCountTextView = container.binding.countTv
+//                flightTopView.background = null
+//                flightBottomView.background = null
 
                 if (day.owner == DayOwner.THIS_MONTH) {
                     textView.setTextColorRes(R.color.black)
                     layout.setBackgroundResource(if (selectedDate == day.date) R.drawable.example_5_selected_bg else 0)
 
+//                    val events = events[day.date]
                     val flights = flights[day.date]
-                    if (flights != null) {
-                        if (flights.count() == 1) {
-                            flightBottomView.setBackgroundColor(view.context.getColorCompat(flights[0].color))
-                        } else {
-                            flightTopView.setBackgroundColor(view.context.getColorCompat(flights[0].color))
-                            flightBottomView.setBackgroundColor(view.context.getColorCompat(flights[1].color))
-                        }
+                    val events = mapByDate!![day.date.toString()]
+                    if (events != null) {
+                        eventCountTextView.text = events.size.toString()+"개 예약"
                     }
+
+//                    if (flights != null) {
+//                        if (flights.count() == 1) {
+//                            flightBottomView.setBackgroundColor(view.context.getColorCompat(flights[0].color))
+//                        } else {
+//                            flightTopView.setBackgroundColor(view.context.getColorCompat(flights[0].color))
+//                            flightBottomView.setBackgroundColor(view.context.getColorCompat(flights[1].color))
+//                        }
+//                    }
                 } else {
                     textView.setTextColorRes(R.color.mainGreyForLine)
                     layout.background = null
@@ -202,22 +267,27 @@ class Example5Fragment : Fragment() {
         class MonthViewContainer(view: View) : ViewContainer(view) {
             val legendLayout = Example5CalendarHeaderBinding.bind(view).legendLayout.root
         }
-        binding.exFiveCalendar.monthHeaderBinder = object : MonthHeaderFooterBinder<MonthViewContainer> {
-            override fun create(view: View) = MonthViewContainer(view)
-            override fun bind(container: MonthViewContainer, month: CalendarMonth) {
-                // Setup each header day text if we have not done that already.
-                if (container.legendLayout.tag == null) {
-                    container.legendLayout.tag = month.yearMonth
-                    container.legendLayout.children.map { it as TextView }.forEachIndexed { index, tv ->
-                        tv.text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
-                            .toUpperCase(Locale.ENGLISH)
+        binding.exFiveCalendar.monthHeaderBinder =
+            object : MonthHeaderFooterBinder<MonthViewContainer> {
+                override fun create(view: View) = MonthViewContainer(view)
+                override fun bind(container: MonthViewContainer, month: CalendarMonth) {
+                    // Setup each header day text if we have not done that already.
+                    if (container.legendLayout.tag == null) {
+                        container.legendLayout.tag = month.yearMonth
+                        container.legendLayout.children.map { it as TextView }
+                            .forEachIndexed { index, tv ->
+                                tv.text = daysOfWeek[index].getDisplayName(
+                                    TextStyle.SHORT,
+                                    Locale.ENGLISH
+                                )
+                                    .toUpperCase(Locale.ENGLISH)
 //                        tv.setTextColorRes(R.color.example_5_text_grey)
-                        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+                                tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+                            }
+                        month.yearMonth
                     }
-                    month.yearMonth
                 }
             }
-        }
 
         binding.exFiveCalendar.monthScrollListener = { month ->
             val title = "${monthTitleFormatter.format(month.yearMonth)} ${month.yearMonth.year}"
@@ -243,9 +313,13 @@ class Example5Fragment : Fragment() {
             }
         }
 
-        binding.menuIcon.setOnClickListener{
+        binding.menuIcon.setOnClickListener {
             val intent = Intent(context, ActivityHomeMenu::class.java)
             startActivity(intent)
+        }
+
+        binding.exFiveMonthYearText.setOnClickListener{
+
         }
     }
 
@@ -260,21 +334,32 @@ class Example5Fragment : Fragment() {
     }
 
     private fun updateAdapterForDate(date: LocalDate?) {
-        flightsAdapter.flights.clear()
-        flightsAdapter.flights.addAll(flights[date].orEmpty())
-        flightsAdapter.notifyDataSetChanged()
+//        eventsAdapter.events.clear()
+//        eventsAdapter.events.addAll(events[date])
+
+//        flightsAdapter.flights.clear()
+//        flightsAdapter.flights.addAll(flights[date].orEmpty())
+//        flightsAdapter.notifyDataSetChanged()
     }
 
-    fun getEvents(): List<Event>{
-        val events = mutableListOf<Event>()
+    fun getEvents(): ArrayList<EventData> {
+        val events = ArrayList<EventData>()
         val currentMonth = YearMonth.now()
 
         val currentMonth17 = currentMonth.atDay(17)
-        events.add(Event(currentMonth17.atTime(14, 0).toString(), true, "김순자", "01030773637", "new", false,
-            "eye","20000", "cash", "없음", "20210420") )
+        events.add(
+            EventData(
+                "2021-04-17", "1430", true, "김순자", "01030773637", "new", false,
+                "eye", "20000", "cash", "없음", "20210420"
+            )
+        )
 
-        events.add(Event(currentMonth17.atTime(21, 30).toString(), true, "나계환", "01030773637", "new", false,
-            "eye","20000", "cash", "없음", "20210420"))
+        events.add(
+            EventData(
+                "2021-04-21", "1800", true, "나계환", "01030773637", "new", false,
+                "eye", "20000", "cash", "없음", "20210420"
+            )
+        )
 
         return events
     }
