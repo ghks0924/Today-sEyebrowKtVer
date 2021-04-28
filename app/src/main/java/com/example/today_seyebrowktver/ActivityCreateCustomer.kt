@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
 import com.example.today_seyebrowktver.databinding.ActivityCreateCustomerBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
@@ -16,6 +17,9 @@ class ActivityCreateCustomer : ActivityBase() {
     private lateinit var binding: ActivityCreateCustomerBinding
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    val mAuth = FirebaseAuth.getInstance()
+    private lateinit var uid: String
+
 
     private lateinit var customerName: String
     private lateinit var customerNumber: String
@@ -25,6 +29,9 @@ class ActivityCreateCustomer : ActivityBase() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateCustomerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val user = mAuth.currentUser
+        uid = user.uid
 
         setLayout()
 
@@ -45,8 +52,8 @@ class ActivityCreateCustomer : ActivityBase() {
             customerNumber = binding.numberEt.text.toString().trim()
             customerMemo = binding.memoEt.text.toString().trim()
 
-            if (isVaildCheck()){
-                customerNumber.replace("-","")
+            if (isVaildCheck()) {
+                customerNumber.replace("-", "")
                 mCreateCustomer()
             }
 
@@ -66,24 +73,25 @@ class ActivityCreateCustomer : ActivityBase() {
         // nowDate 변수에 값을 저장한다.
         val saveDate = sdfNow.format(date)
 
+        val key = database.child("users").child(uid).child("customers").push().key
         val newCustomersData = CustomersData(
-            customerName, customerNumber, customerMemo, 0, "default", saveDate, 0
+            customerName, customerNumber, customerMemo, 0, "default", saveDate, 0, key.toString(),0,""
         )
 
-        val key = database.child("customers").push().key
-        database.child("customers").child(key!!).setValue(newCustomersData)
+
+        database.child("users").child(uid).child("customers").child(key!!).setValue(newCustomersData)
         finish()
         mShowShortToast("고객이 저장되었습니다")
 
     }
 
-    private fun isVaildCheck():Boolean {
-        if (customerName.isNullOrEmpty()){
+    private fun isVaildCheck(): Boolean {
+        if (customerName.isNullOrEmpty()) {
             mShowShortToast("고객이름을 입력해주세요")
             return false
         }
 
-        if (customerNumber.isNullOrEmpty() || !isValidCellPhoneNumber(customerNumber)){
+        if (customerNumber.isNullOrEmpty() || !isValidCellPhoneNumber(customerNumber)) {
             mShowShortToast("전화번호를 확인해주세요")
             return false
         }

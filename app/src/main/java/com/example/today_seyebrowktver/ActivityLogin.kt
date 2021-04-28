@@ -59,6 +59,10 @@ class ActivityLogin : ActivityBase() {
             val intent = Intent(this, ActivityJoin0::class.java)
             startActivity(intent)
         })
+
+
+        binding.idEt.setText("ngh_0925@naver.com")
+        binding.passwordEt.setText("dnswjs12!@")
     }
 
     //ID, password 입력 확인
@@ -80,7 +84,7 @@ class ActivityLogin : ActivityBase() {
 
     //ID, PASSWORD 매칭 확인
     private fun isValidCheck() {
-        auth.signInWithEmailAndPassword("ngh_0924@naver.com", "dnswjs12!@")
+        auth.signInWithEmailAndPassword("ngh_0925@naver.com", "dnswjs12!@")
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information

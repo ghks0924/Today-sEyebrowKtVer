@@ -7,16 +7,17 @@ import java.time.LocalTime
 
 @Keep
 data class EventData(
-    val date: String,
-    val time: String,
-    val complete: Boolean,
-    val customerName: String,
-    val customerNumber: String,
-    val customerGrade: String,
-    val isRetouch: Boolean,
-    val menu: String,
-    val price: String,
-    val payment: String,
-    val reservMemo: String,
-    val savedate: String
+    var date: String = "",
+    var time: String = "",
+    var complete: Boolean = false,
+    var customerName: String = "",
+    var customerNumber: String = "",
+    var customerGrade: String = "",
+    var isRetouch: Boolean = false,
+    var menu: String = "",
+    var price: Int = 0,
+    var payment: String = "",
+    var reservMemo: String = "",
+    var savedate: String = "",
+    var keyvarue: String = ""
 )

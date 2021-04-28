@@ -11,6 +11,9 @@ data class CustomersData(
     var history: Int = 0,
     var grade: String = "",
     var savedate: String = "",
-    var noshowCount: Int = 0
+    var noshowCount: Int = 0,
+    var keyValue: String = "",
+    var sales : Int = 0,
+    var photoURL : String = ""
 )
 

@@ -181,7 +181,7 @@ class ActivityJoin2 : ActivityBase(), View.OnClickListener {
 
     private fun createUserData(userData: UserData) {
         Log.d("firebaseError", "데이터 넣기 실패")
-        database!!.child("users2").child(uid).setValue(userData)
+        database!!.child("users").child(uid).setValue(userData)
             .addOnCompleteListener { task: Task<Void?> ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()

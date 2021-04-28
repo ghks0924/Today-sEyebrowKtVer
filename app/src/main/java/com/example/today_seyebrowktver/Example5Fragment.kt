@@ -11,9 +11,12 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.today_seyebrowktver.databinding.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -81,6 +84,10 @@ class Example5FlightsAdapter :
 
 class Example5Fragment : Fragment() {
 
+    val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    val mAuth = FirebaseAuth.getInstance()
+    private lateinit var uid : String
+
     private var selectedDate: LocalDate? = null
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
 
@@ -89,8 +96,8 @@ class Example5Fragment : Fragment() {
 
     //    private val eventsAdapter = EventsAdapter()
 //    private val events = getEvents()
-    var allEventsData = ArrayList<EventData>()
-    var data = ArrayList<EventData>()
+    var allEventsData : ArrayList<EventData> = ArrayList()
+    private var data: ArrayList<EventData> = ArrayList()
     var data2 = arrayListOf<EventData>()
     var mapByDate: LinkedHashMap<String, MutableList<EventData>>? = null
     var eventAdapter: RvEventAdapter? = null
@@ -104,10 +111,13 @@ class Example5Fragment : Fragment() {
     ): View? {
         binding = Example5FragmentBinding.inflate(inflater, container, false)
 
-        allEventsData = getEvents()
 
-        mapByDate = allEventsData.groupByTo(LinkedHashMap(), { it.date })
+
+        getEvents()
+
+        mapByDate = data.groupByTo(LinkedHashMap(), { it.date })
         Log.d("dateMap", "init : " + mapByDate)
+
 
 
 
@@ -337,39 +347,68 @@ class Example5Fragment : Fragment() {
 //        flightsAdapter.notifyDataSetChanged()
     }
 
-    fun getEvents(): ArrayList<EventData> {
-        val events = ArrayList<EventData>()
-        val currentMonth = YearMonth.now()
+    fun getEvents() {
+        val user = mAuth.currentUser
+        uid = user.uid
 
-        val currentMonth17 = currentMonth.atDay(17)
-        events.add(
-            EventData(
-                "2021-04-17", "1430", true, "김순자", "01030773637", "new", false,
-                "eye", "20000", "cash", "없음", "20210420"
-            )
-        )
+        database.child("users").child(uid).child("events").child("2021-04")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val newEvent2: ArrayList<EventData> = ArrayList()
+                    for (ds in dataSnapshot.children) {
+                        val eventData: EventData? = ds.getValue(EventData::class.java)
+                        if (eventData != null) {
+                            newEvent2.add(eventData)
+                        }
+                    }
+                    data.clear()
+                    data.addAll(newEvent2)
+                    Log.d("dataList", data[0].date)
+                    Log.d("dataList", data[1].date)
+                    Log.d("dataList", data[2].date)
 
-        events.add(
-            EventData(
-                "2021-04-21", "1800", true, "나계환", "01030773637", "new", false,
-                "eye", "20000", "cash", "없음", "20210420"
-            )
-        )
 
-        events.add(
-            EventData(
-                "2021-05-12", "1800", true, "나계환", "01030773637", "old", false,
-                "eye", "20000", "cash", "없음", "20210420"
-            )
-        )
+                }
 
-        events.add(
-            EventData(
-                "2021-04-30", "1800", true, "나계환", "01030773637", "old", true,
-                "eye", "20000", "cash", "없음", "20210420"
-            )
-        )
-
-        return events
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
     }
+
+
+//        val events = ArrayList<EventData>()
+//        val currentMonth = YearMonth.now()
+//
+//        val currentMonth17 = currentMonth.atDay(17)
+//        events.add(
+//            EventData(
+//                "2021-04-17", "1430", true, "김순자", "01030773637", "new", false,
+//                "eye", "20000", "cash", "없음", "20210420"
+//            ,"asdasd")
+//        )
+//
+//        events.add(
+//            EventData(
+//                "2021-04-21", "1800", true, "나계환", "01030773637", "new", false,
+//                "eye", "20000", "cash", "없음", "20210420"
+//                ,"asdasd" )
+//        )
+//
+//        events.add(
+//            EventData(
+//                "2021-05-12", "1800", true, "나계환", "01030773637", "old", false,
+//                "eye", "20000", "cash", "없음", "20210420"
+//                ,"asdasd")
+//        )
+//
+//        events.add(
+//            EventData(
+//                "2021-04-30", "1800", true, "나계환", "01030773637", "old", true,
+//                "eye", "20000", "cash", "없음", "20210420"
+//                ,"asdasd" )
+//        )
+//
+//        return events
+
 }

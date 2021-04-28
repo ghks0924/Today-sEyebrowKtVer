@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 
@@ -22,9 +22,12 @@ class   FragmentCustomers : Fragment() {
     private val binding get() = _binding!!
 
     val database:DatabaseReference = FirebaseDatabase.getInstance().reference
+    val mAuth = FirebaseAuth.getInstance()
     var data = ArrayList<CustomersData>()
     var dataForSearch = ArrayList<CustomersData>()
     var adapter: RvCustomerAdapter? = null
+
+    private lateinit var uid : String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +35,10 @@ class   FragmentCustomers : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCustomersBinding.inflate(inflater, container, false)
+
+        val user = mAuth.currentUser
+        uid = user.uid
+
         return binding.root
     }
 
@@ -82,13 +89,13 @@ class   FragmentCustomers : Fragment() {
     }
 
     private fun setData() {
-        database.child("customers").addValueEventListener(object : ValueEventListener {
+        database.child("users").child(uid).child("customers").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val newData: ArrayList<CustomersData> = ArrayList()
                 for (ds in dataSnapshot.children) {
-                    val idolData: CustomersData? = ds.getValue(CustomersData::class.java)
-                    if (idolData != null) {
-                        newData.add(idolData)
+                    val customersData: CustomersData? = ds.getValue(CustomersData::class.java)
+                    if (customersData != null) {
+                        newData.add(customersData)
                     }
                 }
                 data.clear() //for문이 끝내기전까지 데이터를 유지하기 위해

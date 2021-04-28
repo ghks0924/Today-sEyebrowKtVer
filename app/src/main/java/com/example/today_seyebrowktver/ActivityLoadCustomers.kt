@@ -9,20 +9,29 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.ActivityLoadCustomersBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class ActivityLoadCustomers : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoadCustomersBinding
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    val mAuth = FirebaseAuth.getInstance()
+    private lateinit var uid : String
+
     private var data: ArrayList<CustomersData> = ArrayList()
     private var dataForSearch: ArrayList<CustomersData> = ArrayList()
     private lateinit var adapter: RvCustomerAdapter
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoadCustomersBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val user = mAuth.currentUser
+        uid = user.uid
 
         setData()
         setLayout()
@@ -81,7 +90,7 @@ class ActivityLoadCustomers : AppCompatActivity() {
     }
 
     private fun setData() {
-        database.child("customers").addValueEventListener(object : ValueEventListener {
+        database.child("users").child(uid).child("customers").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val newData: ArrayList<CustomersData> = ArrayList()
                 for (ds in dataSnapshot.children) {
