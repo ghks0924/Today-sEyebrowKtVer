@@ -27,10 +27,11 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="4dp"
             android:gravity="center"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
             android:textSize="12sp"
             tools:text="24" />
+
+<!--        android:fontFamily="@font/notosanscjkkrmedium"-->
+<!--        android:includeFontPadding="false"-->
 
         <View
             android:id="@+id/new_background"

@@ -8,12 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.ColorRes
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.today_seyebrowktver.databinding.*
@@ -25,6 +22,7 @@ import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.previous
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
@@ -32,58 +30,17 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 
 data class Flight(
     val time: LocalDateTime,
     val departure: Airport,
     val destination: Airport,
-    @ColorRes val color: Int
+    @ColorRes val color: Int,
 ) {
     data class Airport(val city: String, val code: String)
 }
 
-data class Event(
-    val date: LocalDateTime,
-    val complete: Boolean,
-    val customerName: String,
-    val customerNumber: String,
-    val customerGrade: String,
-    val isRetouch: Boolean,
-    val menu: String,
-    val price: String,
-    val payment: String,
-    val reservMemo: String,
-    val savedate: String
-)
-//
-//class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>(){
-//
-//    val events = mutableListOf<Event>()
-//
-//    override fun onCreateViewHolder(
-//        parent: ViewGroup,
-//        viewType: Int
-//    ): EventsAdapter.EventsViewHolder {
-//        return EventsViewHolder(RvItemEventBinding.inflate(parent.context.layoutInflater, parent, false))
-//    }
-//
-//    override fun onBindViewHolder(holder: EventsAdapter.EventsViewHolder, position: Int) {
-//        holder.bind(events[position])
-//    }
-//
-//    override fun getItemCount(): Int = events.size
-//
-//    inner class EventsViewHolder(val binding : RvItemEventBinding) : RecyclerView.ViewHolder(binding.root){
-//        fun bind(event : Event){
-//            binding.dateTv.text = event.date
-//            binding.nameTv.text = event.customerName
-//        }
-//
-//    }
-//
-//}
 
 class Example5FlightsAdapter :
     RecyclerView.Adapter<Example5FlightsAdapter.Example5FlightsViewHolder>() {
@@ -124,7 +81,6 @@ class Example5FlightsAdapter :
 
 class Example5Fragment : Fragment() {
 
-
     private var selectedDate: LocalDate? = null
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
 
@@ -144,7 +100,7 @@ class Example5Fragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = Example5FragmentBinding.inflate(inflater, container, false)
 
@@ -178,8 +134,21 @@ class Example5Fragment : Fragment() {
 //        flightsAdapter.notifyDataSetChanged()
 
         val daysOfWeek = daysOfWeekFromLocale()
+        Log.d("dateCheck", daysOfWeek.toString())
 
+        //현재 달 구하기
         val currentMonth = YearMonth.now()
+
+        // 현재시간을 msec 으로 구한다.
+        val now = System.currentTimeMillis()
+        // 현재시간을 date 변수에 저장한다.
+        val date = Date(now)
+        // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
+        val sdfNow = SimpleDateFormat("yyyy-MM-dd")
+        // nowDate 변수에 값을 저장한다.
+        val nowDate: String = sdfNow.format(date)
+
+        Log.d("dateCheck", currentMonth.toString())
         binding.exFiveCalendar.setup(
             currentMonth.minusMonths(100),
             currentMonth.plusMonths(100),
@@ -277,6 +246,13 @@ class Example5Fragment : Fragment() {
                 } else {
                     textView.setTextColorRes(R.color.mainGreyFor30)
                     layout.background = null
+                }
+
+                //오늘 강조하기
+                if (day.date.toString() == nowDate){
+                    textView.setBackgroundResource(R.drawable.example_5_today_bg)
+//                    textView.setBackgroundColor(view.context.getColorCompat(R.color.mainGreen))
+                    textView.setTextColorRes(R.color.white)
                 }
             }
         }
