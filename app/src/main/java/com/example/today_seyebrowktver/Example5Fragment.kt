@@ -99,7 +99,7 @@ class Example5Fragment : Fragment() {
     var allEventsData : ArrayList<EventData> = ArrayList()
     private var data: ArrayList<EventData> = ArrayList()
     var data2 = arrayListOf<EventData>()
-    var mapByDate: LinkedHashMap<String, MutableList<EventData>>? = null
+    var mapByDate: LinkedHashMap<String, MutableList<EventData>> = data.groupByTo(LinkedHashMap(), { it.date })
     var eventAdapter: RvEventAdapter? = null
 
     private lateinit var binding: Example5FragmentBinding
@@ -114,10 +114,6 @@ class Example5Fragment : Fragment() {
 
 
         getEvents()
-
-        mapByDate = data.groupByTo(LinkedHashMap(), { it.date })
-        Log.d("dateMap", "init : " + mapByDate)
-
 
 
 
