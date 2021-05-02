@@ -35,18 +35,20 @@
         <activity android:name=".ActivityJoin1" />
         <activity android:name=".ActivityJoin0" />
         <activity android:name=".ActivityLogin">
-
-        </activity>
-        <activity android:name=".ActivityLoadCustomers" />
-        <activity android:name=".ActivityCreateEventSkipCus" />
-        <activity android:name=".ActivityCreateEventOldCus">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityCreateEventNewCus" />
+        <activity android:name=".ActivityLoadCustomers" />
+        <activity android:name=".ActivityCreateEventSkipCus" />
+        <activity android:name=".ActivityCreateEventOldCus">
+
+        </activity>
+        <activity android:name=".ActivityCreateEventNewCus">
+
+        </activity>
         <activity android:name=".ActivityCreateCustomer" />
         <activity android:name=".ActivityHomeMenu" />
         <activity

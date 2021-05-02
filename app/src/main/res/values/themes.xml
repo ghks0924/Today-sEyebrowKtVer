@@ -56,7 +56,11 @@
         <item name="windowActionBar">false</item>
     </style>
 
-<!--    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />-->
-<!--    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />-->
+    //timepicker Theme
+    <style name="AppTheme.TimePicker"
+        parent="Theme.TodaysEyebrowKtVer">
+        <item name="colorControlNormal">@color/mainPink</item>
+    </style>
+
 
 </resources>

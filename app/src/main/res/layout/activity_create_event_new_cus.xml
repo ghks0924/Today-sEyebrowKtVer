@@ -148,13 +148,13 @@
     </RelativeLayout>
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rsv_type_Rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_big_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_big_vertical_margin"
+        android:layout_marginTop="@dimen/activity_small_vertical_margin"
         android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
         android:background="@drawable/rounded_corner_weakgrey"
 
@@ -168,9 +168,11 @@
             android:id="@+id/rsv_type_tv"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_small_vertical_margin"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
 
             android:fontFamily="@font/notosanscjkkrmedium"
@@ -184,6 +186,9 @@
             android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+
+            app:layout_constraintTop_toBottomOf="@+id/rsv_type_tv"
+            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
 
@@ -196,44 +201,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                />
-
-            <TextView
-                android:id="@+id/newTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
+                android:text="신규"
                 android:fontFamily="@font/notosanscjkkrmedium"
                 android:includeFontPadding="false"
-                android:text="@string/new_reserve"
-                android:textColor="@color/mainGrey" />
+                android:textColor="@color/mainGrey"
+                android:paddingLeft="10dp"
+
+                />
+
 
             <RadioButton
                 android:id="@+id/retouchRb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_big_horizontal_margin" />
+                android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
 
-            <TextView
-                android:id="@+id/retouchTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
+                android:text="리터치"
                 android:fontFamily="@font/notosanscjkkrmedium"
                 android:includeFontPadding="false"
-                android:text="@string/retouch"
                 android:textColor="@color/mainGrey"
-
-                />
+                android:paddingLeft="10dp"/>
 
 
         </RadioGroup>
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/rsv_date_Rl"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rsv_date_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_big_horizontal_margin"
@@ -252,9 +248,12 @@
             android:id="@+id/dateTv"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_small_vertical_margin"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
 
             android:fontFamily="@font/notosanscjkkrmedium"
@@ -268,25 +267,28 @@
         <TextView
             android:id="@+id/dateContentTv"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+            android:layout_height="wrap_content"
 
+            app:layout_constraintTop_toBottomOf="@+id/dateTv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_small_vertical_margin"
             android:layout_weight="1"
             android:fontFamily="@font/notosanscjkkrmedium"
             android:includeFontPadding="false"
-            android:gravity="center"
 
             android:text="날짜를 선택해주세요"
             android:textColor="@color/mainPink"
             android:textSize="@dimen/textsize_default" />
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/rsv_time_Ll"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rsv_time_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_big_horizontal_margin"
@@ -299,15 +301,18 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rsv_date_Rl">
+        app:layout_constraintTop_toBottomOf="@+id/rsv_date_layout">
 
         <TextView
             android:id="@+id/timeTv"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_small_vertical_margin"
             android:layout_weight="1"
 
             android:fontFamily="@font/notosanscjkkrmedium"
@@ -320,7 +325,11 @@
         <TextView
             android:id="@+id/timeContentTv"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/timeTv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
 
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
@@ -333,12 +342,12 @@
             android:text="시간을 입력해주세요"
             android:textColor="@color/mainPink"
             android:textSize="@dimen/textsize_default" />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/rsv_memo_Ll"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rsv_memo_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_marginStart="@dimen/activity_big_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
         android:layout_marginTop="@dimen/activity_small_vertical_margin"
@@ -349,15 +358,17 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rsv_time_Ll">
+        app:layout_constraintTop_toBottomOf="@+id/rsv_time_layout">
 
         <TextView
             android:id="@+id/memoTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_small_vertical_margin"
             android:layout_weight="1"
 
             android:fontFamily="@font/notosanscjkkrmedium"
@@ -371,6 +382,10 @@
             android:id="@+id/memoEt"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/memoTv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_small_horizontal_margin"
@@ -384,23 +399,22 @@
 
             android:gravity="top"
             android:hint="예약시 특이사항을 메모해주세요"
-            android:maxLines="4"
+            android:inputType="textMultiLine"
             android:textColor="@color/mainGrey"
             android:textColorHint="@color/mainGreyFor50"
-            android:textCursorDrawable="@drawable/cursor_edittext"
 
             android:textSize="@dimen/textsize_default" />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/okBtn"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="?android:attr/actionBarSize"
 
         android:background="@color/mainPink"
         android:fontFamily="@font/notosansmonocjkkrbold"
 
-        android:foreground="?selectableItemBackground"
+        android:includeFontPadding="false"
         android:gravity="center"
         android:text="@string/rsv_ok_btn"
         android:textColor="@color/mainGrey"

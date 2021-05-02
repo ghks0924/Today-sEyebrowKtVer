@@ -82,6 +82,7 @@ class Example5FlightsAdapter :
     }
 }
 
+//Class
 class Example5Fragment : Fragment() {
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
@@ -111,12 +112,7 @@ class Example5Fragment : Fragment() {
     ): View? {
         binding = Example5FragmentBinding.inflate(inflater, container, false)
 
-
-
         getEvents()
-
-
-
 
         return binding.root
     }

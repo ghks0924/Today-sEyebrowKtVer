@@ -26,6 +26,7 @@ class BottomSheetFragmentEvent : BottomSheetDialogFragment(){
 
         newCusBtn.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, ActivityCreateCustomer::class.java)
+            intent.putExtra("origin", "createEvent")
             startActivity(intent)
             dismiss()
         })

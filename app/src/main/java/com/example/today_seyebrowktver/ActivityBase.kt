@@ -1,6 +1,7 @@
 package com.example.today_seyebrowktver
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -14,12 +15,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import java.util.*
 import java.util.regex.Pattern
 
 
 open class ActivityBase : AppCompatActivity() {
 
-    val gittest : String = "가나다151"
+    val gittest: String = "가나다151"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,7 +121,7 @@ open class ActivityBase : AppCompatActivity() {
     }
 
     //액티비티 상태바 수정하기
-    fun setStatusBarColor(activity : Activity, color : Int) {
+    fun setStatusBarColor(activity: Activity, color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = activity.window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -130,7 +132,27 @@ open class ActivityBase : AppCompatActivity() {
         }
     }
 
+    //DatePicker && TimePicker
+    fun showDatePickerDialog(): String {
+        val cal = Calendar.getInstance()
+        var resultYear: String? = null
+        var resultMonth: String? = null
+        var resultDay: String? = null
 
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            DatePickerDialog(applicationContext,
+                DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    resultYear = year.toString()
+                    resultMonth = month.toString()
+                    resultDay = dayOfMonth.toString()
+                },
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DATE))
+        }
+
+        return resultYear + "-"+ resultMonth+"-"+resultDay
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.today_seyebrowktver
 
+import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
@@ -25,10 +26,14 @@ class ActivityCreateCustomer : ActivityBase() {
     private lateinit var customerNumber: String
     private lateinit var customerMemo: String
 
+    private lateinit var checkOrgStr: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateCustomerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        checkOrigin()
 
         val user = mAuth.currentUser
         uid = user.uid
@@ -36,6 +41,11 @@ class ActivityCreateCustomer : ActivityBase() {
         setLayout()
 
 
+    }
+
+    private fun checkOrigin() {
+        val getintent = intent
+        checkOrgStr = getintent.getStringExtra("origin")
     }
 
     private fun setLayout() {
@@ -75,13 +85,33 @@ class ActivityCreateCustomer : ActivityBase() {
 
         val key = database.child("users").child(uid).child("customers").push().key
         val newCustomersData = CustomersData(
-            customerName, customerNumber, customerMemo, 0, "default", saveDate, 0, key.toString(),0,""
+            customerName,
+            customerNumber,
+            customerMemo,
+            0,
+            "default",
+            saveDate,
+            0,
+            key.toString(),
+            0,
+            ""
         )
 
 
-        database.child("users").child(uid).child("customers").child(key!!).setValue(newCustomersData)
-        finish()
+        database.child("users").child(uid).child("customers").child(key!!)
+            .setValue(newCustomersData)
         mShowShortToast("고객이 저장되었습니다")
+
+        if (checkOrgStr == "createEvent"){ //event 생성에서 넘어온 경우 바로 넘어간다
+            val intent = Intent(this, ActivityCreateEventNewCus::class.java)
+            intent.putExtra("name", customerName)
+            intent.putExtra("number", customerNumber)
+            startActivity(intent)
+            finish()
+        } else { //그냥 createCustomer인 경우에는 home으로
+            finish()
+        }
+
 
     }
 
