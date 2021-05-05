@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,21 @@ import android.widget.NumberPicker
 import android.widget.TextView
 import com.example.today_seyebrowktver.databinding.ActivityCreateEventOldCusBinding
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import java.util.*
 
 class ActivityCreateEventOldCus : ActivityBase() {
 
     //viewBinding
     private lateinit var binding: ActivityCreateEventOldCusBinding
 
+    val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    val mAuth = FirebaseAuth.getInstance()
+    private lateinit var uid : String
+    private lateinit var yearMonthForServer : String
+    private lateinit var dateForServer : String
+    var data = ArrayList<EventData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +42,8 @@ class ActivityCreateEventOldCus : ActivityBase() {
 
 
     private fun setLayout() {
+        //uid 구하기
+        uid = mAuth.currentUser.uid
         mChangeStatusBarColor("#ebbdc5")
 
         binding.loadCusData.setOnClickListener(View.OnClickListener {
@@ -45,10 +57,32 @@ class ActivityCreateEventOldCus : ActivityBase() {
             val picker: MaterialDatePicker<*> = datePicker.build()
             picker.show(supportFragmentManager, picker.toString())
             picker.addOnPositiveButtonClickListener {
-                val datetetete =
-                    picker.headerText.replace("년 ", "-").replace("월 ", "-").replace("일", "")
+                var selectedDate = picker.headerText.toString()
+                var year = picker.headerText.substring(0,4)
+                var month:String = ""
+                var day : String = ""
+
+                if (selectedDate.indexOf("월") == 7 && selectedDate.indexOf("일") == 10){
+                    month = "0" + selectedDate.get(6)
+                    day = "0" + selectedDate.get(9)
+                } else if (selectedDate.indexOf("월") == 7 && selectedDate.indexOf("일") == 11){
+                    month = "0" + selectedDate.get(6)
+                    day = selectedDate.substring(9,11)
+                } else if(selectedDate.indexOf("월") == 8 && selectedDate.indexOf("일") == 11){
+                    month = selectedDate.substring(6,8)
+                    day = "0" + selectedDate.get(10).toString()
+                } else {
+                    month = selectedDate.substring(6,8)
+                    day = selectedDate.substring(10,12)
+                }
+
+                yearMonthForServer = year+"-"+month
+                dateForServer = year+month+day
+
                 binding.dateContentTv.text = picker.headerText
-                mShowLongToast(datetetete)
+                mShowLongToast(year+month+day)
+
+                getEventsByDate()
             }
 
         }
@@ -106,13 +140,11 @@ class ActivityCreateEventOldCus : ActivityBase() {
             minute.displayedValues = arrayOf("00분", "10분", "20분", "30분", "40분", "50분")
 
             minute.setOnValueChangedListener { picker, oldVal, newVal ->
-
             }
 
             //초기값 세팅
             hour.value = 9
             minute.value = 0
-
 
             //  취소 버튼 클릭 시
             cancel.setOnClickListener {
@@ -122,6 +154,14 @@ class ActivityCreateEventOldCus : ActivityBase() {
 
             //  완료 버튼 클릭 시
             ok.setOnClickListener {
+
+                var dspHour : String = ""
+                when (hour.value){
+                    6 -> dspHour = "06"
+                    7 -> dspHour = "07"
+                    8 -> dspHour = "08"
+                    9 -> dspHour = "09"
+                }
 
                 var dspMin: String = ""
                 when (minute.value) {
@@ -134,8 +174,13 @@ class ActivityCreateEventOldCus : ActivityBase() {
 
                 }
 
-                binding.timeContentTv.text =
-                    (hour.value).toString() + "시 " + dspMin
+                if (hour.value <10) {
+                    binding.timeContentTv.text = dspHour + "시 " + dspMin
+                } else {
+                    binding.timeContentTv.text =
+                        (hour.value).toString() + "시 " + dspMin
+                }
+
 
                 dialog.dismiss()
                 dialog.cancel()
@@ -157,17 +202,31 @@ class ActivityCreateEventOldCus : ActivityBase() {
 
     }
 
+    fun getEventsByDate(){
+        database.child("users").child(uid).child("events").child(yearMonthForServer).addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val newData: ArrayList<EventData> = ArrayList()
+                for (ds in dataSnapshot.children) {
+                    val event: EventData? = ds.getValue(EventData::class.java)
+                    if (event != null) {
+                        newData.add(event)
+                    }
+                }
+                data.clear() //for문이 끝내기전까지 데이터를 유지하기 위해
+                data.addAll(newData)
 
-//            val timePicker = MaterialTimePicker.Builder().setInputMode(INPUT_MODE_KEYBOARD)
-//                .setTimeFormat(TimeFormat.CLOCK_24H)
-//                .setTitleText("예약시간 선택 ex) 14시 30분")
-//                .setHour(9)
-//                .build()
-//
-//            timePicker.show(supportFragmentManager, timePicker.toString())
-//
-//            timePicker.addOnPositiveButtonClickListener {
-//                binding.timeContentTv.text = timePicker.hour.toString()+"시 "+timePicker.minute+"분"
+                Log.d("sizeOfData", data.size.toString() + "?")
+
+            }
+
+
+            //addListener sing은 한번만 불러오고
+            //addValue는 데이터가 바꿀때마다 datachage 돈다.
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
+
 }
 
 
