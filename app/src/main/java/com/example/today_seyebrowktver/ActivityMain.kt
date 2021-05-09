@@ -2,6 +2,7 @@ package com.example.today_seyebrowktver
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
@@ -10,6 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.today_seyebrowktver.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -22,6 +27,7 @@ class ActivityMain : ActivityBase() {
 
     //viewBinding
     internal lateinit var binding: ActivityMainBinding
+    val auth =  FirebaseAuth.getInstance()
 
     //viewModel
     private lateinit var mainViewModel: ViewModelMain
@@ -45,6 +51,33 @@ class ActivityMain : ActivityBase() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setPermittionCheck() //권한체크
+
+        //test login
+        auth.signInWithEmailAndPassword("ngh_0925@naver.com", "dnswjs12!@")
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("LoginTest", "signInWithEmail:success")
+
+                    val user = auth.currentUser
+                    user.uid
+                    Log.d("uid", user.uid+"?")
+
+                } else {
+                    try {
+                        throw task.exception!!
+                    } catch (e: FirebaseAuthInvalidUserException) {
+                        mShowShortToast("존재하지 않는 계정 입니다")
+                    } catch (e: FirebaseAuthInvalidCredentialsException) {
+                        mShowShortToast("이메일 또는 비밀번호를 확인해주세요")
+                    } catch (e: FirebaseNetworkException) {
+                        mShowShortToast("네트워크 오류")
+                    } catch (e: Exception) {
+                        mShowShortToast("오류 : 잠시 후 다시 시도해주세요")
+                    }
+                }
+            }
+
         //뷰모델 생성
         mainViewModel = ViewModelProvider(this)[ViewModelMain::class.java]
         setContentView(view)

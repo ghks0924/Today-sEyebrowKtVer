@@ -1,12 +1,15 @@
 package com.example.today_seyebrowktver
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -126,6 +129,25 @@ class   FragmentCustomers : Fragment() {
             )
 
         binding.recyclerview.addItemDecoration(dividerDecoration)
+
+        adapter!!.itemClick = object : RvCustomerAdapter.ItemClick{
+            override fun onClick(view: View, position: Int) {
+                val intent = Intent(context, ActivityEachCustomer::class.java)
+                intent.putExtra("keyValue", data[position].keyValue)
+                startActivity(intent)
+
+                Log.d("click?", "click OK" + data[position].keyValue)
+
+            }
+
+        }
+
+        adapter!!.itemLongClick = object  : RvCustomerAdapter.ItemLongClick{
+            override fun onClick(view: View, position: Int) {
+                Log.d("click?", "LongClick OK")
+            }
+
+        }
 
 //        val decoration_height = RecyclerDecorationHeight(5)
 //        binding.recyclerview.addItemDecoration(decoration_height)
