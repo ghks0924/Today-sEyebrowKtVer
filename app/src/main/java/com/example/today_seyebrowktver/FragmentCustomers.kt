@@ -18,24 +18,24 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 
-class   FragmentCustomers : Fragment() {
+class FragmentCustomers : Fragment() {
 
     private var _binding: FragmentCustomersBinding? = null //onDestory를 위한 변수
 
     private val binding get() = _binding!!
 
-    val database:DatabaseReference = FirebaseDatabase.getInstance().reference
+    val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     val mAuth = FirebaseAuth.getInstance()
     var data = ArrayList<CustomersData>()
     var dataForSearch = ArrayList<CustomersData>()
     var adapter: RvCustomerAdapter? = null
 
-    private lateinit var uid : String
+    private lateinit var uid: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentCustomersBinding.inflate(inflater, container, false)
 
@@ -76,7 +76,7 @@ class   FragmentCustomers : Fragment() {
 
         })
 
-        binding.edittext.addTextChangedListener(object :TextWatcher{
+        binding.edittext.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -86,35 +86,42 @@ class   FragmentCustomers : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 var searchText: String = binding.edittext.text.toString().toLowerCase()
                 search(searchText)
+
+                if (searchText.isEmpty()) {
+                    setClickListener(data)
+                } else {
+                    setClickListener(dataForSearch)
+                }
+
             }
 
         })
     }
 
     private fun setData() {
-        database.child("users").child(uid).child("customers").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val newData: ArrayList<CustomersData> = ArrayList()
-                for (ds in dataSnapshot.children) {
-                    val customersData: CustomersData? = ds.getValue(CustomersData::class.java)
-                    if (customersData != null) {
-                        newData.add(customersData)
+        database.child("users").child(uid).child("customers")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val newData: ArrayList<CustomersData> = ArrayList()
+                    for (ds in dataSnapshot.children) {
+                        val customersData: CustomersData? = ds.getValue(CustomersData::class.java)
+                        if (customersData != null) {
+                            newData.add(customersData)
+                        }
                     }
+                    data.clear() //for문이 끝내기전까지 데이터를 유지하기 위해
+                    dataForSearch.clear()
+
+                    data.addAll(newData)
+                    dataForSearch.addAll(newData)
+                    setRv() //일반적인 위치는 아님..  db접근, 파일접근은 비동기처리 해야함. fb는 자동적으로 비동기적으로 돈다
                 }
-                data.clear() //for문이 끝내기전까지 데이터를 유지하기 위해
-                dataForSearch.clear()
-
-                data.addAll(newData)
-                dataForSearch.addAll(newData)
-                setRv() //일반적인 위치는 아님..  db접근, 파일접근은 비동기처리 해야함. fb는 자동적으로 비동기적으로 돈다
-            }
 
 
-
-            //addListener sing은 한번만 불러오고
-            //addValue는 데이터가 바꿀때마다 datachage 돈다.
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+                //addListener sing은 한번만 불러오고
+                //addValue는 데이터가 바꿀때마다 datachage 돈다.
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
     }
 
     private fun setRv() {
@@ -130,7 +137,15 @@ class   FragmentCustomers : Fragment() {
 
         binding.recyclerview.addItemDecoration(dividerDecoration)
 
-        adapter!!.itemClick = object : RvCustomerAdapter.ItemClick{
+        setClickListener(data)
+
+//        val decoration_height = RecyclerDecorationHeight(5)
+//        binding.recyclerview.addItemDecoration(decoration_height)
+
+    }
+
+    private fun setClickListener(data: ArrayList<CustomersData>) {
+        adapter!!.itemClick = object : RvCustomerAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(context, ActivityEachCustomer::class.java)
                 intent.putExtra("keyValue", data[position].keyValue)
@@ -142,16 +157,12 @@ class   FragmentCustomers : Fragment() {
 
         }
 
-        adapter!!.itemLongClick = object  : RvCustomerAdapter.ItemLongClick{
+        adapter!!.itemLongClick = object : RvCustomerAdapter.ItemLongClick {
             override fun onClick(view: View, position: Int) {
                 Log.d("click?", "LongClick OK")
             }
 
         }
-
-//        val decoration_height = RecyclerDecorationHeight(5)
-//        binding.recyclerview.addItemDecoration(decoration_height)
-
     }
 
     override fun onDestroyView() {
@@ -170,16 +181,19 @@ class   FragmentCustomers : Fragment() {
         } else { //문자입력시
             for (i in data.indices) { //리소스의 모든 데이터를 검색한다.
                 if (data.get(i).customerName!!.toLowerCase().contains(charText)
-                    || data.get(i).customerNumber!!.contains(charText)) {
+                    || data.get(i).customerNumber!!.contains(charText)
+                ) {
                     //검색된 데이터를 리스트에 추가한다.
                     //list.add(arraylist.get(i));
                     dataForSearch.add(data.get(i))
                 }
             }
 
+
             adapter = RvCustomerAdapter(dataForSearch)
             binding.recyclerview.adapter = adapter
         }
+
     }
 
 
