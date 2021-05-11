@@ -1,5 +1,6 @@
 package com.example.today_seyebrowktver
 
+import android.R
 import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
 import android.content.Intent
@@ -15,6 +16,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.example.today_seyebrowktver.databinding.FragmentMessageBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -137,6 +140,34 @@ class FragmentMessage : Fragment() {
 //            intent.type = "vnd.android-dir/mms-sms"
 //            startActivity(intent)
         })
+
+        binding.fixedLayout.setOnClickListener {
+            if (binding.hidenView.visibility == View.VISIBLE){
+                TransitionManager.beginDelayedTransition(binding.cardview,
+                    AutoTransition())
+                binding.hidenView.visibility = View.GONE
+                binding.historyExpandIv.setImageResource(R.drawable.arrow_down_float)
+            } else{
+                TransitionManager.beginDelayedTransition(binding.cardview,
+                    AutoTransition())
+                binding.hidenView.visibility = View.VISIBLE
+                binding.historyExpandIv.setImageResource(R.drawable.arrow_up_float)
+            }
+        }
+
+        binding.fixedLayout1.setOnClickListener {
+            if (binding.hidenView1.visibility == View.VISIBLE){
+                TransitionManager.beginDelayedTransition(binding.cardview,
+                    AutoTransition())
+                binding.hidenView1.visibility = View.GONE
+                binding.historyExpandIv1.setImageResource(R.drawable.arrow_down_float)
+            } else{
+                TransitionManager.beginDelayedTransition(binding.cardview,
+                    AutoTransition())
+                binding.hidenView1.visibility = View.VISIBLE
+                binding.historyExpandIv1.setImageResource(R.drawable.arrow_up_float)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
