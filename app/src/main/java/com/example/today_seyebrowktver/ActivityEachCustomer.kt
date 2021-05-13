@@ -86,19 +86,37 @@ class ActivityEachCustomer : ActivityBase() {
 
         }
 
+        binding.fixedMemoLayout.setOnClickListener {
+
+            if (binding.memoEt.visibility == View.VISIBLE){
+                TransitionManager.beginDelayedTransition(binding.memoCardview,
+                    AutoTransition())
+                binding.memoEt.visibility = View.GONE
+                binding.memoExpandIv.setImageResource(R.drawable.arrow_down_float)
+            } else{
+                TransitionManager.beginDelayedTransition(binding.memoCardview,
+                    AutoTransition())
+                binding.memoEt.visibility = View.VISIBLE
+                binding.memoExpandIv.setImageResource(R.drawable.arrow_up_float)
+            }
+
+        }
+
         binding.fixedLayout.setOnClickListener {
             if (binding.hidenView.visibility == View.VISIBLE){
-                TransitionManager.beginDelayedTransition(binding.cardview,
+                TransitionManager.beginDelayedTransition(binding.historyCardview,
                     AutoTransition())
                 binding.hidenView.visibility = View.GONE
                 binding.historyExpandIv.setImageResource(R.drawable.arrow_down_float)
             } else{
-                TransitionManager.beginDelayedTransition(binding.cardview,
+                TransitionManager.beginDelayedTransition(binding.historyCardview,
                     AutoTransition())
                 binding.hidenView.visibility = View.VISIBLE
                 binding.historyExpandIv.setImageResource(R.drawable.arrow_up_float)
             }
         }
+
+
     }
 
     fun ShowAlertDialogWithListview() {
