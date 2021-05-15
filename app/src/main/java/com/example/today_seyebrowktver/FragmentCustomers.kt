@@ -128,7 +128,6 @@ class FragmentCustomers : Fragment() {
 
                     database.child("users").child(uid).child("customersSort").get()
                         .addOnSuccessListener {
-                            Log.d("customersSort", it.value.toString())
                             customersSort = it.value.toString()
 
                             if (customersSort == "name"){
