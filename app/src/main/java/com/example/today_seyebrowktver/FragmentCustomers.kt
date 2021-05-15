@@ -28,6 +28,7 @@ class FragmentCustomers : Fragment() {
     val mAuth = FirebaseAuth.getInstance()
     var data = ArrayList<CustomersData>()
     var dataForSearch = ArrayList<CustomersData>()
+    private lateinit var customersSort:String
     var adapter: RvCustomerAdapter? = null
 
     private lateinit var uid: String
@@ -58,6 +59,11 @@ class FragmentCustomers : Fragment() {
             {
                 binding.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
                 binding.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+                data.sortBy { data1 -> data1.customerName }
+                adapter!!.notifyDataSetChanged()
+                database.child("users").child(uid).child("customersSort").setValue("name").addOnSuccessListener {
+                    }.addOnFailureListener {
+                    }
             })
 
         binding.savedTv.setOnClickListener(View.OnClickListener
@@ -65,7 +71,11 @@ class FragmentCustomers : Fragment() {
         {
             binding.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
             binding.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
-
+            data.sortBy { data1 -> data1.savedate }
+            adapter!!.notifyDataSetChanged()
+            database.child("users").child(uid).child("customersSort").setValue("date").addOnSuccessListener {
+            }.addOnFailureListener {
+            }
         })
 
         binding.edittext.clearFocus()
@@ -113,7 +123,25 @@ class FragmentCustomers : Fragment() {
                     dataForSearch.clear()
 
                     data.addAll(newData)
+
                     dataForSearch.addAll(newData)
+
+                    database.child("users").child(uid).child("customersSort").get()
+                        .addOnSuccessListener {
+                            Log.d("customersSort", it.value.toString())
+                            customersSort = it.value.toString()
+
+                            if (customersSort == "name"){
+                                data.sortBy { data1 -> data1.customerName }
+                                dataForSearch.sortBy { data1 -> data1.customerName }
+                            } else{
+                                data.sortBy { data1 -> data1.savedate }
+                                dataForSearch.sortBy { data1 -> data1.savedate }
+                            }
+                        }
+
+
+
                     setRv() //일반적인 위치는 아님..  db접근, 파일접근은 비동기처리 해야함. fb는 자동적으로 비동기적으로 돈다
                 }
 

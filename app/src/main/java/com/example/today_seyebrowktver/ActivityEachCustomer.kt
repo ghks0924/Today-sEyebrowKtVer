@@ -22,6 +22,8 @@ import java.util.*
 
 class ActivityEachCustomer : ActivityBase() {
 
+    val REQUEST_EDIT = 1111;
+
     private lateinit var binding: ActivityEachCustomerBinding
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
@@ -70,6 +72,7 @@ class ActivityEachCustomer : ActivityBase() {
         binding.customerNameTv.text = eachCustomer.customerName
         binding.customerNumberTv.text = eachCustomer.customerNumber
 
+
         binding.backCardview.setOnClickListener {
             finish()
         }
@@ -82,7 +85,7 @@ class ActivityEachCustomer : ActivityBase() {
         binding.editIcon.setOnClickListener {
             val intent = Intent(this, ActivityEditCustomer::class.java)
             intent.putExtra("keyValue", customerKeyValue)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_EDIT)
 
         }
 
@@ -93,11 +96,15 @@ class ActivityEachCustomer : ActivityBase() {
                     AutoTransition())
                 binding.memoEt.visibility = View.GONE
                 binding.memoExpandIv.setImageResource(R.drawable.arrow_down_float)
+                updateCustomerMemo()
             } else{
                 TransitionManager.beginDelayedTransition(binding.memoCardview,
                     AutoTransition())
                 binding.memoEt.visibility = View.VISIBLE
                 binding.memoExpandIv.setImageResource(R.drawable.arrow_up_float)
+                binding.memoEt.setText(eachCustomer.customerMemo)
+                binding.memoEt.requestFocus()
+                binding.memoEt.setSelection(eachCustomer.customerMemo.length)
             }
 
         }
@@ -108,15 +115,24 @@ class ActivityEachCustomer : ActivityBase() {
                     AutoTransition())
                 binding.hidenView.visibility = View.GONE
                 binding.historyExpandIv.setImageResource(R.drawable.arrow_down_float)
+
             } else{
                 TransitionManager.beginDelayedTransition(binding.historyCardview,
                     AutoTransition())
                 binding.hidenView.visibility = View.VISIBLE
                 binding.historyExpandIv.setImageResource(R.drawable.arrow_up_float)
+
             }
         }
 
 
+    }
+
+    fun updateCustomerMemo(){
+        database.child("users").child(uid).child("customers").child(customerKeyValue)
+            .child("customerMemo").setValue(binding.memoEt.text.toString().trim()).addOnSuccessListener {
+            }.addOnFailureListener {
+            }
     }
 
     fun ShowAlertDialogWithListview() {
@@ -156,6 +172,23 @@ class ActivityEachCustomer : ActivityBase() {
         val alertDialogObject = dialogBuilder.create()
         //Show the dialog
         alertDialogObject.show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK){
+            return
+        }
+
+        when(requestCode){
+            REQUEST_EDIT -> {
+                getCustomerData()
+                binding.customerNameTv.text = eachCustomer.customerName
+                binding.customerNumberTv.text = eachCustomer.customerNumber
+            }
+        }
+
+
     }
 
 

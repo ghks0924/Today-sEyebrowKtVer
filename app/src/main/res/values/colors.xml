@@ -26,6 +26,7 @@
 
     <color name="transparent">#00000000</color>
     <color name="weakGrey">#dfdfdf</color>
+    <color name="backgroundGrey">#CBE4E4E4</color>
 
     //================calendar color==================
 
