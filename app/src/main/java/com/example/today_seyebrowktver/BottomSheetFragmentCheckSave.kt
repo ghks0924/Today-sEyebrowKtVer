@@ -34,6 +34,7 @@ class BottomSheetFragmentCheckSave : BottomSheetDialogFragment() {
 
         donotSaveTv.setOnClickListener {
             dismiss()
+            requireActivity().finish()
         }
         saveTv.setOnClickListener {
         }
