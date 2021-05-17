@@ -45,4 +45,6 @@ class BottomSheetFragmentEvent : BottomSheetDialogFragment(){
 
         return view
     }
+
+    override fun getTheme(): Int = R.style.TopRoundedBottomSheetDialogTheme
 }

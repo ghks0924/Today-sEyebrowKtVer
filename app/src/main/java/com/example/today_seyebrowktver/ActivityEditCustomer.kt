@@ -136,4 +136,9 @@ class ActivityEditCustomer : ActivityBase() {
 
 
     }
+
+    override fun onBackPressed() {
+        val frag = BottomSheetFragmentCheckSave()
+        frag.show(supportFragmentManager, frag.tag)
+    }
 }

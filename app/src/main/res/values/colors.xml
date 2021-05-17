@@ -28,6 +28,9 @@
     <color name="weakGrey">#dfdfdf</color>
     <color name="backgroundGrey">#CBE4E4E4</color>
 
+    //================textColorHighlight==============
+    <color name="mainBlueTextColorHighlight">#4D0c0a4d</color>
+
     //================calendar color==================
 
     <color name="colorPrimary">#3F51B5</color>

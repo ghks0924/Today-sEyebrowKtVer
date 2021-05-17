@@ -74,15 +74,20 @@
                 android:id="@+id/customer_name_et"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+
                 android:fontFamily="@font/notosanscjkkrbold"
                 android:hint="고객이름"
                 android:includeFontPadding="false"
+                android:theme="@style/EditCustomerEdittext"
 
                 android:inputType="text"
                 android:textColor="@color/mainGrey"
                 android:textSize="12sp"
+                android:textColorHighlight="@color/mainBlueTextColorHighlight"
                 android:textCursorDrawable="@drawable/cursor_edittext_mainblue"
+
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/customer_name_iv"
                 app:layout_constraintRight_toRightOf="parent"
@@ -134,9 +139,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
                 android:fontFamily="@font/notosanscjkkrbold"
                 android:hint="고객 전화번호"
                 android:includeFontPadding="false"
+                android:theme="@style/EditCustomerEdittext"
                 android:textCursorDrawable="@drawable/cursor_edittext_mainblue"
 
                 android:inputType="phone"
@@ -173,7 +180,7 @@
             android:includeFontPadding="false"
             android:stateListAnimator="@null"
             android:text="취소"
-            android:textColor="@color/mainPink"
+            android:textColor="@color/mainBlue"
 
             android:textSize="15sp" />
 
@@ -187,7 +194,7 @@
             android:includeFontPadding="false"
             android:stateListAnimator="@null"
             android:text="저장"
-            android:textColor="@color/mainPink"
+            android:textColor="@color/mainBlue"
             android:textSize="15sp" />
     </LinearLayout>
 

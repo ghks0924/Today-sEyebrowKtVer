@@ -195,6 +195,7 @@
                         android:layout_margin="3dp"
                         android:fontFamily="@font/notosanscjkkrmedium"
                         android:gravity="top"
+                        android:background="@null"
                         android:hint="고객의 특이사항을 메모하세요"
 
                         android:includeFontPadding="false"

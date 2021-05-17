@@ -28,13 +28,22 @@
     <style name="Theme.TodaysEyebrowKtVer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     //Custom BottomSheetDialog
-    <style name="CustomBottomSheetDialog"
-        parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">20dp</item>
-        <item name="cornerSizeTopLeft">20dp</item>
-        <item name="cornerSizeBottomRight">20dp</item>
-        <item name="cornerSizeBottomLeft">20dp</item>
+
+    <style name="TopRoundedBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/TopRoundedModalStyle</item>
+    </style>
+
+    <style name="TopRoundedModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottomsheetdialog_top_rounded</item>
+    </style>
+
+
+    <style name="AllRoundedBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AllRoundedModalStyle</item>
+    </style>
+
+    <style name="AllRoundedModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottomsheetdialog_4way_rounded</item>
     </style>
 
     //PopUp Activity theme
@@ -60,6 +69,14 @@
     <style name="AppTheme.TimePicker"
         parent="Theme.TodaysEyebrowKtVer">
         <item name="colorControlNormal">@color/mainPink</item>
+    </style>
+
+    //=============EditText==============
+
+    //ActivityEditCustomer Edittext theme
+    <style name="EditCustomerEdittext" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/transparent</item>
+        <item name="colorControlActivated">@color/mainBlue</item>
     </style>
 
 

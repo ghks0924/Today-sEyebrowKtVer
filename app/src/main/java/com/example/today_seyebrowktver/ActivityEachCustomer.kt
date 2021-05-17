@@ -92,16 +92,16 @@ class ActivityEachCustomer : ActivityBase() {
         binding.fixedMemoLayout.setOnClickListener {
 
             if (binding.memoEt.visibility == View.VISIBLE){
-                TransitionManager.beginDelayedTransition(binding.memoCardview,
-                    AutoTransition())
+//                TransitionManager.beginDelayedTransition(binding.memoCardview,
+//                    AutoTransition())
                 binding.memoEt.visibility = View.GONE
-                binding.memoExpandIv.setImageResource(R.drawable.arrow_down_float)
+                binding.memoExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
                 updateCustomerMemo()
             } else{
-                TransitionManager.beginDelayedTransition(binding.memoCardview,
-                    AutoTransition())
+//                TransitionManager.beginDelayedTransition(binding.memoCardview,
+//                    AutoTransition())
                 binding.memoEt.visibility = View.VISIBLE
-                binding.memoExpandIv.setImageResource(R.drawable.arrow_up_float)
+                binding.memoExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
                 binding.memoEt.setText(eachCustomer.customerMemo)
                 binding.memoEt.requestFocus()
                 binding.memoEt.setSelection(eachCustomer.customerMemo.length)
@@ -111,16 +111,16 @@ class ActivityEachCustomer : ActivityBase() {
 
         binding.fixedLayout.setOnClickListener {
             if (binding.hidenView.visibility == View.VISIBLE){
-                TransitionManager.beginDelayedTransition(binding.historyCardview,
-                    AutoTransition())
+//                TransitionManager.beginDelayedTransition(binding.historyCardview,
+//                    AutoTransition())
                 binding.hidenView.visibility = View.GONE
-                binding.historyExpandIv.setImageResource(R.drawable.arrow_down_float)
+                binding.historyExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
 
             } else{
-                TransitionManager.beginDelayedTransition(binding.historyCardview,
-                    AutoTransition())
+//                TransitionManager.beginDelayedTransition(binding.historyCardview,
+//                    AutoTransition())
                 binding.hidenView.visibility = View.VISIBLE
-                binding.historyExpandIv.setImageResource(R.drawable.arrow_up_float)
+                binding.historyExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
 
             }
         }
