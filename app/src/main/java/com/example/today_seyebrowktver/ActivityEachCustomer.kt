@@ -67,7 +67,6 @@ class ActivityEachCustomer : ActivityBase() {
             }
     }
 
-
     fun setLayout() {
         binding.customerNameTv.text = eachCustomer.customerName
         binding.customerNumberTv.text = eachCustomer.customerNumber
@@ -183,8 +182,8 @@ class ActivityEachCustomer : ActivityBase() {
         when(requestCode){
             REQUEST_EDIT -> {
                 getCustomerData()
-                binding.customerNameTv.text = eachCustomer.customerName
-                binding.customerNumberTv.text = eachCustomer.customerNumber
+                binding.customerNameTv.text = data!!.getStringExtra("edittedName")
+                binding.customerNumberTv.text = data!!.getStringExtra("edittedNumber")
             }
         }
 

@@ -115,21 +115,29 @@ class ActivityEditCustomer : ActivityBase() {
     }
 
     private fun saveUpdatedCustomerData() {
+
+        val edittedName = binding.customerNameEt.toString().trim()
+        val edittedNumber = binding.customerNumberEt.toString().trim()
+
         if (isVaildCheck()){
             if (isNameEditted){
                 database.child("users").child(uid).child("customers").child(customerKeyValue)
-                    .child("customerName").setValue(binding.customerNameEt.text.toString().trim()).addOnSuccessListener {
+                    .child("customerName").setValue(edittedName).addOnSuccessListener {
                     }.addOnFailureListener {
                     }
             }
             if (isNumberEditted){
                 database.child("users").child(uid).child("customers").child(customerKeyValue)
-                    .child("customerNumber").setValue(binding.customerNumberEt.text.toString().trim()).addOnSuccessListener {
+                    .child("customerNumber").setValue(edittedNumber).addOnSuccessListener {
                     }.addOnFailureListener {
                     }
             }
 
 
+            val intent = intent
+            intent.putExtra("edittedName", edittedName)
+            intent.putExtra("edittedNumber", edittedNumber)
+            setResult(RESULT_OK)
             finish()
 
         }
