@@ -114,17 +114,13 @@ class ActivityEachCustomer : ActivityBase() {
 //                    AutoTransition())
                 binding.hidenView.visibility = View.GONE
                 binding.historyExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-
             } else{
 //                TransitionManager.beginDelayedTransition(binding.historyCardview,
 //                    AutoTransition())
                 binding.hidenView.visibility = View.VISIBLE
                 binding.historyExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
-
             }
         }
-
-
     }
 
     fun updateCustomerMemo(){
