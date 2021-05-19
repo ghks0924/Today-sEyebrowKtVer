@@ -37,6 +37,8 @@ class BottomSheetFragmentCheckSave : BottomSheetDialogFragment() {
             requireActivity().finish()
         }
         saveTv.setOnClickListener {
+            dismiss()
+            (activity as ActivityEditCustomer).saveUpdatedCustomerData()
         }
     }
 

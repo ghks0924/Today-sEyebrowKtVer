@@ -22,6 +22,10 @@ class ActivityEditCustomer : ActivityBase() {
     private lateinit var customerKeyValue: String
     private lateinit var eachCustomer: CustomersData
 
+    private lateinit var orgName: String
+    private lateinit var orgNumber: String
+
+
     private var isNameEditted = false
     private var isNumberEditted = false
 
@@ -54,6 +58,10 @@ class ActivityEditCustomer : ActivityBase() {
                     it.child("photoURL").value.toString()
                 )
 
+                //수정된 정보와 비교하기 위해서
+                orgName = eachCustomer.customerName
+                orgNumber = eachCustomer.customerNumber
+
                 setLayout()
             }
     }
@@ -64,8 +72,15 @@ class ActivityEditCustomer : ActivityBase() {
         }
 
         binding.saveBtn.setOnClickListener {
-            //saveData
-            saveUpdatedCustomerData()
+            //수정된게 있는지 확인
+            if (isAnythingEditted()){ //수정된게 있으면
+                //saveData
+                saveUpdatedCustomerData()
+
+            } else{
+                finish()
+            }
+
         }
         //자동 하이픈 먹이려고
         binding.customerNumberEt.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -110,16 +125,15 @@ class ActivityEditCustomer : ActivityBase() {
             mShowShortToast("전화번호를 확인해주세요")
             return false
         }
-
         return true
     }
 
-    private fun saveUpdatedCustomerData() {
-
-        val edittedName = binding.customerNameEt.toString().trim()
-        val edittedNumber = binding.customerNumberEt.toString().trim()
-
+    //서버 && 이전 액티비티로 데이터 넘김
+    fun saveUpdatedCustomerData() {
         if (isVaildCheck()){
+            val edittedName = binding.customerNameEt.text.toString().trim()
+            val edittedNumber = binding.customerNumberEt.text.toString().trim()
+
             if (isNameEditted){
                 database.child("users").child(uid).child("customers").child(customerKeyValue)
                     .child("customerName").setValue(edittedName).addOnSuccessListener {
@@ -137,16 +151,32 @@ class ActivityEditCustomer : ActivityBase() {
             val intent = intent
             intent.putExtra("edittedName", edittedName)
             intent.putExtra("edittedNumber", edittedNumber)
-            setResult(RESULT_OK)
+            setResult(RESULT_OK, intent)
             finish()
 
         }
 
-
     }
 
     override fun onBackPressed() {
-        val frag = BottomSheetFragmentCheckSave()
-        frag.show(supportFragmentManager, frag.tag)
+        //수정사항이 있는지 체크
+        if (isAnythingEditted()){ //수정사항이 있으면
+            val frag = BottomSheetFragmentCheckSave()
+            frag.show(supportFragmentManager, frag.tag)
+        } else{ //수정사항이 없으면
+            finish()
+        }
+
+    }
+
+    //수정된 항목이 있는지
+    private fun isAnythingEditted() : Boolean{
+        if (isNameEditted && orgName != binding.customerNameEt.text.toString().trim()){
+            return true
+        }
+        if (isNumberEditted && orgNumber != binding.customerNumberEt.text.toString().trim()){
+            return true
+        }
+        return false
     }
 }

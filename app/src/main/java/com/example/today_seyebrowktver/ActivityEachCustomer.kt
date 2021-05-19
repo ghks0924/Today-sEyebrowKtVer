@@ -108,7 +108,7 @@ class ActivityEachCustomer : ActivityBase() {
 
         }
 
-        binding.fixedLayout.setOnClickListener {
+        binding.historyFixedLayout.setOnClickListener {
             if (binding.hidenView.visibility == View.VISIBLE){
 //                TransitionManager.beginDelayedTransition(binding.historyCardview,
 //                    AutoTransition())

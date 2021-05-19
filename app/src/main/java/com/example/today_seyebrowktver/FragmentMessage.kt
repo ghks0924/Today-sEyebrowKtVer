@@ -120,8 +120,8 @@ class FragmentMessage : Fragment() {
             }
         }
 
-        binding.recyclerviewMessages.layoutManager = LinearLayoutManager(context)
-        binding.recyclerviewMessages.adapter = adapter
+        binding.reservMessages.layoutManager = LinearLayoutManager(context)
+        binding.reservMessages.adapter = adapter
     }
 
     private fun setLayout() {
@@ -134,38 +134,66 @@ class FragmentMessage : Fragment() {
         })
 
         //send click event
-        binding.filterCardview.setOnClickListener(View.OnClickListener {
+//        binding.filterCardview.setOnClickListener(View.OnClickListener {
 //            val intent = Intent("android.intent.action.MAIN")
 //            intent.addCategory("android.intent.category.DEFAULT")
 //            intent.type = "vnd.android-dir/mms-sms"
 //            startActivity(intent)
-        })
+//        })
 
-        binding.fixedLayout.setOnClickListener {
-            if (binding.hidenView.visibility == View.VISIBLE){
-                TransitionManager.beginDelayedTransition(binding.cardview,
-                    AutoTransition())
-                binding.hidenView.visibility = View.GONE
-                binding.historyExpandIv.setImageResource(R.drawable.arrow_down_float)
+        binding.eventFixedLayout.setOnClickListener {
+            if (binding.eventHidenView.visibility == View.VISIBLE){
+//                TransitionManager.beginDelayedTransition(binding.cardview,
+//                    AutoTransition())
+                binding.eventHidenView.visibility = View.GONE
+                binding.eventHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
             } else{
-                TransitionManager.beginDelayedTransition(binding.cardview,
-                    AutoTransition())
-                binding.hidenView.visibility = View.VISIBLE
-                binding.historyExpandIv.setImageResource(R.drawable.arrow_up_float)
+//                TransitionManager.beginDelayedTransition(binding.cardview,
+//                    AutoTransition())
+                binding.eventHidenView.visibility = View.VISIBLE
+                binding.eventHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
             }
         }
 
-        binding.fixedLayout1.setOnClickListener {
-            if (binding.hidenView1.visibility == View.VISIBLE){
-                TransitionManager.beginDelayedTransition(binding.cardview,
-                    AutoTransition())
-                binding.hidenView1.visibility = View.GONE
-                binding.historyExpandIv1.setImageResource(R.drawable.arrow_down_float)
+        binding.afterFixedLayout.setOnClickListener {
+            if (binding.afterHidenView.visibility == View.VISIBLE){
+//                TransitionManager.beginDelayedTransition(binding.cardview,
+//                    AutoTransition())
+                binding.afterHidenView.visibility = View.GONE
+                binding.afterHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
             } else{
-                TransitionManager.beginDelayedTransition(binding.cardview,
-                    AutoTransition())
-                binding.hidenView1.visibility = View.VISIBLE
-                binding.historyExpandIv1.setImageResource(R.drawable.arrow_up_float)
+//                TransitionManager.beginDelayedTransition(binding.cardview,
+//                    AutoTransition())
+                binding.afterHidenView.visibility = View.VISIBLE
+                binding.afterHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
+            }
+        }
+
+        binding.retouchFixedLayout.setOnClickListener {
+            if (binding.retouchHidenView.visibility == View.VISIBLE){
+//                TransitionManager.beginDelayedTransition(binding.cardview,
+//                    AutoTransition())
+                binding.retouchHidenView.visibility = View.GONE
+                binding.retouchHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
+            } else{
+//                TransitionManager.beginDelayedTransition(binding.cardview,
+//                    AutoTransition())
+                binding.retouchHidenView.visibility = View.VISIBLE
+                binding.retouchHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
+            }
+        }
+
+        binding.extraFixedLayout.setOnClickListener {
+            if (binding.extraHidenView.visibility == View.VISIBLE){
+//                TransitionManager.beginDelayedTransition(binding.cardview,
+//                    AutoTransition())
+                binding.extraHidenView.visibility = View.GONE
+                binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
+            } else{
+//                TransitionManager.beginDelayedTransition(binding.cardview,
+//                    AutoTransition())
+                binding.extraHidenView.visibility = View.VISIBLE
+                binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
             }
         }
     }

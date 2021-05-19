@@ -237,7 +237,7 @@
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/fixed_layout"
+                        android:id="@+id/history_fixed_layout"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
 
@@ -286,7 +286,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/fixed_layout"
+                        app:layout_constraintTop_toBottomOf="@+id/after_fixed_layout"
                         tools:listitem="@layout/rv_item_event"/>
 
 

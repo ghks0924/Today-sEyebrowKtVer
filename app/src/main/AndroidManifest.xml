@@ -35,7 +35,9 @@
         <activity android:name=".ActivityJoin2" />
         <activity android:name=".ActivityJoin1" />
         <activity android:name=".ActivityJoin0" />
-        <activity android:name=".ActivityLogin"></activity>
+        <activity android:name=".ActivityLogin">
+
+        </activity>
         <activity android:name=".ActivityLoadCustomers" />
         <activity android:name=".ActivityCreateEventSkipCus" />
         <activity android:name=".ActivityCreateEventOldCus"></activity>
