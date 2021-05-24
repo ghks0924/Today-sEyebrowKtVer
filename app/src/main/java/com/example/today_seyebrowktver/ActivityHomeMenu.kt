@@ -23,6 +23,5 @@ class ActivityHomeMenu : AppCompatActivity() {
             overridePendingTransition(R.anim.fadein, R.anim.horizon_exit)
         }
 
-
     }
 }

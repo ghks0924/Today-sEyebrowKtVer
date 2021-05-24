@@ -65,23 +65,20 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/profile_cardview"
-            android:layout_width="@dimen/profile_iv_background_width"
-            android:layout_height="@dimen/profile_iv_background_height"
-            android:layout_centerVertical="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@color/ivory"
             android:backgroundTint="@color/mainPink"
-
-            app:cardCornerRadius="@dimen/half_profile_iv_background_height"
+            app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
                 android:id="@+id/profile_iv"
-                android:layout_width="@dimen/profile_iv_width"
-                android:layout_height="@dimen/profile_iv_height"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
 
 
@@ -128,21 +125,6 @@
             app:layout_constraintLeft_toLeftOf="@+id/activity_create_evt_cusName"
             android:text="고객번호" />
 
-
-        <ImageView
-            android:id="@+id/moreIv"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-
-            android:layout_marginRight="10dp"
-            android:adjustViewBounds="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleType="fitCenter"
-            android:src="@drawable/outline_more_vert_black_36"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/loadCusData"
-
-            app:layout_constraintTop_toTopOf="parent" />
 
 
         <Button

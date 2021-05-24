@@ -290,7 +290,7 @@ class ActivityCreateEventOldCus : ActivityBase() {
             REQUEST_LOAD_CUSTOMERS -> {
                 binding.activityCreateEvtCusName.text = data!!.getStringExtra("cusName")
                 binding.activityCreateEvtCusNbr.text = data!!.getStringExtra("cusNumber")
-                binding.histroyCountTv.text = data!!.getStringExtra("numOfHistory") + "회 방문"
+                binding.histroyCountTv.text = data!!.getIntExtra("numOfHistory",0).toString() + "회 방문"
 
                 binding.activityCreateEvtCusName.setTextColor(Color.parseColor("#4f4f4f"))
                 binding.activityCreateEvtCusNbr.setTextColor(Color.parseColor("#4f4f4f"))

@@ -45,7 +45,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/customer_Rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,39 +63,31 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/profile_cardview"
-            android:layout_width="@dimen/profile_iv_background_width"
-            android:layout_height="@dimen/profile_iv_background_height"
-            android:layout_centerVertical="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@color/ivory"
             android:backgroundTint="@color/mainPink"
-            app:cardCornerRadius="100dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
 
-            app:cardElevation="0dp">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
                 android:id="@+id/profile_iv"
-                android:layout_width="@dimen/profile_iv_width"
-                android:layout_height="@dimen/profile_iv_height"
-                android:layout_centerVertical="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
 
 
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-
                 android:src="@drawable/thick_profile_iv_ivory" />
 
 
         </com.google.android.material.card.MaterialCardView>
 
-        <LinearLayout
-            android:id="@+id/cusDataLl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
-            android:layout_toRightOf="@id/profile_cardview"
-
-            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/activity_create_evt_cusName"
@@ -104,11 +96,15 @@
 
                 android:fontFamily="@font/notosanscjkkrmedium"
                 android:includeFontPadding="false"
-                android:gravity="bottom"
-                android:paddingTop="5dp"
                 android:text="@string/cusName_create_evt_activity"
                 android:textColor="@color/mainGrey"
-                android:textSize="@dimen/textsize_default" />
+                android:textSize="@dimen/textsize_default"
+
+                android:layout_marginLeft="10dp"
+                app:layout_constraintLeft_toRightOf="@+id/profile_cardview"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/activity_create_evt_cusNbr"
+                />
 
             <TextView
                 android:id="@+id/activity_create_evt_cusNbr"
@@ -117,16 +113,16 @@
 
                 android:fontFamily="@font/notosanscjkkrmedium"
                 android:includeFontPadding="false"
-                android:gravity="top"
-                android:paddingBottom="5dp"
                 android:text="@string/cusNmb_create_evt_activity"
                 android:textColor="@color/mainGrey"
-                android:textSize="@dimen/textsize_default" />
+                android:textSize="@dimen/textsize_default"
+                app:layout_constraintTop_toBottomOf="@+id/activity_create_evt_cusName"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/activity_create_evt_cusName"
+                />
 
-        </LinearLayout>
 
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

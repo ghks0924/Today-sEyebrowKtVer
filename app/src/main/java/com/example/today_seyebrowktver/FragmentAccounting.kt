@@ -15,21 +15,35 @@ class FragmentAccounting:Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("lifecycle Check", "accounting onCreate")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         _binding = FragmentAccountingBinding.inflate(inflater, container, false)
 
-        Log.d("lifecycle Check", "accounting onCreateView")
+
         return binding.root
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.previousMonthImage.setOnClickListener {
+
+        }
+
+        binding.performanceTv.setOnClickListener {
+
+        }
+        binding.nextMonthImage.setOnClickListener {
+
+        }
+
+
+
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Log.d("lifecycle Check", "accounting destroy")
     }
 }

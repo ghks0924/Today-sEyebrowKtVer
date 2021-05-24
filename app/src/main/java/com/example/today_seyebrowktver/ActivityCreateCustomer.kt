@@ -3,6 +3,7 @@ package com.example.today_seyebrowktver
 import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.today_seyebrowktver.databinding.ActivityCreateCustomerBinding
@@ -97,18 +98,23 @@ class ActivityCreateCustomer : ActivityBase() {
 
 
         database.child("users").child(uid).child("customers").child(key!!)
-            .setValue(newCustomersData)
-        mShowShortToast("고객이 저장되었습니다")
+            .setValue(newCustomersData).addOnSuccessListener {
+                mShowShortToast("고객이 저장되었습니다")
 
-        if (checkOrgStr == "createEvent"){ //event 생성에서 넘어온 경우 바로 넘어간다
-            val intent = Intent(this, ActivityCreateEventNewCus::class.java)
-            intent.putExtra("name", customerName)
-            intent.putExtra("number", customerNumber)
-            startActivity(intent)
-            finish()
-        } else { //그냥 createCustomer인 경우에는 home으로
-            finish()
-        }
+                if (checkOrgStr == "createEvent"){ //event 생성에서 넘어온 경우 바로 넘어간다
+                    val intent = Intent(this, ActivityCreateEventNewCus::class.java)
+                    intent.putExtra("name", customerName)
+                    intent.putExtra("number", customerNumber)
+                    startActivity(intent)
+                    finish()
+                } else { //그냥 createCustomer인 경우에는 home으로
+                    finish()
+                }
+
+            }.addOnFailureListener {
+                Log.d("errorOfCustomerSave", it.message)
+            }
+
 
 
     }
@@ -128,15 +134,14 @@ class ActivityCreateCustomer : ActivityBase() {
     }
 
     private fun isVaildNumberCheck(){
-
         //전화번호 중복 체크
         database.child("users").child(uid).child("customers").orderByChild("customerNumber").equalTo(customerNumber)
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        mShowShortToast("이미 등록된 번호입니다")
-                    } else {
+                    if (!dataSnapshot.exists()) {
                         mCreateCustomer()
+                    } else {
+                        mShowShortToast("이미 등록된 번호입니다")
                     }
                 }
 
