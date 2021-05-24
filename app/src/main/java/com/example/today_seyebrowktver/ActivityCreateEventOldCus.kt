@@ -46,6 +46,10 @@ class ActivityCreateEventOldCus : ActivityBase() {
         uid = mAuth.currentUser.uid
         mChangeStatusBarColor("#ebbdc5")
 
+        binding.backIv.setOnClickListener {
+            finish()
+        }
+
         binding.loadCusData.setOnClickListener(View.OnClickListener {
             val intent = Intent(applicationContext, ActivityLoadCustomers::class.java)
             startActivity(intent)

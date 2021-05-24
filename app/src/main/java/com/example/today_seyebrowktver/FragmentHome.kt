@@ -35,8 +35,6 @@ class FragmentHome : Fragment() {
             View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-
-
         return binding.root
     }
 
@@ -48,10 +46,10 @@ class FragmentHome : Fragment() {
 //
 //        })
 
-        binding.fab.setOnClickListener(View.OnClickListener {
-            (activity as ActivityMain).mSelectTypeOfCustomer()
-
-        })
+//        binding.fab.setOnClickListener(View.OnClickListener {
+//            (activity as ActivityMain).mSelectTypeOfCustomer()
+//
+//        })
 
 //        binding.calendarView.setOnDateChangedListener() { view, year, month, dayOfMonth ->
 //            val msg = "Selected date is " + dayOfMonth + "/" + (month + 1) + "/" + year

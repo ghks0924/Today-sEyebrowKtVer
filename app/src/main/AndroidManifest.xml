@@ -36,7 +36,11 @@
         <activity android:name=".ActivityJoin1" />
         <activity android:name=".ActivityJoin0" />
         <activity android:name=".ActivityLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".ActivityLoadCustomers" />
         <activity android:name=".ActivityCreateEventSkipCus" />
@@ -49,11 +53,7 @@
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
         <activity android:name=".ActivityMain">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

@@ -21,25 +21,25 @@
             android:id="@+id/back_iv"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:fitsSystemWindows="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginLeft="10dp"
-            android:adjustViewBounds="true"
-            android:fitsSystemWindows="true"
             app:srcCompat="@drawable/ic_chevron_left"
-            app:tint="@color/black"/>
+            app:tint="@color/black" />
 
 
         <TextView
             android:id="@+id/joinTv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-
-
             android:fontFamily="@font/notosansmonocjkkrbold"
+
+
+            android:gravity="center"
             android:includeFontPadding="false"
             android:text="@string/title_create_evt_activity"
             android:textColor="@color/black"
@@ -48,7 +48,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/customer_Rl"
+        android:id="@+id/customer_data_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_big_horizontal_margin"
@@ -104,11 +104,11 @@
             android:fontFamily="@font/notosanscjkkrmedium"
             android:includeFontPadding="false"
 
-            tools:text="@string/cusName_create_evt_activity"
-            android:textColor="@color/black"
+            android:textColor="@color/mainGrey"
             android:textSize="@dimen/textsize_default"
             app:layout_constraintLeft_toRightOf="@+id/profile_cardview"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/cusName_create_evt_activity" />
 
         <TextView
             android:id="@+id/activity_create_evt_cusNbr"
@@ -118,109 +118,98 @@
             android:fontFamily="@font/notosanscjkkrmedium"
             android:includeFontPadding="false"
 
-            tools:text="@string/cusNmb_create_evt_activity"
-            android:textColor="@color/black"
+            android:textColor="@color/mainGrey"
             android:textSize="@dimen/textsize_default"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/activity_create_evt_cusName" />
+            app:layout_constraintLeft_toLeftOf="@+id/activity_create_evt_cusName"
+            tools:text="@string/cusNmb_create_evt_activity" />
 
 
         <ImageView
             android:id="@+id/moreIv"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
 
             android:layout_marginLeft="15dp"
             android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="fitCenter"
-
-            android:src="@drawable/more"
-
-
+            android:src="@drawable/outline_more_vert_black_36"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/activity_create_evt_cusNbr"
 
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <TextView
+        <Button
             android:id="@+id/loadCusData"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:background="@drawable/button_rounded_mainpinkborder"
             android:clickable="true"
             android:fontFamily="@font/notosanscjkkrmedium"
-
-            android:gravity="center"
             android:includeFontPadding="false"
-
-            android:padding="8dp"
             android:text="@string/load_cus_btn"
+
             android:textColor="@color/mainPink"
-            android:textSize="@dimen/textsize_default"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/mainPink" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/historyLl"
+
+    <ImageView
+        android:id="@+id/hitoryIv"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+
+        android:layout_marginRight="5dp"
+        android:adjustViewBounds="true"
+        android:backgroundTint="@color/mainGrey"
+        android:scaleType="fitCenter"
+
+        android:src="@drawable/outline_history_black_36"
+        app:layout_constraintRight_toLeftOf="@+id/history_descrip_tv"
+        app:layout_constraintTop_toTopOf="@+id/histroy_count_tv" />
+
+    <TextView
+        android:id="@+id/history_descrip_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_big_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_big_horizontal_margin"
-        android:orientation="horizontal"
+        android:layout_gravity="center"
+
+        android:layout_marginRight="7dp"
+
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:includeFontPadding="false"
+
+        android:text="@string/histroy_tv"
+        android:textColor="@color/mainGrey"
+        android:textSize="13sp"
+        app:layout_constraintRight_toLeftOf="@+id/histroy_count_tv"
+        app:layout_constraintTop_toTopOf="@+id/histroy_count_tv" />
+
+    <TextView
+        android:id="@+id/histroy_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:includeFontPadding="false"
 
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customer_Rl"
-
-        >
-
-        <ImageView
-            android:id="@+id/hitoryIv"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_gravity="center"
-
-            android:layout_marginTop="1dp"
-            android:adjustViewBounds="true"
-
-            android:scaleType="fitCenter"
-            android:src="@drawable/history" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-
-            android:layout_marginLeft="5dp"
-
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
-            android:text="@string/histroy_tv"
-            android:textColor="@color/black"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/histroy_count_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-
-            android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
-            android:text="n회 방문"
-            android:textColor="@color/mainPink"
-            android:textSize="13sp" />
-
-    </LinearLayout>
+        android:text="0회 방문"
+        android:textColor="@color/mainPink"
+        android:textSize="13sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customer_data_layout" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -237,50 +226,50 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/historyLl">
+        app:layout_constraintTop_toBottomOf="@+id/histroy_count_tv">
 
         <TextView
             android:id="@+id/rsv_type_tv"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-
             android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
             android:gravity="center"
+
+            android:includeFontPadding="false"
             android:text="@string/rsv_type_tv"
             android:textColor="@color/mainGrey"
-            android:textSize="@dimen/textsize_default" />
+            android:textSize="@dimen/textsize_default"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
 
-            app:layout_constraintTop_toBottomOf="@+id/rsv_type_tv"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-
             android:layout_marginBottom="@dimen/activity_small_vertical_margin"
             android:layout_weight="1"
-            android:orientation="horizontal">
+
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rsv_type_tv">
 
             <RadioButton
                 android:id="@+id/newRb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:text="신규"
                 android:fontFamily="@font/notosanscjkkrmedium"
                 android:includeFontPadding="false"
-                android:textColor="@color/mainGrey"
                 android:paddingLeft="10dp"
+                android:text="신규"
+                android:textColor="@color/mainGrey"
 
                 />
 
@@ -291,11 +280,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
 
-                android:text="리터치"
                 android:fontFamily="@font/notosanscjkkrmedium"
                 android:includeFontPadding="false"
-                android:textColor="@color/mainGrey"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:text="리터치"
+                android:textColor="@color/mainGrey" />
 
 
         </RadioGroup>
@@ -324,19 +313,19 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
 
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-
             android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
             android:gravity="center"
+
+            android:includeFontPadding="false"
             android:text="@string/rsv_date_tv"
             android:textColor="@color/mainGrey"
-            android:textSize="@dimen/textsize_default" />
+            android:textSize="@dimen/textsize_default"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -344,20 +333,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            app:layout_constraintTop_toBottomOf="@+id/dateTv"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="@dimen/activity_small_vertical_margin"
             android:layout_weight="1"
             android:fontFamily="@font/notosanscjkkrmedium"
             android:includeFontPadding="false"
-
             android:text="날짜를 선택해주세요"
             android:textColor="@color/mainPink"
-            android:textSize="@dimen/textsize_default" />
+            android:textSize="@dimen/textsize_default"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateTv" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -383,40 +372,40 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
 
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-
             android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
             android:gravity="center"
+
+            android:includeFontPadding="false"
             android:text="@string/rsv_time_tv"
             android:textColor="@color/mainGrey"
-            android:textSize="@dimen/textsize_default" />
+            android:textSize="@dimen/textsize_default"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/timeContentTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/timeTv"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
-
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="@dimen/activity_small_vertical_margin"
             android:layout_weight="1"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
-            android:gravity="center"
 
+            android:fontFamily="@font/notosanscjkkrmedium"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:text="시간을 입력해주세요"
             android:textColor="@color/mainPink"
-            android:textSize="@dimen/textsize_default" />
+            android:textSize="@dimen/textsize_default"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeTv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -439,46 +428,46 @@
             android:id="@+id/memoTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-
             android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
             android:gravity="center"
+
+            android:includeFontPadding="false"
             android:text="@string/memo_tv"
             android:textColor="@color/mainGrey"
-            android:textSize="@dimen/textsize_default" />
+            android:textSize="@dimen/textsize_default"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/memoEt"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/memoTv"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="@dimen/activity_small_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="@dimen/activity_small_horizontal_margin"
             android:layout_marginRight="@dimen/activity_small_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_small_vertical_margin"
             android:layout_weight="3"
-
             android:background="@null"
             android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
-
             android:gravity="top"
+
             android:hint="예약시 특이사항을 메모해주세요"
+            android:includeFontPadding="false"
             android:inputType="textMultiLine"
+
             android:textColor="@color/mainGrey"
             android:textColorHint="@color/mainGreyFor50"
+            android:textSize="@dimen/textsize_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
 
-            android:textSize="@dimen/textsize_default" />
+            app:layout_constraintTop_toBottomOf="@+id/memoTv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -489,8 +478,8 @@
         android:background="@color/mainPink"
         android:fontFamily="@font/notosansmonocjkkrbold"
 
-        android:includeFontPadding="false"
         android:gravity="center"
+        android:includeFontPadding="false"
         android:text="@string/rsv_ok_btn"
         android:textColor="@color/mainGrey"
         android:textSize="@dimen/textsize_default"

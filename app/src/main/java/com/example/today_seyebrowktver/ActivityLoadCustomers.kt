@@ -39,12 +39,20 @@ class ActivityLoadCustomers : AppCompatActivity() {
 
     private fun setLayout() {
 
+        binding.backIv.setOnClickListener {
+            finish()
+        }
+
         binding.abcTv.setOnClickListener(
             View.OnClickListener
-//가나다순 버튼
+            //가나다순 버튼
             {
                 binding.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
                 binding.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+                data.sortBy { data1 -> data1.customerName }
+                dataForSearch.sortBy { data1 -> data1.customerName }
+                adapter.notifyDataSetChanged()
+
             })
 
         binding.savedTv.setOnClickListener(
@@ -53,6 +61,9 @@ class ActivityLoadCustomers : AppCompatActivity() {
             {
                 binding.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
                 binding.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
+                data.sortByDescending { data1 -> data1.savedate }
+                dataForSearch.sortByDescending { data1 -> data1.savedate }
+                adapter.notifyDataSetChanged()
             })
 
         //검색기능
@@ -103,6 +114,8 @@ class ActivityLoadCustomers : AppCompatActivity() {
                 dataForSearch.clear()
                 data.addAll(newData)
                 dataForSearch.addAll(newData)
+                data.sortBy { data1 -> data1.customerName }
+                dataForSearch.sortBy { data1 -> data1.customerName }
                 setRv() //일반적인 위치는 아님..  db접근, 파일접근은 비동기처리 해야함. fb는 자동적으로 비동기적으로 돈다
             }
 

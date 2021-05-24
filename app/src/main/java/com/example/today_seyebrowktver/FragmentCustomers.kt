@@ -71,7 +71,8 @@ class FragmentCustomers : Fragment() {
         {
             binding.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
             binding.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
-            data.sortBy { data1 -> data1.savedate }
+            data.sortByDescending { data1 -> data1.savedate }
+//            data.sortBy { data1 -> data1.savedate }
             adapter!!.notifyDataSetChanged()
             database.child("users").child(uid).child("customersSort").setValue("date").addOnSuccessListener {
             }.addOnFailureListener {
@@ -121,9 +122,7 @@ class FragmentCustomers : Fragment() {
                     }
                     data.clear() //for문이 끝내기전까지 데이터를 유지하기 위해
                     dataForSearch.clear()
-
                     data.addAll(newData)
-
                     dataForSearch.addAll(newData)
 
                     database.child("users").child(uid).child("customersSort").get()
@@ -133,15 +132,21 @@ class FragmentCustomers : Fragment() {
                             if (customersSort == "name"){
                                 data.sortBy { data1 -> data1.customerName }
                                 dataForSearch.sortBy { data1 -> data1.customerName }
+                                binding.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
+                                binding.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
                             } else{
-                                data.sortBy { data1 -> data1.savedate }
-                                dataForSearch.sortBy { data1 -> data1.savedate }
+                                data.sortByDescending { data1 -> data1.savedate }
+                                dataForSearch.sortByDescending { data1 -> data1.savedate }
+                                binding.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+                                binding.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
                             }
+
+                            setRv()
                         }
 
 
 
-                    setRv() //일반적인 위치는 아님..  db접근, 파일접근은 비동기처리 해야함. fb는 자동적으로 비동기적으로 돈다
+//                    setRv() //일반적인 위치는 아님..  db접근, 파일접근은 비동기처리 해야함. fb는 자동적으로 비동기적으로 돈다
                 }
 
 
