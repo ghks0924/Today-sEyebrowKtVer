@@ -4,12 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
+import android.widget.Toast
 import com.example.today_seyebrowktver.databinding.ActivityCreateCustomerBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class ActivityCreateCustomer : ActivityBase() {
 
@@ -25,6 +26,7 @@ class ActivityCreateCustomer : ActivityBase() {
     private lateinit var customerName: String
     private lateinit var customerNumber: String
     private lateinit var customerMemo: String
+    private var isValidNumber:Boolean= false
 
     private lateinit var checkOrgStr: String
 
@@ -58,21 +60,17 @@ class ActivityCreateCustomer : ActivityBase() {
 
         binding.completeBtn.setOnClickListener(View.OnClickListener {
             customerName = binding.nameEt.text.toString().trim()
-            //전화번호는 하이픈 빼고 저장하기
             customerNumber = binding.numberEt.text.toString().trim()
             customerMemo = binding.memoEt.text.toString().trim()
 
-            if (isVaildCheck()) {
-                customerNumber.replace("-", "")
-                mCreateCustomer()
+            if (emptyCheck()) {
+                isVaildNumberCheck()
             }
 
         })
     }
 
     private fun mCreateCustomer() {
-
-        isVaildCheck()
 
         // 현재시간을 msec 으로 구한다.
         val now = System.currentTimeMillis()
@@ -115,7 +113,7 @@ class ActivityCreateCustomer : ActivityBase() {
 
     }
 
-    private fun isVaildCheck(): Boolean {
+    private fun emptyCheck():Boolean {
         if (customerName.isNullOrEmpty()) {
             mShowShortToast("고객이름을 입력해주세요")
             return false
@@ -127,6 +125,27 @@ class ActivityCreateCustomer : ActivityBase() {
         }
 
         return true
+    }
+
+    private fun isVaildNumberCheck(){
+
+        //전화번호 중복 체크
+        database.child("users").child(uid).child("customers").orderByChild("customerNumber").equalTo(customerNumber)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        mShowShortToast("이미 등록된 번호입니다")
+                    } else {
+                        mCreateCustomer()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Toast.makeText(applicationContext,
+                        databaseError.message,
+                        Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
 }
