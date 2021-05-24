@@ -65,7 +65,8 @@ class RvMemoAdapter: RecyclerView.Adapter<RvMemoAdapter.ViewHolder> {
             if (memoData.memoTitle.isNullOrEmpty()){ //제목이 굳이 비워있으면 영역 비우기
                 binding.memoTitle.visibility = View.GONE
             } else{
-                binding.memoTitle.text = memoData.memoTitle
+                    binding.memoTitle.text = memoData.memoTitle
+
             }
 
             if (memoData.memoContent.isNullOrEmpty()){  //메모 내용이 굳이 비워있으면 영역 비우기
@@ -73,6 +74,8 @@ class RvMemoAdapter: RecyclerView.Adapter<RvMemoAdapter.ViewHolder> {
             } else{
                 binding.memoContent.text = memoData.memoContent
             }
+
+
 
 //             현재시간을 msec 으로 구한다.
 

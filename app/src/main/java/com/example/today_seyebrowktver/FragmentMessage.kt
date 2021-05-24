@@ -1,24 +1,31 @@
 package com.example.today_seyebrowktver
 
-import android.R
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.AutoTransition
-import androidx.transition.TransitionManager
 import com.example.today_seyebrowktver.databinding.FragmentMessageBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -29,6 +36,17 @@ class FragmentMessage : Fragment() {
 
     private var _binding: FragmentMessageBinding? = null
     private val binding get() = _binding!!
+
+    val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    val mAuth = FirebaseAuth.getInstance()
+    private lateinit var uid: String
+
+
+
+
+    //messageGroup 서버에서 받아오는 변수들
+    private var adapter2: RvMessageGroupAdapter? = null
+    private var messageGroupList = ArrayList<MessageGroupData>()
 
     //RecyclerView를 위한 변수들
     private var messageDataList = ArrayList<MessageData>()
@@ -44,10 +62,12 @@ class FragmentMessage : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentMessageBinding.inflate(inflater, container, false)
 
+        val user = mAuth.currentUser
+        uid = user.uid
         return binding.root
     }
 
@@ -60,6 +80,34 @@ class FragmentMessage : Fragment() {
     }
 
     private fun setData() {
+        //그룹 받아오기
+        database.child("users").child(uid).child("messageGroups")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val newData: ArrayList<MessageGroupData> = ArrayList()
+                    for (ds in snapshot.children) {
+                        val messageGroupData: MessageGroupData? = ds.getValue(MessageGroupData::class.java)
+                        if (messageGroupData != null) {
+                            newData.add(messageGroupData)
+                            Log.d("messageGroup", messageGroupData.groupName)
+                            Log.d("messageGroup", messageGroupData.order.toString())
+                            Log.d("messageGroup", messageGroupData.numberOfMessages.toString())
+                            Log.d("messageGroup", messageGroupData.savedate)
+                        }
+                    }
+                    messageGroupList.clear()
+                    messageGroupList.addAll(newData)
+
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("messageGroup", error.message)
+                }
+
+            })
+
+
         mainViewModel.getAllMessages().observe(activity as ActivityMain) { messages ->
             var tempMessageDataList = ArrayList<MessageData>()
             for (i in 0 until messages.size) {
@@ -108,7 +156,8 @@ class FragmentMessage : Fragment() {
                 ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
 
                     lifecycleScope.launch(Dispatchers.IO) {
-                        val messageData = mainViewModel.findMessageByDate(messageDataList[position].messageDate)
+                        val messageData =
+                            mainViewModel.findMessageByDate(messageDataList[position].messageDate)
                         mainViewModel.delete(messageData)
                     }
 
@@ -142,12 +191,12 @@ class FragmentMessage : Fragment() {
 //        })
 
         binding.eventFixedLayout.setOnClickListener {
-            if (binding.eventHidenView.visibility == View.VISIBLE){
+            if (binding.eventHidenView.visibility == View.VISIBLE) {
 //                TransitionManager.beginDelayedTransition(binding.cardview,
 //                    AutoTransition())
                 binding.eventHidenView.visibility = View.GONE
                 binding.eventHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-            } else{
+            } else {
 //                TransitionManager.beginDelayedTransition(binding.cardview,
 //                    AutoTransition())
                 binding.eventHidenView.visibility = View.VISIBLE
@@ -156,12 +205,12 @@ class FragmentMessage : Fragment() {
         }
 
         binding.afterFixedLayout.setOnClickListener {
-            if (binding.afterHidenView.visibility == View.VISIBLE){
+            if (binding.afterHidenView.visibility == View.VISIBLE) {
 //                TransitionManager.beginDelayedTransition(binding.cardview,
 //                    AutoTransition())
                 binding.afterHidenView.visibility = View.GONE
                 binding.afterHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-            } else{
+            } else {
 //                TransitionManager.beginDelayedTransition(binding.cardview,
 //                    AutoTransition())
                 binding.afterHidenView.visibility = View.VISIBLE
@@ -170,12 +219,12 @@ class FragmentMessage : Fragment() {
         }
 
         binding.retouchFixedLayout.setOnClickListener {
-            if (binding.retouchHidenView.visibility == View.VISIBLE){
+            if (binding.retouchHidenView.visibility == View.VISIBLE) {
 //                TransitionManager.beginDelayedTransition(binding.cardview,
 //                    AutoTransition())
                 binding.retouchHidenView.visibility = View.GONE
                 binding.retouchHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-            } else{
+            } else {
 //                TransitionManager.beginDelayedTransition(binding.cardview,
 //                    AutoTransition())
                 binding.retouchHidenView.visibility = View.VISIBLE
@@ -184,17 +233,21 @@ class FragmentMessage : Fragment() {
         }
 
         binding.extraFixedLayout.setOnClickListener {
-            if (binding.extraHidenView.visibility == View.VISIBLE){
+            if (binding.extraHidenView.visibility == View.VISIBLE) {
 //                TransitionManager.beginDelayedTransition(binding.cardview,
 //                    AutoTransition())
                 binding.extraHidenView.visibility = View.GONE
                 binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-            } else{
+            } else {
 //                TransitionManager.beginDelayedTransition(binding.cardview,
 //                    AutoTransition())
                 binding.extraHidenView.visibility = View.VISIBLE
                 binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
             }
+        }
+
+        binding.moreIcon.setOnClickListener {
+            ShowAlertDialogWithListview()
         }
     }
 
@@ -248,6 +301,56 @@ class FragmentMessage : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    //more Icon 클릭스 띄우는 대화상자, alertDialog
+    fun ShowAlertDialogWithListview() {
+        val numberMethod: MutableList<String> = java.util.ArrayList()
+        numberMethod.add("그룹 추가하기")
+        numberMethod.add("그룹 순서 수정")
+
+        //Create sequence of items
+        val Animals: Array<String> = numberMethod.toTypedArray()
+        val dialogBuilder = AlertDialog.Builder(context)
+        dialogBuilder.setItems(Animals) { dialog, item ->
+            val selectedText = Animals[item].toString() //Selected item in listview
+            if (selectedText.contains("추가")) {
+                Log.d("messageGroup", "추가 버튼")
+
+
+                val dlg = DialogCreateMessageGroup(requireActivity())
+                dlg.setOnOKClickedListener { content ->
+                    Log.d("messageGroup", "추가가가가가가")
+                    //키보드 내리기
+                    val immhide = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    immhide.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                }
+
+                dlg.setOnCanCelClickedListener {
+                    Log.d("messageGroup", "취소소소소")
+                    //키보드 내리기
+                    val immhide = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    immhide.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                }
+
+                dlg.start()
+
+                // 키보드 띄우기
+                val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+
+//                val uri = Uri.parse("tel:${eachCustomer.customerNumber}")
+//                val intent = Intent(Intent.ACTION_DIAL, uri)
+//                startActivity(intent)
+            }  else {
+                Log.d("messageGroup", "순서 수정 버튼")
+            }
+        }
+        //Create alert dialog object via builder
+        val alertDialogObject = dialogBuilder.create()
+        //Show the dialog
+        alertDialogObject.show()
     }
 
 

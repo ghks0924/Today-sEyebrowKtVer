@@ -343,7 +343,7 @@ class Example5Fragment : Fragment() {
         val user = mAuth.currentUser
         uid = user.uid
 
-        database.child("users").child(uid).child("events").child("2021-04")
+        database.child("users").child(uid).child("eventsByDate").child("2021-04")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val newEvent2: ArrayList<EventData> = ArrayList()
