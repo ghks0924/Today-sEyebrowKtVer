@@ -2,6 +2,7 @@ package com.example.today_seyebrowktver
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,8 @@ import com.google.firebase.database.*
 import java.util.*
 
 class ActivityCreateEventOldCus : ActivityBase() {
+
+    val REQUEST_LOAD_CUSTOMERS = 1111;
 
     //viewBinding
     private lateinit var binding: ActivityCreateEventOldCusBinding
@@ -52,9 +55,10 @@ class ActivityCreateEventOldCus : ActivityBase() {
 
         binding.loadCusData.setOnClickListener(View.OnClickListener {
             val intent = Intent(applicationContext, ActivityLoadCustomers::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_LOAD_CUSTOMERS)
         })
 
+        //예약 날짜 설정
         binding.dateContentTv.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding.rsvDateLayout.setOnClickListener {
             val datePicker: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
@@ -91,6 +95,7 @@ class ActivityCreateEventOldCus : ActivityBase() {
 
         }
 
+        //예약 시간 설정
         binding.timeContentTv.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding.rsvTimeLayout.setOnClickListener {
 
@@ -203,8 +208,51 @@ class ActivityCreateEventOldCus : ActivityBase() {
 
         }
 
+        binding.okBtn.setOnClickListener {
+            if (isValidCheck()){
+
+            }
+        }
+
+
+
 
     }
+
+    //유효성 체크
+    private fun isValidCheck() :Boolean {
+
+        //고객 선택 강제
+        if (binding.activityCreateEvtCusName.text.contains("선택")){
+            mShowShortToast("고객을 선택해주세요")
+            return false
+        }
+
+        //예약 유형 선택 강제
+        if(!binding.newRb.isChecked && !binding.retouchRb.isChecked){
+            mShowShortToast("예약 유형을 선택해주세요")
+            return false
+        }
+
+        //예약 날짜 선택 장제
+        if (binding.dateContentTv.text.contains("선택")){
+            mShowShortToast("예약 날짜를 선택해주세요")
+            return false
+        }
+
+        //예약 시간 선택 강제
+        if (binding.timeContentTv.text.contains("입력")){
+            mShowShortToast("예약 시간을 선택해주세요")
+            return false
+        }
+
+        //예약 중복 막기
+//        if ()
+
+
+        return true
+    }
+
 
     fun getEventsByDate(){
         database.child("users").child(uid).child("events").child(yearMonthForServer).addValueEventListener(object :
@@ -229,6 +277,26 @@ class ActivityCreateEventOldCus : ActivityBase() {
             //addValue는 데이터가 바꿀때마다 datachage 돈다.
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != RESULT_OK){
+            return
+        }
+
+        when (requestCode){
+            REQUEST_LOAD_CUSTOMERS -> {
+                binding.activityCreateEvtCusName.text = data!!.getStringExtra("cusName")
+                binding.activityCreateEvtCusNbr.text = data!!.getStringExtra("cusNumber")
+                binding.histroyCountTv.text = data!!.getStringExtra("numOfHistory") + "회 방문"
+
+                binding.activityCreateEvtCusName.setTextColor(Color.parseColor("#4f4f4f"))
+                binding.activityCreateEvtCusNbr.setTextColor(Color.parseColor("#4f4f4f"))
+
+            }
+        }
     }
 
 }

@@ -388,7 +388,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/okBtn"
+        android:id="@+id/ok_btn"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
 

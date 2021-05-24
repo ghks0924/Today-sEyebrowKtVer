@@ -115,7 +115,7 @@
         app:layout_constraintRight_toRightOf="parent"
 
         android:src="@drawable/white_cross"
-        android:backgroundTint="@color/mainRed"
+        android:backgroundTint="@color/mainGreen"
         android:adjustViewBounds="true"
         app:borderWidth="0dp"
         android:elevation="1dp"

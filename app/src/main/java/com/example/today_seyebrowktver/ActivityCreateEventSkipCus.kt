@@ -37,12 +37,11 @@ class ActivityCreateEventSkipCus : ActivityBase() {
 
     private fun setLayout() {
         mChangeStatusBarColor("#ebbdc5")
-        binding.okBtn.setOnClickListener {
-            createEvent()
-
-
+        binding.backIv.setOnClickListener {
+            finish()
         }
 
+        //예약 날짜 설정
         binding.dateContentTv.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding.rsvDateLayout.setOnClickListener {
             val datePicker: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
@@ -57,6 +56,7 @@ class ActivityCreateEventSkipCus : ActivityBase() {
 
         }
 
+        //예약 시간 설정
         binding.timeContentTv.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding.rsvTimeLayout.setOnClickListener {
 
@@ -157,6 +157,12 @@ class ActivityCreateEventSkipCus : ActivityBase() {
             dialog.getWindow()!!.setAttributes(params as WindowManager.LayoutParams)
 
         }
+
+        binding.okBtn.setOnClickListener {
+            if (isValidCheck()){
+                createEvent()
+            }
+        }
     }
 
     private fun createEvent() {
@@ -173,11 +179,26 @@ class ActivityCreateEventSkipCus : ActivityBase() {
 
     }
 
-    private fun isValid(): Boolean {
-        if (!binding.newRb.isChecked && !binding.retouchRb.isChecked) {
+    private fun isValidCheck(): Boolean {
+        //예약 유형 선택 강제
+        if(!binding.newRb.isChecked && !binding.retouchRb.isChecked){
+            mShowShortToast("예약 유형을 선택해주세요")
             return false
         }
 
+        //예약 날짜 선택 장제
+        if (binding.dateContentTv.text.contains("선택")){
+            mShowShortToast("예약 날짜를 선택해주세요")
+            return false
+        }
+
+        //예약 시간 선택 강제
+        if (binding.timeContentTv.text.contains("입력")){
+            mShowShortToast("예약 시간을 선택해주세요")
+            return false
+        }
+
+        //예약 중복 막기
 //        if ()
         return true
     }

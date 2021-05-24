@@ -1,9 +1,11 @@
 package com.example.today_seyebrowktver
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -138,5 +140,25 @@ class ActivityLoadCustomers : AppCompatActivity() {
             )
 
         binding.recyclerview.addItemDecoration(dividerDecoration)
+
+        setClickListener(data)
+    }
+
+    private fun setClickListener(data: ArrayList<CustomersData>) {
+        adapter!!.itemClick = object : RvCustomerAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                val intent = intent
+                intent.putExtra("keyValue", data[position].keyValue)
+                intent.putExtra("cusName", data[position].customerName)
+                intent.putExtra("cusNumber", data[position].customerNumber)
+                intent.putExtra("numOfHistory", data[position].history)
+
+                setResult(RESULT_OK,intent)
+                finish()
+
+
+            }
+
+        }
     }
 }

@@ -22,9 +22,6 @@ class FragmentHome : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Log.d("lifecycle Check", "home onCreate")
-
     }
 
     override fun onCreateView(
@@ -40,11 +37,11 @@ class FragmentHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.menuIv.setOnClickListener(View.OnClickListener {
-//            val intent = Intent(context, ActivityHomeMenu::class.java)
-//            startActivity(intent)
-//
-//        })
+        binding.menuIcon.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context, ActivityHomeMenu::class.java)
+            startActivity(intent)
+
+        })
 
 //        binding.fab.setOnClickListener(View.OnClickListener {
 //            (activity as ActivityMain).mSelectTypeOfCustomer()
@@ -66,7 +63,6 @@ class FragmentHome : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Log.d("lifecycle Check", "home destroy")
     }
 
 
