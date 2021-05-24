@@ -14,32 +14,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/back_cardview"
-            android:layout_width="@dimen/arrow_background_width"
-            android:layout_height="@dimen/arrow_background_height"
-            android:backgroundTint="@color/transparent"
-            app:cardCornerRadius="@dimen/half_arrow_background_height"
-            app:cardElevation="0dp"
-            android:clickable="true"
-            app:rippleColor="@color/weakGrey"
-            android:layout_centerVertical="true"
-
-            android:layout_marginLeft="@dimen/margin_back_iv_left"
-
-            app:layout_constraintLeft_toLeftOf="parent"
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <ImageView
-                android:id="@+id/back_iv"
-                android:layout_width="@dimen/back_iv_width"
-                android:layout_height="@dimen/back_iv_height"
-                android:adjustViewBounds="true"
-                android:layout_gravity="center"
-                android:src="@drawable/revised_backarrow" />
-
-        </com.google.android.material.card.MaterialCardView>
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
+            android:fitsSystemWindows="true"
+            app:srcCompat="@drawable/ic_chevron_left"
+            app:tint="@color/black"/>
 
 
         <EditText
@@ -48,9 +35,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/back_cardview"
-            app:layout_constraintRight_toLeftOf="@+id/check_all"
-            android:layout_marginLeft="20dp"
+            app:layout_constraintLeft_toRightOf="@+id/back_iv"
+            app:layout_constraintRight_toLeftOf="@+id/check_all_linearL"
+            android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
 
             android:background="@drawable/edittext_frame_searchmember"
@@ -72,16 +59,38 @@
             android:maxLines="1"
             />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:gravity="center"
-            android:id="@+id/check_all"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+        <LinearLayout
+            android:id="@+id/check_all_linearL"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
 
-            android:layout_marginRight="10dp"
+            android:layout_margin="3dp"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:gravity="center"
+                android:id="@+id/check_all"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="전체"
+                android:textSize="12sp"
+                android:textColor="@color/mainGrey"
+                android:fontFamily="@font/notosanscjkkrregular"
+                android:includeFontPadding="false"
+                android:gravity="center"
+                />
+        </LinearLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     

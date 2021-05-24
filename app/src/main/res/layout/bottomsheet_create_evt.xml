@@ -37,8 +37,9 @@
             android:layout_marginTop="@dimen/activity_big_vertical_margin"
             android:layout_marginRight="@dimen/activity_big_horizontal_margin"
 
+            android:background="?attr/selectableItemBackground"
             android:backgroundTint="@color/white"
-            android:elevation="1dp"
+            android:elevation="0dp"
             android:fontFamily="@font/notosanscjkkrmedium"
 
             android:includeFontPadding="false"
@@ -63,7 +64,8 @@
             android:layout_marginRight="@dimen/activity_big_horizontal_margin"
 
             android:backgroundTint="@color/white"
-            android:elevation="1dp"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
             android:fontFamily="@font/notosanscjkkrmedium"
 
             android:includeFontPadding="false"
@@ -84,9 +86,11 @@
             android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
             android:layout_marginTop="@dimen/activity_small_vertical_margin"
             android:layout_marginRight="@dimen/activity_big_horizontal_margin"
+            android:layout_marginBottom="10dp"
 
             android:backgroundTint="@color/white"
-            android:elevation="1dp"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
             android:fontFamily="@font/notosanscjkkrmedium"
 
             android:includeFontPadding="false"
@@ -97,7 +101,8 @@
             app:cornerRadius="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/old_cus" />
+            app:layout_constraintTop_toBottomOf="@+id/old_cus"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

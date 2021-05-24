@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ActivityCreateEventNewCus">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
@@ -16,38 +16,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/back_cardview"
-            android:layout_width="@dimen/arrow_background_width"
-            android:layout_height="@dimen/arrow_background_height"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_back_iv_left"
-            android:backgroundTint="@color/transparent"
-            android:clickable="true"
-
-
-            app:cardCornerRadius="@dimen/half_arrow_background_width"
-            app:cardElevation="0dp"
-
-            app:rippleColor="@color/weakGrey">
-
-            <ImageView
-                android:id="@+id/back_iv"
-                android:layout_width="@dimen/back_iv_width"
-                android:layout_height="@dimen/back_iv_height"
-                android:layout_gravity="center"
-
-                android:adjustViewBounds="true"
-
-                android:src="@drawable/revised_backarrow" />
-
-        </com.google.android.material.card.MaterialCardView>
-
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
+            android:fitsSystemWindows="true"
+            app:srcCompat="@drawable/ic_chevron_left"
+            app:tint="@color/black"/>
 
         <TextView
             android:id="@+id/joinTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
 
             android:fontFamily="@font/notosansmonocjkkrbold"
@@ -57,14 +43,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/title_textsize" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1.5dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:background="@color/weakGrey" />
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:id="@+id/customer_Rl"
@@ -124,10 +103,11 @@
                 android:layout_height="wrap_content"
 
                 android:fontFamily="@font/notosanscjkkrmedium"
+                android:includeFontPadding="false"
                 android:gravity="bottom"
                 android:paddingTop="5dp"
                 android:text="@string/cusName_create_evt_activity"
-                android:textColor="@color/black"
+                android:textColor="@color/mainGrey"
                 android:textSize="@dimen/textsize_default" />
 
             <TextView
@@ -136,10 +116,11 @@
                 android:layout_height="wrap_content"
 
                 android:fontFamily="@font/notosanscjkkrmedium"
+                android:includeFontPadding="false"
                 android:gravity="top"
                 android:paddingBottom="5dp"
                 android:text="@string/cusNmb_create_evt_activity"
-                android:textColor="@color/black"
+                android:textColor="@color/mainGrey"
                 android:textSize="@dimen/textsize_default" />
 
         </LinearLayout>

@@ -41,7 +41,7 @@ class ActivityCreateCustomerFromBook : ActivityBase() {
 
     private fun setLayout() {
         //back 버튼
-        binding.backCardview.setOnClickListener(View.OnClickListener {
+        binding.backIv.setOnClickListener(View.OnClickListener {
             finish()
         })
 
