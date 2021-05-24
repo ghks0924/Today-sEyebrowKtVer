@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_four_dp"
+    android:layout_margin="@dimen/margin_four_dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardElevation="0dp"

@@ -52,7 +52,7 @@ class ActivityCreateCustomer : ActivityBase() {
         //자동 하이픈 먹이려고
         binding.numberEt.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        binding.backCardview.setOnClickListener(View.OnClickListener {
+        binding.backIv.setOnClickListener(View.OnClickListener {
             finish()
         })
 
