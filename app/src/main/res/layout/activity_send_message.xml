@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parent_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivitySendMessage"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    tools:context=".ActivitySendMessage">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -18,35 +18,25 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/back_cardview"
-            android:layout_width="@dimen/arrow_background_width"
-            android:layout_height="@dimen/arrow_background_height"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_back_iv_left"
-            android:backgroundTint="@color/transparent"
-            android:clickable="true"
-            app:cardCornerRadius="@dimen/half_arrow_background_height"
-            app:cardElevation="0dp"
-
-            app:rippleColor="@color/weakGrey">
-
-            <ImageView
-                android:id="@+id/back_iv"
-                android:layout_width="@dimen/back_iv_width"
-                android:layout_height="@dimen/back_iv_height"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:src="@drawable/revised_backarrow" />
-
-        </com.google.android.material.card.MaterialCardView>
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:fitsSystemWindows="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_chevron_left"
+            app:tint="@color/black" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:fontFamily="@font/notosanscjkkrbold"
+            android:gravity="center"
 
             android:includeFontPadding="false"
             android:text="문자 보내기"
@@ -54,43 +44,38 @@
 
             android:textSize="20sp" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/send_cardview"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:clickable="true"
 
-            android:elevation="0dp"
-            app:cardCornerRadius="25dp"
-            app:rippleColor="@color/weakGrey">
-
-            <ImageView
-                android:id="@+id/send_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:src="@drawable/outline_send_black" />
-        </com.google.android.material.card.MaterialCardView>
+        <ImageView
+            android:id="@+id/send_iv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:fitsSystemWindows="true"
+            app:srcCompat="@drawable/outline_send_black_36"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
 
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/mainGreyForLine" />
+            android:background="@color/mainGreyForLine"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/select_customer_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/button_rounded_mainblueborder"
         android:fontFamily="@font/notosanscjkkrmedium"
 
@@ -104,8 +89,7 @@
         android:textColor="@color/mainBlue"
         android:textSize="@dimen/textsize_default"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_relative_layout"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/header_relative_layout" />
 
     <TextView
         android:id="@+id/customer_list_tv"
@@ -118,15 +102,15 @@
         android:background="@drawable/edittext_frame_grey"
 
         android:fontFamily="@font/notosanscjkkrmedium"
-        tools:hint="고객을 선택해주세요zxvlkznxvnajvnjanvajsasdasfasgnakjnsraslkdnalsngjlnjkasnfasjfnajsfnkjasnfkjasfkjasf"
         android:includeFontPadding="false"
         android:paddingLeft="10dp"
-
         android:textSize="15sp"
 
         app:layout_constraintLeft_toLeftOf="parent"
+
         app:layout_constraintRight_toLeftOf="@+id/select_customer_tv"
-        app:layout_constraintTop_toBottomOf="@+id/header_relative_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/header_relative_layout"
+        tools:hint="고객을 선택해주세요zxvlkznxvkdnalsngjlnjkasnfasjfnajsfnkjasnfkjasfkjasf" />
 
     <TextView
         android:id="@+id/message_title_display_tv"

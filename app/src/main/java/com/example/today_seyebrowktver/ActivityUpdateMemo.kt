@@ -43,7 +43,7 @@ class ActivityUpdateMemo : ActivityBase() {
         binding.contentEdittext.setText(prevMemoContent)
 
         //backIv 클릭이벤트
-        binding.backCardview.setOnClickListener(View.OnClickListener {
+        binding.backIv.setOnClickListener(View.OnClickListener {
             newMemoTitle = binding.memoTitleEt.text.toString().trim()
             newMemoContent = binding.contentEdittext.text.toString().trim()
 

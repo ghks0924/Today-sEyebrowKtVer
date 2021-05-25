@@ -65,14 +65,14 @@ class ActivityJoin2 : ActivityBase(), View.OnClickListener {
     private fun setLayout() {
         shopType = binding.shopTypeTv.text.toString().trim()
 
-        binding.backCardview.setOnClickListener(this)
+        binding.backIv.setOnClickListener(this)
         binding.completeBtn.setOnClickListener(this)
         binding.serviceTypeTv.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v) {
-            binding.backCardview -> finish()
+            binding.backIv -> finish()
 
             binding.serviceTypeTv -> {
                 val intent2 = Intent(applicationContext, ActivitySelectShopType::class.java)

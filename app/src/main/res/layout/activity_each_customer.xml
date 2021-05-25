@@ -14,32 +14,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/back_cardview"
-            android:layout_width="@dimen/arrow_background_width"
-            android:layout_height="@dimen/arrow_background_height"
-
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_back_iv_left"
-            android:backgroundTint="@color/transparent"
-            android:clickable="true"
-            app:cardCornerRadius="@dimen/half_arrow_background_height"
-            app:cardElevation="0dp"
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
-            app:rippleColor="@color/weakGrey">
-
-            <ImageView
-                android:id="@+id/back_iv"
-                android:layout_width="@dimen/back_iv_width"
-                android:layout_height="@dimen/back_iv_height"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:src="@drawable/revised_backarrow" />
-
-        </com.google.android.material.card.MaterialCardView>
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
+            android:fitsSystemWindows="true"
+            app:srcCompat="@drawable/ic_chevron_left"
+            app:tint="@color/black"/>
 
         <ImageView
             android:id="@+id/edit_icon"

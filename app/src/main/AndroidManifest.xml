@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <uses-feature android:name="android.hardware.screen.portrait" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer">
-        <activity android:name=".ActivityEditCustomer"></activity>
+        <activity android:name=".ActivityMonthlyPerformance"></activity>
+        <activity
+            android:name=".ActivityEditCustomer"
+            android:screenOrientation="portrait" />
         <activity android:name=".ActivityEachEvent" />
         <activity android:name=".ActivityEachCustomer" />
         <activity
@@ -44,17 +49,15 @@
         </activity>
         <activity android:name=".ActivityLoadCustomers" />
         <activity android:name=".ActivityCreateEventSkipCus" />
-        <activity android:name=".ActivityCreateEventOldCus"></activity>
-        <activity android:name=".ActivityCreateEventNewCus"></activity>
+        <activity android:name=".ActivityCreateEventOldCus" />
+        <activity android:name=".ActivityCreateEventNewCus" />
         <activity android:name=".ActivityCreateCustomer" />
         <activity android:name=".ActivityHomeMenu" />
         <activity
             android:name=".ActivityBase"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
-        <activity android:name=".ActivityMain">
-
-        </activity>
+        <activity android:name=".ActivityMain"></activity>
     </application>
 
 </manifest>

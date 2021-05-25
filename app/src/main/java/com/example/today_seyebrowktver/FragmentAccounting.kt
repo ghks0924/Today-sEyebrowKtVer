@@ -1,5 +1,6 @@
 package com.example.today_seyebrowktver
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,7 +34,8 @@ class FragmentAccounting:Fragment() {
         }
 
         binding.performanceTv.setOnClickListener {
-
+            val intent = Intent(context, ActivityMonthlyPerformance::class.java)
+            startActivity(intent)
         }
         binding.nextMonthImage.setOnClickListener {
 

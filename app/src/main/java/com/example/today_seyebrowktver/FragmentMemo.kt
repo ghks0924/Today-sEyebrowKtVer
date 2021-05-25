@@ -92,7 +92,7 @@ class FragmentMemo : Fragment() {
 
 
                 val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
-                ab.setMessage("메모를 삭제 하시겠습니까??")
+                ab.setMessage("메모를 삭제 하시겠습니까?")
                 ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
 
                     lifecycleScope.launch(Dispatchers.IO) {

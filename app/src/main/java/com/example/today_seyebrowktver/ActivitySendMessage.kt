@@ -65,7 +65,7 @@ class ActivitySendMessage : ActivityBase() {
 
 
         //back_iv event
-        binding.backCardview.setOnClickListener(View.OnClickListener {
+        binding.backIv.setOnClickListener(View.OnClickListener {
             newMessageContent = binding.messageContentEt.text.toString().trim()
             newMessageTitle = binding.messageTitleDisplayTv.text.toString().trim()
 
@@ -76,7 +76,7 @@ class ActivitySendMessage : ActivityBase() {
         })
 
         //send_btn event
-        binding.sendCardview.setOnClickListener(View.OnClickListener {
+        binding.backIv.setOnClickListener(View.OnClickListener {
             val Sharing_intent = Intent(Intent.ACTION_SEND)
             Sharing_intent.type = "text/plain"
 

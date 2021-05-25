@@ -72,7 +72,7 @@ class ActivityEachCustomer : ActivityBase() {
         binding.customerNumberTv.text = eachCustomer.customerNumber
 
 
-        binding.backCardview.setOnClickListener {
+        binding.backIv.setOnClickListener {
             finish()
         }
 

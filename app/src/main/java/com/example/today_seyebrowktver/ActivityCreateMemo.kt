@@ -32,13 +32,15 @@ class ActivityCreateMemo : ActivityBase() {
     private fun setLayout() {
 
         //backIv 클릭이벤트
-        binding.backCardview.setOnClickListener(View.OnClickListener {
+        binding.backIv.setOnClickListener(View.OnClickListener {
 
             memoTitle = binding.memoTitleEt.text.toString().trim()
             memoContent = binding.contentEdittext.text.toString().trim()
 
             if (memoTitle.isNullOrEmpty() && memoContent.isNullOrEmpty()) {
+                mKeyboardDown()
                 finish()
+
             } else {
                 mCreateMemo()
                 mKeyboardDown()

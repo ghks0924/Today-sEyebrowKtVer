@@ -27,7 +27,7 @@ class ActivityCreateMessage : ActivityBase() {
     private fun setLayout() {
 
         //back_iv 뒤로가기 event
-        binding.backCardview.setOnClickListener(View.OnClickListener {
+        binding.backIv.setOnClickListener(View.OnClickListener {
             finish()
         })
 

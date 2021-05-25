@@ -98,6 +98,7 @@ class FragmentMessage : Fragment() {
                     messageGroupList.clear()
                     messageGroupList.addAll(newData)
 
+                    setGroupRv()
 
                 }
 
@@ -108,70 +109,92 @@ class FragmentMessage : Fragment() {
             })
 
 
-        mainViewModel.getAllMessages().observe(activity as ActivityMain) { messages ->
-            var tempMessageDataList = ArrayList<MessageData>()
-            for (i in 0 until messages.size) {
-                tempMessageDataList.add(
-                    MessageData(
-                        messages[i].messageType,
-                        messages[i].messageTitle,
-                        messages[i].messageContent,
-                        messages[i].messageDate
-                    )
-                )
-            }
-
-            messageDataList.clear()
-            messageDataList.addAll(tempMessageDataList)
-
-            setRv()
-        }
+//        mainViewModel.getAllMessages().observe(activity as ActivityMain) { messages ->
+//            var tempMessageDataList = ArrayList<MessageData>()
+//            for (i in 0 until messages.size) {
+//                tempMessageDataList.add(
+//                    MessageData(
+//                        messages[i].messageType,
+//                        messages[i].messageTitle,
+//                        messages[i].messageContent,
+//                        messages[i].messageDate
+//                    )
+//                )
+//            }
+//
+//            messageDataList.clear()
+//            messageDataList.addAll(tempMessageDataList)
+//
+//            setRv()
+//        }
 
 
     }
 
-    private fun setRv() {
-        adapter = RvMessageAdapter(messageDataList) //adapter 생성
+    private fun setGroupRv(){
+        adapter2 = RvMessageGroupAdapter(messageGroupList)
 
-        //itemClick event
-        adapter!!.itemClick = object : RvMessageAdapter.ItemClick {
+        binding.groupRv.layoutManager = LinearLayoutManager(context)
+        binding.groupRv.adapter = adapter2
+
+        setOnItemClickListener()
+    }
+
+    private fun setOnItemClickListener() {
+        adapter2!!.itemClick = object : RvMessageGroupAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-                mainViewModel.sendMessageData(
-                    messageDataList[position].messageType,
-                    messageDataList[position].messageTitle,
-                    messageDataList[position].messageContent,
-                    messageDataList[position].messageDate
-                )
-                (activity as ActivityMain).mGoToSendMessageActivity()
+
+            Log.d("messageGroupRv", messageGroupList[position].groupName)
             }
+
+
+            }
+
+
         }
 
-
-        //itemLongClick event
-        adapter!!.itemLongClick = object : RvMessageAdapter.ItemLongClick {
-            override fun onLongClick(view: View, position: Int) {
-
-                val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
-                ab.setMessage("문자를 삭제 하시겠습니까??")
-                ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
-
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        val messageData =
-                            mainViewModel.findMessageByDate(messageDataList[position].messageDate)
-                        mainViewModel.delete(messageData)
-                    }
-
-
-                })
-                ab.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which -> })
-                ab.setCancelable(true)
-                ab.show()
-            }
-        }
-
-        binding.reservMessages.layoutManager = LinearLayoutManager(context)
-        binding.reservMessages.adapter = adapter
-    }
+//    private fun setRv() {
+//        adapter = RvMessageAdapter(messageDataList) //adapter 생성
+//
+//        //itemClick event
+//        adapter!!.itemClick = object : RvMessageAdapter.ItemClick {
+//            override fun onClick(view: View, position: Int) {
+//                mainViewModel.sendMessageData(
+//                    messageDataList[position].messageType,
+//                    messageDataList[position].messageTitle,
+//                    messageDataList[position].messageContent,
+//                    messageDataList[position].messageDate
+//                )
+//                (activity as ActivityMain).mGoToSendMessageActivity()
+//            }
+//        }
+//
+//
+//        //itemLongClick event
+//        adapter!!.itemLongClick = object : RvMessageAdapter.ItemLongClick {
+//            override fun onLongClick(view: View, position: Int) {
+//
+//                val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
+//                ab.setMessage("문자를 삭제 하시겠습니까??")
+//                ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+//
+//                    lifecycleScope.launch(Dispatchers.IO) {
+//                        val messageData =
+//                            mainViewModel.findMessageByDate(messageDataList[position].messageDate)
+//                        mainViewModel.delete(messageData)
+//                    }
+//
+//
+//                })
+//                ab.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which -> })
+//                ab.setCancelable(true)
+//                ab.show()
+//            }
+//        }
+//
+//        binding.reservMessages.layoutManager = LinearLayoutManager(context)
+//        binding.reservMessages.adapter = adapter
+//    }
 
     private fun setLayout() {
         //fab click event
@@ -182,7 +205,9 @@ class FragmentMessage : Fragment() {
             startActivityForResult(intent, REQUEST_CREATE_MESSAGE)
         })
 
-        //send click event
+
+
+//        send click event
 //        binding.filterCardview.setOnClickListener(View.OnClickListener {
 //            val intent = Intent("android.intent.action.MAIN")
 //            intent.addCategory("android.intent.category.DEFAULT")
@@ -190,61 +215,61 @@ class FragmentMessage : Fragment() {
 //            startActivity(intent)
 //        })
 
-        binding.eventFixedLayout.setOnClickListener {
-            if (binding.eventHidenView.visibility == View.VISIBLE) {
-//                TransitionManager.beginDelayedTransition(binding.cardview,
-//                    AutoTransition())
-                binding.eventHidenView.visibility = View.GONE
-                binding.eventHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-            } else {
-//                TransitionManager.beginDelayedTransition(binding.cardview,
-//                    AutoTransition())
-                binding.eventHidenView.visibility = View.VISIBLE
-                binding.eventHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
-            }
-        }
-
-        binding.afterFixedLayout.setOnClickListener {
-            if (binding.afterHidenView.visibility == View.VISIBLE) {
-//                TransitionManager.beginDelayedTransition(binding.cardview,
-//                    AutoTransition())
-                binding.afterHidenView.visibility = View.GONE
-                binding.afterHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-            } else {
-//                TransitionManager.beginDelayedTransition(binding.cardview,
-//                    AutoTransition())
-                binding.afterHidenView.visibility = View.VISIBLE
-                binding.afterHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
-            }
-        }
-
-        binding.retouchFixedLayout.setOnClickListener {
-            if (binding.retouchHidenView.visibility == View.VISIBLE) {
-//                TransitionManager.beginDelayedTransition(binding.cardview,
-//                    AutoTransition())
-                binding.retouchHidenView.visibility = View.GONE
-                binding.retouchHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-            } else {
-//                TransitionManager.beginDelayedTransition(binding.cardview,
-//                    AutoTransition())
-                binding.retouchHidenView.visibility = View.VISIBLE
-                binding.retouchHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
-            }
-        }
-
-        binding.extraFixedLayout.setOnClickListener {
-            if (binding.extraHidenView.visibility == View.VISIBLE) {
-//                TransitionManager.beginDelayedTransition(binding.cardview,
-//                    AutoTransition())
-                binding.extraHidenView.visibility = View.GONE
-                binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-            } else {
-//                TransitionManager.beginDelayedTransition(binding.cardview,
-//                    AutoTransition())
-                binding.extraHidenView.visibility = View.VISIBLE
-                binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
-            }
-        }
+//        binding.eventFixedLayout.setOnClickListener {
+//            if (binding.eventHidenView.visibility == View.VISIBLE) {
+////                TransitionManager.beginDelayedTransition(binding.cardview,
+////                    AutoTransition())
+//                binding.eventHidenView.visibility = View.GONE
+//                binding.eventHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
+//            } else {
+////                TransitionManager.beginDelayedTransition(binding.cardview,
+////                    AutoTransition())
+//                binding.eventHidenView.visibility = View.VISIBLE
+//                binding.eventHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
+//            }
+//        }
+//
+//        binding.afterFixedLayout.setOnClickListener {
+//            if (binding.afterHidenView.visibility == View.VISIBLE) {
+////                TransitionManager.beginDelayedTransition(binding.cardview,
+////                    AutoTransition())
+//                binding.afterHidenView.visibility = View.GONE
+//                binding.afterHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
+//            } else {
+////                TransitionManager.beginDelayedTransition(binding.cardview,
+////                    AutoTransition())
+//                binding.afterHidenView.visibility = View.VISIBLE
+//                binding.afterHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
+//            }
+//        }
+//
+//        binding.retouchFixedLayout.setOnClickListener {
+//            if (binding.retouchHidenView.visibility == View.VISIBLE) {
+////                TransitionManager.beginDelayedTransition(binding.cardview,
+////                    AutoTransition())
+//                binding.retouchHidenView.visibility = View.GONE
+//                binding.retouchHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
+//            } else {
+////                TransitionManager.beginDelayedTransition(binding.cardview,
+////                    AutoTransition())
+//                binding.retouchHidenView.visibility = View.VISIBLE
+//                binding.retouchHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
+//            }
+//        }
+//
+//        binding.extraFixedLayout.setOnClickListener {
+//            if (binding.extraHidenView.visibility == View.VISIBLE) {
+////                TransitionManager.beginDelayedTransition(binding.cardview,
+////                    AutoTransition())
+//                binding.extraHidenView.visibility = View.GONE
+//                binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
+//            } else {
+////                TransitionManager.beginDelayedTransition(binding.cardview,
+////                    AutoTransition())
+//                binding.extraHidenView.visibility = View.VISIBLE
+//                binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
+//            }
+//        }
 
         binding.moreIcon.setOnClickListener {
             ShowAlertDialogWithListview()
@@ -320,21 +345,19 @@ class FragmentMessage : Fragment() {
 
 
                 val dlg = DialogCreateMessageGroup(requireActivity())
+
                 dlg.setOnOKClickedListener { content ->
                     Log.d("messageGroup", "추가가가가가가")
-                    //키보드 내리기
-                    val immhide = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    immhide.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+
                 }
 
                 dlg.setOnCanCelClickedListener {
                     Log.d("messageGroup", "취소소소소")
-                    //키보드 내리기
-                    val immhide = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    immhide.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+
                 }
 
-                dlg.start()
+
+                dlg.start(requireContext())
 
                 // 키보드 띄우기
                 val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager

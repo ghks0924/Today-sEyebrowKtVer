@@ -5,8 +5,10 @@
     android:id="@+id/message_type_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:backgroundTint="@color/white"
+    android:layout_margin="10dp"
+    android:backgroundTint="@color/mainGreyFor50"
+    android:clickable="true"
+    android:background="?attr/selectableItemBackground"
     app:cardElevation="0dp">
 
     <!--This is a ConstraintLayout for the entire CardView
@@ -42,7 +44,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/after_history_expand_iv"
+                android:id="@+id/expand_iv"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="10dp"

@@ -64,7 +64,7 @@ class ActivityJoin1 : ActivityBase(), View.OnClickListener {
 
 
         //click event
-        binding.backCardview.setOnClickListener(this)
+        binding.backIv.setOnClickListener(this)
         binding.nextTv.setOnClickListener(this)
         binding.regionTv.setOnClickListener(this)
 
@@ -90,7 +90,7 @@ class ActivityJoin1 : ActivityBase(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v) {
-            binding.backCardview -> finish()
+            binding.backIv -> finish()
 
             binding.nextTv -> {
                 if (isValid()) {

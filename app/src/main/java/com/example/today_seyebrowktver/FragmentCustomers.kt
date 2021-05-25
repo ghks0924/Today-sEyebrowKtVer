@@ -1,5 +1,6 @@
 package com.example.today_seyebrowktver
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -11,11 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class FragmentCustomers : Fragment() {
@@ -158,6 +162,7 @@ class FragmentCustomers : Fragment() {
 
     private fun setRv() {
         adapter = RvCustomerAdapter(data)
+
         binding.recyclerview.layoutManager = LinearLayoutManager(context)
         binding.recyclerview.adapter = adapter
 
@@ -182,7 +187,6 @@ class FragmentCustomers : Fragment() {
                 val intent = Intent(context, ActivityEachCustomer::class.java)
                 intent.putExtra("keyValue", data[position].keyValue)
                 startActivity(intent)
-
                 Log.d("click?", "click OK" + data[position].keyValue)
 
             }
@@ -191,6 +195,23 @@ class FragmentCustomers : Fragment() {
 
         adapter!!.itemLongClick = object : RvCustomerAdapter.ItemLongClick {
             override fun onClick(view: View, position: Int) {
+                val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
+                ab.setTitle(data[position].customerName)
+                ab.setMessage("고객을 삭제 하시겠습니까?")
+                ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+
+                    database.child("users").child(uid).child("customers")
+                        .child(data[position].keyValue).removeValue()
+                        .addOnSuccessListener {
+                            Log.d("removeValue", "삭제 성공")
+                        }.addOnCanceledListener {
+                            Log.d("removeValue", "삭제 실패")
+                        }
+
+                })
+                ab.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which -> })
+                ab.setCancelable(true)
+                ab.show()
                 Log.d("click?", "LongClick OK")
             }
 

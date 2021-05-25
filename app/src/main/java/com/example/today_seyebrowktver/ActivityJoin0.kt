@@ -33,7 +33,7 @@ class ActivityJoin0 : ActivityBase(), View.OnClickListener {
     }
 
     private fun setLayout() {
-        binding.backCardview.setOnClickListener(this)
+        binding.backIv.setOnClickListener(this)
         binding.nextTv.setOnClickListener(this)
 
         //초기화
@@ -108,7 +108,7 @@ class ActivityJoin0 : ActivityBase(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v) {
-            binding.backCardview -> {
+            binding.backIv -> {
                 finish()
             }
 
