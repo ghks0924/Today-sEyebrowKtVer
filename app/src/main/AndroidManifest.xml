@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer">
-        <activity android:name=".ActivityMonthlyPerformance"></activity>
+        <activity android:name=".ActivityEditMessageGroup"></activity>
+        <activity android:name=".ActivityMonthlyPerformance" />
         <activity
             android:name=".ActivityEditCustomer"
             android:screenOrientation="portrait" />
@@ -40,13 +41,7 @@
         <activity android:name=".ActivityJoin2" />
         <activity android:name=".ActivityJoin1" />
         <activity android:name=".ActivityJoin0" />
-        <activity android:name=".ActivityLogin">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ActivityLogin"></activity>
         <activity android:name=".ActivityLoadCustomers" />
         <activity android:name=".ActivityCreateEventSkipCus" />
         <activity android:name=".ActivityCreateEventOldCus" />
@@ -57,7 +52,13 @@
             android:name=".ActivityBase"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
-        <activity android:name=".ActivityMain"></activity>
+        <activity android:name=".ActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

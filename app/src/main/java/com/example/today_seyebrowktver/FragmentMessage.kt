@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.FragmentMessageBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -132,7 +133,7 @@ class FragmentMessage : Fragment() {
     private fun setGroupRv(){
         adapter2 = RvMessageGroupAdapter(messageGroupList)
 
-        binding.groupRv.layoutManager = LinearLayoutManager(context)
+        binding.groupRv.layoutManager = GridLayoutManager(context, 2)
         binding.groupRv.adapter = adapter2
 
         setOnItemClickListener()
@@ -203,16 +204,16 @@ class FragmentMessage : Fragment() {
 //            startActivityForResult(intent, REQUEST_CREATE_MESSAGE)
 
 
-            val popupMenu = PopupMenu(context, view)
+            val popupMenu = PopupMenu(context, binding.fab, Gravity.BOTTOM)
             val menu = popupMenu.menu
             for (i in 0 until  messageGroupList.size){
                 menu.add(Menu.NONE, i , Menu.NONE, messageGroupList[i].groupName)
             }
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 Log.d("menuItem", it.itemId.toString())
+                binding.messageGroupTv.text = messageGroupList[it.itemId].groupName
                 return@OnMenuItemClickListener true
-            }
-            )
+            })
 
             popupMenu.show()
 
@@ -345,16 +346,20 @@ class FragmentMessage : Fragment() {
     //more Icon 클릭스 띄우는 대화상자, alertDialog
     fun ShowAlertDialogWithListview() {
         val numberMethod: MutableList<String> = java.util.ArrayList()
-        numberMethod.add("그룹 추가하기")
-        numberMethod.add("그룹 순서 수정")
+
+        numberMethod.add("문자 템플릿 추가")
+        numberMethod.add("문자 그룹 수정")
 
         //Create sequence of items
         val Animals: Array<String> = numberMethod.toTypedArray()
         val dialogBuilder = AlertDialog.Builder(context)
         dialogBuilder.setItems(Animals) { dialog, item ->
             val selectedText = Animals[item].toString() //Selected item in listview
-            if (selectedText.contains("추가")) {
+            if (selectedText.contains("그룹")) {
                 Log.d("messageGroup", "추가 버튼")
+
+                val intent = Intent(context, ActivityEditMessageGroup::class.java)
+                startActivity(intent)
 
 
                 val dlg = DialogCreateMessageGroup(requireActivity())
@@ -380,6 +385,8 @@ class FragmentMessage : Fragment() {
 //                val intent = Intent(Intent.ACTION_DIAL, uri)
 //                startActivity(intent)
             }  else {
+                val intent = Intent(context, ActivityCreateMessage::class.java)
+                startActivity(intent)
                 Log.d("messageGroup", "순서 수정 버튼")
             }
         }
