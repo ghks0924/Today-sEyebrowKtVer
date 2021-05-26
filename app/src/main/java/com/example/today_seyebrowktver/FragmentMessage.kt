@@ -10,11 +10,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
@@ -199,10 +197,25 @@ class FragmentMessage : Fragment() {
     private fun setLayout() {
         //fab click event
         binding.fab.setOnClickListener(View.OnClickListener {
-            val intent = Intent(context, ActivityCreateMessage::class.java)
-            intent.putExtra("type", "new")
+//            val intent = Intent(context, ActivityCreateMessage::class.java)
+//            intent.putExtra("type", "new")
+//
+//            startActivityForResult(intent, REQUEST_CREATE_MESSAGE)
 
-            startActivityForResult(intent, REQUEST_CREATE_MESSAGE)
+
+            val popupMenu = PopupMenu(context, view)
+            val menu = popupMenu.menu
+            for (i in 0 until  messageGroupList.size){
+                menu.add(Menu.NONE, i , Menu.NONE, messageGroupList[i].groupName)
+            }
+            popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
+                Log.d("menuItem", it.itemId.toString())
+                return@OnMenuItemClickListener true
+            }
+            )
+
+            popupMenu.show()
+
         })
 
 

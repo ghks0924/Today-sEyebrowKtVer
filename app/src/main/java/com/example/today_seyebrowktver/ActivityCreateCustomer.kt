@@ -43,7 +43,6 @@ class ActivityCreateCustomer : ActivityBase() {
 
         setLayout()
 
-
     }
 
     private fun checkOrigin() {
