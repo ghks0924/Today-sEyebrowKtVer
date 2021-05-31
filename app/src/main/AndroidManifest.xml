@@ -12,13 +12,21 @@
     <uses-feature android:name="android.hardware.screen.portrait" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer">
-        <activity android:name=".ActivityMonthlyPerformance"></activity>
+        <activity android:name=".ActivityLoading">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ActivityMonthlyPerformance" />
         <activity
             android:name=".ActivityEditCustomer"
             android:screenOrientation="portrait" />
@@ -41,13 +49,11 @@
         <activity android:name=".ActivityJoin1" />
         <activity android:name=".ActivityJoin0" />
         <activity android:name=".ActivityLogin">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".ActivityLoadCustomers" />
+        <activity android:name=".ActivityLoadCustomers" >
+
+        </activity>
         <activity android:name=".ActivityCreateEventSkipCus" />
         <activity android:name=".ActivityCreateEventOldCus" />
         <activity android:name=".ActivityCreateEventNewCus" />
@@ -57,7 +63,7 @@
             android:name=".ActivityBase"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
-        <activity android:name=".ActivityMain"></activity>
+        <activity android:name=".ActivityMain" />
     </application>
 
 </manifest>

@@ -36,4 +36,7 @@
     <string name="rsv_ok_btn">완료</string>
 
     <string name="example_5_title">Example 5</string>
+
+    //============================================firebase functions==============================
+    <string name="firebase_functions_base_url">https://us-central1-today-s-eyebrow-kt-ver.cloudfunctions.net/</string>
 </resources>

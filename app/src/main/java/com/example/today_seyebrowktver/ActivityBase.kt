@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import java.util.*
@@ -21,7 +22,9 @@ import java.util.regex.Pattern
 
 open class ActivityBase : AppCompatActivity() {
 
-    val gittest: String = "가나다151"
+    val mAuth =  FirebaseAuth.getInstance()
+    lateinit var userId:String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,11 @@ open class ActivityBase : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+    }
+
+    //===============================User 및 uid 구하기================================
+    fun getUserData(){
+
     }
 
 
@@ -97,7 +105,7 @@ open class ActivityBase : AppCompatActivity() {
         }
     }
 
-    //====권한설정 TedPermission===
+    //=========================권한설정 TedPermission=====================
     var permissionlistener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
 //            mShowShortToast("권한 설정 완료")
@@ -153,6 +161,11 @@ open class ActivityBase : AppCompatActivity() {
 
         return resultYear + "-"+ resultMonth+"-"+resultDay
     }
+
+
+
+
+
 
 
 }

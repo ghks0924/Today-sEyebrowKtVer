@@ -16,7 +16,6 @@ class ActivityEditCustomer : ActivityBase() {
     private lateinit var binding:ActivityEditCustomerBinding
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-    val mAuth = FirebaseAuth.getInstance()
     private lateinit var uid: String
 
     private lateinit var customerKeyValue: String

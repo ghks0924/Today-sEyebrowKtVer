@@ -20,7 +20,6 @@ class ActivityCreateCustomer : ActivityBase() {
     private lateinit var binding: ActivityCreateCustomerBinding
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-    val mAuth = FirebaseAuth.getInstance()
     private lateinit var uid: String
 
 

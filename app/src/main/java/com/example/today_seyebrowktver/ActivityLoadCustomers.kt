@@ -14,11 +14,10 @@ import com.example.today_seyebrowktver.databinding.ActivityLoadCustomersBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class ActivityLoadCustomers : AppCompatActivity() {
+class ActivityLoadCustomers : ActivityBase() {
 
     private lateinit var binding: ActivityLoadCustomersBinding
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-    val mAuth = FirebaseAuth.getInstance()
     private lateinit var uid : String
 
     private var data: ArrayList<CustomersData> = ArrayList()
