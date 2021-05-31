@@ -44,7 +44,7 @@
 
             android:includeFontPadding="false"
             android:stateListAnimator="@null"
-            android:text="신규 고객"
+            android:text="신규 고객 예약"
             android:textColor="@color/mainGrey"
             android:textSize="18sp"
 
@@ -69,7 +69,7 @@
             android:fontFamily="@font/notosanscjkkrmedium"
 
             android:includeFontPadding="false"
-            android:text="기존 고객"
+            android:text="기존 고객 예약"
             android:textColor="@color/mainGrey"
 
             android:textSize="18sp"

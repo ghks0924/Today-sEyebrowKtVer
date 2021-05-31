@@ -9,8 +9,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-    <uses-feature android:name="android.hardware.screen.portrait" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -41,6 +39,8 @@
         <activity android:name=".ActivityJoin1" />
         <activity android:name=".ActivityJoin0" />
         <activity android:name=".ActivityLogin">
+        </activity>
+        <activity android:name=".ActivityLoading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,6 +52,7 @@
         <activity android:name=".ActivityCreateEventOldCus" />
         <activity android:name=".ActivityCreateEventNewCus" />
         <activity android:name=".ActivityCreateCustomer" />
+        <activity android:name=".ActivityEditMessageGroup"/>
         <activity android:name=".ActivityHomeMenu" />
         <activity
             android:name=".ActivityBase"

@@ -31,7 +31,7 @@
             android:layout_height="@dimen/profile_iv_background_height"
 
             android:layout_marginLeft="15dp"
-            android:backgroundTint="@color/mainGrey"
+            android:backgroundTint="@color/mainPink"
             app:cardCornerRadius="@dimen/half_profile_iv_background_height"
 
             app:cardElevation="0dp"
@@ -48,7 +48,7 @@
 
                 android:fontFamily="@font/notosanscjkkrbold"
                 android:includeFontPadding="false"
-                android:textColor="@color/mainGreyForLine"
+                android:textColor="@color/white"
                 android:textSize="25sp"
                 tools:text="고" />
 

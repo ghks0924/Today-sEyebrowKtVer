@@ -2,6 +2,7 @@ package com.example.today_seyebrowktver
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.example.today_seyebrowktver.databinding.ActivityEditMessageGroupBinding
 
 class ActivityEditMessageGroup : AppCompatActivity() {
@@ -14,4 +15,11 @@ class ActivityEditMessageGroup : AppCompatActivity() {
 
 
     }
+
+    fun onClick(view: View) {
+        when(view){
+            binding.backIv -> finish()
+        }
+    }
+
 }

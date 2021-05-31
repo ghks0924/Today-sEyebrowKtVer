@@ -27,7 +27,8 @@
             android:adjustViewBounds="true"
             android:fitsSystemWindows="true"
             app:srcCompat="@drawable/ic_chevron_left"
-            app:tint="@color/black"/>
+            app:tint="@color/black"
+            android:onClick="onClick"/>
 
         <TextView
             android:layout_width="match_parent"

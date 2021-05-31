@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.FragmentMemoBinding
 import kotlinx.coroutines.Dispatchers
@@ -56,8 +57,9 @@ class FragmentMemo : Fragment() {
     }
 
     private fun mGoToCreateMemo() {
-        binding.addMemoCardview.setOnClickListener(View.OnClickListener {
-            (activity as ActivityMain).mGoToCreateMemoActivity()
+        binding.fab.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context, ActivityCreateMemo::class.java)
+            startActivityForResult(intent, REQUEST_CREATE_MEMO)
         })
     }//memo 추가 메서드
 
@@ -109,7 +111,7 @@ class FragmentMemo : Fragment() {
         }
 
 
-        binding.recyclerview.layoutManager = LinearLayoutManager(context)
+        binding.recyclerview.layoutManager = GridLayoutManager(context, 2)
         binding.recyclerview.adapter = adapter
     } //RecyclerView 세팅 메서드
 
@@ -145,9 +147,6 @@ class FragmentMemo : Fragment() {
 
         when (requestCode) {
             REQUEST_CREATE_MEMO -> {
-
-
-
 
             }
 

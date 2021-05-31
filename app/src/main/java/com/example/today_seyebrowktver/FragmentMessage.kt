@@ -97,6 +97,7 @@ class FragmentMessage : Fragment() {
                     messageGroupList.clear()
                     messageGroupList.addAll(newData)
 
+                    binding.messageGroupTv.text = messageGroupList[0].groupName
                     setGroupRv()
 
                 }
@@ -362,24 +363,24 @@ class FragmentMessage : Fragment() {
                 startActivity(intent)
 
 
-                val dlg = DialogCreateMessageGroup(requireActivity())
-
-                dlg.setOnOKClickedListener { content ->
-                    Log.d("messageGroup", "추가가가가가가")
-
-                }
-
-                dlg.setOnCanCelClickedListener {
-                    Log.d("messageGroup", "취소소소소")
-
-                }
-
-
-                dlg.start(requireContext())
-
-                // 키보드 띄우기
-                val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+//                val dlg = DialogCreateMessageGroup(requireActivity())
+//
+//                dlg.setOnOKClickedListener { content ->
+//                    Log.d("messageGroup", "추가가가가가가")
+//
+//                }
+//
+//                dlg.setOnCanCelClickedListener {
+//                    Log.d("messageGroup", "취소소소소")
+//
+//                }
+//
+//
+//                dlg.start(requireContext())
+//
+//                // 키보드 띄우기
+//                val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+//                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
 
 //                val uri = Uri.parse("tel:${eachCustomer.customerNumber}")
 //                val intent = Intent(Intent.ACTION_DIAL, uri)

@@ -27,28 +27,6 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/add_memo_cardview"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="0dp"
-            android:background="?attr/selectableItemBackground"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:clickable="true"
-            app:rippleColor="@color/weakGrey">
-
-            <ImageView
-                android:id="@+id/filter_iv"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_gravity="center"
-                android:src="@drawable/plus" />
-        </com.google.android.material.card.MaterialCardView>
-
-
     </RelativeLayout>
 
 <!--    <TextView-->
@@ -79,5 +57,21 @@
         android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
         tools:listitem="@layout/rv_item_memo"
         />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:src="@drawable/white_cross"
+        android:backgroundTint="@color/mainGrey"
+        android:adjustViewBounds="true"
+        app:borderWidth="0dp"
+        android:elevation="1dp"
+        app:tint="@null"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.today_seyebrowktver
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,8 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.today_seyebrowktver.databinding.RvItemCustomersBookBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RvCustomerBookAdapter : RecyclerView.Adapter<RvCustomerBookAdapter.ViewHolder> {
 
@@ -68,6 +71,8 @@ class RvCustomerBookAdapter : RecyclerView.Adapter<RvCustomerBookAdapter.ViewHol
             }
 
             binding.checkbox.isChecked = item!!.isChecked
+
+
         }
         init {
             this.binding = binding
