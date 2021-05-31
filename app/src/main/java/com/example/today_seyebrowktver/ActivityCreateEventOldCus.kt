@@ -26,7 +26,6 @@ class ActivityCreateEventOldCus : ActivityBase() {
     private lateinit var binding: ActivityCreateEventOldCusBinding
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-    val mAuth = FirebaseAuth.getInstance()
     private lateinit var uid : String
     private lateinit var yearMonthForServer : String
     private lateinit var dateForServer : String

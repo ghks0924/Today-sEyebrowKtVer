@@ -35,7 +35,6 @@ class ActivityJoin2 : ActivityBase(), View.OnClickListener {
     private lateinit var shopType: String
 
     //FirebaseAuth
-    var mAuth: FirebaseAuth? = null
     var database: DatabaseReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +42,6 @@ class ActivityJoin2 : ActivityBase(), View.OnClickListener {
         binding = ActivityJoin2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mAuth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
 

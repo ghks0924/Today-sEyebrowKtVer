@@ -27,7 +27,6 @@ class ActivityMain : ActivityBase() {
 
     //viewBinding
     internal lateinit var binding: ActivityMainBinding
-    val auth =  FirebaseAuth.getInstance()
 
     //viewModel
     private lateinit var mainViewModel: ViewModelMain
@@ -53,13 +52,13 @@ class ActivityMain : ActivityBase() {
         setPermittionCheck() //권한체크
 
         //test login
-        auth.signInWithEmailAndPassword("ngh_0925@naver.com", "dnswjs12!@")
+        mAuth.signInWithEmailAndPassword("ngh_0925@naver.com", "dnswjs12!@")
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("LoginTest", "signInWithEmail:success")
 
-                    val user = auth.currentUser
+                    val user = mAuth.currentUser
                     user.uid
                     Log.d("uid", user.uid+"?")
 

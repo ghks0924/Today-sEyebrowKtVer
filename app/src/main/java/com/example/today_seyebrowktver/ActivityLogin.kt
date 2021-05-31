@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 class ActivityLogin : ActivityBase() {
 
-    private lateinit var auth: FirebaseAuth
+    // Initialize Firebase Auth
 
     //viewBinding
     private lateinit var binding: ActivityLoginBinding
@@ -27,8 +27,7 @@ class ActivityLogin : ActivityBase() {
         setContentView(binding.root)
         setStatusBarColor(this, Color.parseColor("#fff4eb"))
 
-        // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+
         setLayout()
     }
 
@@ -84,7 +83,7 @@ class ActivityLogin : ActivityBase() {
 
     //ID, PASSWORD 매칭 확인
     private fun isValidCheck() {
-        auth.signInWithEmailAndPassword("ngh_0925@naver.com", "dnswjs12!@")
+        mAuth.signInWithEmailAndPassword("ngh_0925@naver.com", "dnswjs12!@")
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
@@ -92,8 +91,8 @@ class ActivityLogin : ActivityBase() {
                     val intent = Intent(this, ActivityMain::class.java)
                     startActivity(intent)
 
-
-                    val user = auth.currentUser
+                    userId = mAuth.currentUser.uid
+                    val user = mAuth.currentUser
                     user.uid
                     Log.d("uid", user.uid+"?")
 //                    updateUI(user)
@@ -127,12 +126,18 @@ class ActivityLogin : ActivityBase() {
     }
 
 
-    //로그인 유지상태 사용하는 메소드인데 나중에... activate
-//    override fun onStart() {
-//        super.onStart()
-//        val currentUser = auth.currentUser
-//        if(currentUser != null){
+//    로그인 유지상태 사용하는 메소드인데 나중에... activate
+    override fun onStart() {
+        super.onStart()
+        val currentUser = mAuth.currentUser
+        if(currentUser != null){
 //            reload();
-//        }
-//    }
+            Log.d("currentUser", currentUser?.uid+"널이 아닐때?")
+            val intent = Intent(this, ActivityMain::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent)
+        } else{
+            Log.d("currentUser", "null일 때")
+        }
+    }
 }

@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 
 class ViewModelMain(application: Application) : AndroidViewModel(application) {
 
@@ -17,6 +19,9 @@ class ViewModelMain(application: Application) : AndroidViewModel(application) {
         application,
         MessageDatabase::class.java, "messages"
     ).build()
+
+    //==========user Data==========
+    val mAuth = FirebaseAuth.getInstance()
 
     //===================Memo db method===================
 

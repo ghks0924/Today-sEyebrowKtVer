@@ -27,7 +27,6 @@ class ActivityEachCustomer : ActivityBase() {
     private lateinit var binding: ActivityEachCustomerBinding
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-    val mAuth = FirebaseAuth.getInstance()
     private lateinit var uid: String
 
     private lateinit var customerKeyValue: String
