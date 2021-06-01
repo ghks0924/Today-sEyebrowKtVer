@@ -4,7 +4,6 @@ import androidx.annotation.Keep
 
 @Keep
 class LoadEventsResponse(
-    val key: String,
     val name: String,
-    val type: Boolean
+    val type: String
 )

@@ -2,7 +2,11 @@ package com.example.today_seyebrowktver
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import com.example.today_seyebrowktver.data.remote.Api
 import com.example.today_seyebrowktver.databinding.ActivityHomeMenuBinding
+import com.google.android.material.snackbar.Snackbar
 
 class ActivityHomeMenu : AppCompatActivity() {
 
@@ -15,13 +19,44 @@ class ActivityHomeMenu : AppCompatActivity() {
         setContentView(binding.root)
 
         overridePendingTransition(R.anim.horizon_enter, R.anim.fadeout)
+
+        binding.et1.setText("grade")
+        binding.et2.setText("default")
+
+        binding.btn.setOnClickListener {
+            Api().loadEvents(
+                binding.et1.text.toString(),
+                binding.et2.text.toString()
+            ) { isSuccess, data ->
+                callback(isSuccess, data) {
+
+                }
+            }
+        }
+
+
+
+
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if (isFinishing){
+        if (isFinishing) {
             overridePendingTransition(R.anim.fadein, R.anim.horizon_exit)
         }
 
+    }
+
+
+    private fun callback(success: Boolean, data: Any?, function: () -> Unit) {
+        if (success) {
+            Snackbar.make(binding.root, "Success", Snackbar.LENGTH_SHORT)
+            Log.d("function", "success")
+        } else {
+            Snackbar.make(binding.root, "fial", Snackbar.LENGTH_SHORT)
+            Log.d("function", "fail")
+        }
+
+        binding.showTv.text = data.toString()
     }
 }
