@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
 
     <TextView
         android:id="@+id/title_tv"
@@ -19,6 +27,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/monthly_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp"
+        android:adjustViewBounds="true"
+        android:fitsSystemWindows="true"
+        app:srcCompat="@drawable/outline_date_range_black_36"
+        app:tint="@color/mainGrey"/>
+
+
 
     <ImageView
         android:id="@+id/previousMonthImage"
@@ -77,4 +100,46 @@
         app:srcCompat="@drawable/ic_chevron_right"
         app:tint="@color/mainGrey" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/temp_performance_graph"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:background="#dfdf"
+        android:text="파이 차트 그래프만(현금, 카드"
+
+        app:layout_constraintTop_toBottomOf="@+id/performance_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:id="@+id/customer_analysis_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@+id/temp_performance_graph"
+        app:layout_constraintStart_toStartOf="parent"
+
+
+        android:text="고객분석"
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:includeFontPadding="false"
+        android:textColor="@color/mainGrey"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"/>
+
+    <TextView
+        android:id="@+id/temp_customer_graph"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:background="#dfdf00"
+        android:text="두 개의 막대 신규/기존 고객/리터치"
+
+        app:layout_constraintTop_toBottomOf="@+id/customer_analysis_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

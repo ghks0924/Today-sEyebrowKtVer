@@ -47,7 +47,7 @@
     </style>
 
     //PopUp Activity theme
-    <style name="popupTheme" parent="Theme.AppCompat.Light.Dialog">
+    <style name="popupTheme" parent="Theme.MaterialComponents.Light.Dialog">
 
         <item name="colorPrimary">@color/mainGrey</item>
         <item name="colorPrimaryDark">@color/mainBlue</item>

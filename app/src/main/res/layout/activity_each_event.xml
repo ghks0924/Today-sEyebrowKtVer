@@ -37,7 +37,7 @@
             android:fontFamily="@font/notosansmonocjkkrbold"
             android:includeFontPadding="false"
             android:gravity="center"
-            android:text="예약정보"
+            android:text="예약유형"
             android:textColor="#211f1f"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -54,357 +54,363 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/outline_edit_black_24"
-            app:tint="@color/mainGrey" />
+            app:tint="@color/black" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/customer_data_layout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_big_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_big_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/header_relative_layout"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_layout">
 
-        android:orientation="horizontal"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_relative_layout">
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/profile_cardview"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@color/ivory"
-            android:backgroundTint="@color/mainPink"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <ImageView
-                android:id="@+id/profile_iv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-
-
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/thick_profile_iv_ivory" />
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-
-        <TextView
-            android:id="@+id/activity_create_evt_cusName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
-            android:text="@string/cusName_create_evt_activity"
-            android:textColor="@color/mainGrey"
-            android:textSize="@dimen/textsize_default"
-            android:layout_marginLeft="15dp"
-            app:layout_constraintLeft_toRightOf="@+id/profile_cardview"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/activity_create_evt_cusNbr"
-            />
-
-        <TextView
-            android:id="@+id/activity_create_evt_cusNbr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
-            android:text="@string/cusNmb_create_evt_activity"
-            android:textColor="@color/mainGrey"
-            android:textSize="@dimen/textsize_default"
-            app:layout_constraintTop_toBottomOf="@+id/activity_create_evt_cusName"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/activity_create_evt_cusName"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="예약유형"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
-            android:textColor="@color/mainGrey"
-            android:layout_marginEnd="10dp"/>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/rsv_date_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_big_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_small_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
-        android:background="@drawable/rounded_corner_weakgrey"
-
-        android:orientation="vertical"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customer_data_layout">
-
-        <TextView
-            android:id="@+id/dateTv"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-
-            android:layout_marginStart="@dimen/activity_small_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:gravity="center"
-
-            android:includeFontPadding="false"
-            android:text="예약일시"
-            android:textColor="@color/mainGrey"
-            android:textSize="@dimen/textsize_default"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/dateContentTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="@dimen/activity_small_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="@dimen/activity_small_vertical_margin"
-            android:layout_weight="1"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
-            android:text="날짜를 선택해주세요"
-            android:textColor="@color/mainPink"
-            android:textSize="@dimen/textsize_default"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateTv" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/rsv_menu_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_big_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_small_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
-        android:background="@drawable/rounded_corner_weakgrey"
-
-        android:orientation="vertical"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rsv_date_layout">
-
-        <TextView
-            android:id="@+id/menu_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-
-            android:layout_marginStart="@dimen/activity_small_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:gravity="center"
-
-            android:includeFontPadding="false"
-            android:text="시술메뉴"
-            android:textColor="@color/mainGrey"
-            android:textSize="@dimen/textsize_default"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/menu_content_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="@dimen/activity_small_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="@dimen/activity_small_vertical_margin"
-            android:layout_weight="1"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
-            android:text="날짜를 선택해주세요"
-            android:textColor="@color/mainPink"
-            android:textSize="@dimen/textsize_default"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/menu_tv" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/rsv_payment_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_big_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_small_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
-        android:background="@drawable/rounded_corner_weakgrey"
-
-        android:orientation="vertical"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rsv_menu_layout">
-
-        <TextView
-            android:id="@+id/rsv_type_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="@dimen/activity_small_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:includeFontPadding="false"
-            android:gravity="center"
-            android:text="결제방식을 선택해주세요"
-            android:textColor="@color/mainGrey"
-            android:textSize="@dimen/textsize_default" />
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-
-            app:layout_constraintTop_toBottomOf="@+id/rsv_type_tv"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="@dimen/activity_small_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-
-            android:layout_marginBottom="@dimen/activity_small_vertical_margin"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/newRb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:text="현금결제"
-                android:fontFamily="@font/notosanscjkkrmedium"
-                android:includeFontPadding="false"
-                android:textColor="@color/mainGrey"
-                android:paddingLeft="10dp"
-
-                />
-
-
-            <RadioButton
-                android:id="@+id/retouchRb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
-
-                android:text="카드결제"
-                android:fontFamily="@font/notosanscjkkrmedium"
-                android:includeFontPadding="false"
-                android:textColor="@color/mainGrey"
-                android:paddingLeft="10dp"/>
-
-
-        </RadioGroup>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/rsv_memo_layout"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginStart="@dimen/activity_big_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_small_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
-        android:background="@drawable/rounded_corner_weakgrey"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rsv_payment_layout">
-
-        <TextView
-            android:id="@+id/memoTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_small_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:gravity="center"
-
-            android:includeFontPadding="false"
-            android:text="@string/memo_tv"
-            android:textColor="@color/mainGrey"
-            android:textSize="@dimen/textsize_default"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/memoEt"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/activity_small_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="@dimen/activity_small_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_small_horizontal_margin"
-            android:layout_marginBottom="@dimen/activity_small_vertical_margin"
-            android:layout_weight="3"
-            android:background="@null"
-            android:fontFamily="@font/notosanscjkkrmedium"
-            android:gravity="top"
+            android:layout_height="match_parent">
 
-            android:hint="예약시 특이사항을 메모해주세요"
-            android:includeFontPadding="false"
-            android:inputType="textMultiLine"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/customer_data_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_big_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_big_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
 
-            android:textColor="@color/mainGrey"
-            android:textColorHint="@color/mainGreyFor50"
-            android:textSize="@dimen/textsize_default"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+                android:orientation="horizontal"
 
-            app:layout_constraintTop_toBottomOf="@+id/memoTv" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/profile_cardview"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/ivory"
+                    android:backgroundTint="@color/mainPink"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <ImageView
+                        android:id="@+id/profile_iv"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+
+
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/thick_profile_iv_ivory" />
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <TextView
+                    android:id="@+id/activity_create_evt_cusName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/notosanscjkkrmedium"
+                    android:includeFontPadding="false"
+                    android:text="@string/cusName_create_evt_activity"
+                    android:textColor="@color/mainGrey"
+                    android:textSize="@dimen/textsize_default"
+                    android:layout_marginLeft="15dp"
+                    app:layout_constraintLeft_toRightOf="@+id/profile_cardview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/activity_create_evt_cusNbr"
+                    />
+
+                <TextView
+                    android:id="@+id/activity_create_evt_cusNbr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/notosanscjkkrmedium"
+                    android:includeFontPadding="false"
+                    android:text="@string/cusNmb_create_evt_activity"
+                    android:textColor="@color/mainGrey"
+                    android:textSize="@dimen/textsize_default"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_create_evt_cusName"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/activity_create_evt_cusName"
+                    />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:id="@+id/midl_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+
+                app:layout_constraintTop_toBottomOf="@id/customer_data_layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rsv_date_layout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corner_weakgrey"
+                    android:layout_marginEnd="1dp">
+
+                    <TextView
+                        android:id="@+id/dateTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+
+                        android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+                        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/notosanscjkkrmedium"
+                        android:gravity="center"
+
+                        android:includeFontPadding="false"
+                        android:text="예약일시"
+                        android:textColor="@color/mainGrey"
+                        android:textSize="@dimen/textsize_default"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/dateContentTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+                        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="@dimen/activity_small_vertical_margin"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/notosanscjkkrmedium"
+                        android:includeFontPadding="false"
+                        android:text="날짜를 선택해주세요"
+                        android:textColor="@color/mainPink"
+                        android:textSize="@dimen/textsize_default"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dateTv" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rsv_menu_layout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corner_weakgrey"
+                    android:layout_marginStart="1dp">
+
+                    <TextView
+                        android:id="@+id/menu_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+
+                        android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+                        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/notosanscjkkrmedium"
+                        android:gravity="center"
+
+                        android:includeFontPadding="false"
+                        android:text="시술메뉴"
+                        android:textColor="@color/mainGrey"
+                        android:textSize="@dimen/textsize_default"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/menu_content_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+                        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="@dimen/activity_small_vertical_margin"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/notosanscjkkrmedium"
+                        android:includeFontPadding="false"
+                        android:text="날짜를 선택해주세요"
+                        android:textColor="@color/mainPink"
+                        android:textSize="@dimen/textsize_default"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/menu_tv" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rsv_payment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_big_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_small_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
+                android:background="@drawable/rounded_corner_weakgrey"
+
+                android:orientation="vertical"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/midl_layout">
+
+                <TextView
+                    android:id="@+id/rsv_type_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+
+                    android:fontFamily="@font/notosanscjkkrmedium"
+                    android:includeFontPadding="false"
+                    android:gravity="center"
+                    android:text="결제방식을 선택해주세요"
+                    android:textColor="@color/mainGrey"
+                    android:textSize="@dimen/textsize_default" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+
+                    app:layout_constraintTop_toBottomOf="@+id/rsv_type_tv"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+
+                    android:layout_marginBottom="@dimen/activity_small_vertical_margin"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/newRb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="현금결제"
+                        android:fontFamily="@font/notosanscjkkrmedium"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/mainGrey"
+                        android:paddingLeft="10dp"
+
+                        />
+
+
+                    <RadioButton
+                        android:id="@+id/retouchRb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+
+                        android:text="카드결제"
+                        android:fontFamily="@font/notosanscjkkrmedium"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/mainGrey"
+                        android:paddingLeft="10dp"/>
+
+
+                </RadioGroup>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rsv_memo_layout"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="@dimen/activity_big_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_small_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
+                android:background="@drawable/rounded_corner_weakgrey"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rsv_payment_layout">
+
+                <TextView
+                    android:id="@+id/memoTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/notosanscjkkrmedium"
+                    android:gravity="center"
+
+                    android:includeFontPadding="false"
+                    android:text="@string/memo_tv"
+                    android:textColor="@color/mainGrey"
+                    android:textSize="@dimen/textsize_default"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/memoEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginBottom="@dimen/activity_small_vertical_margin"
+                    android:layout_weight="3"
+                    android:background="@null"
+                    android:fontFamily="@font/notosanscjkkrmedium"
+                    android:gravity="top"
+
+                    android:hint="예약시 특이사항을 메모해주세요"
+                    android:includeFontPadding="false"
+                    android:inputType="textMultiLine"
+
+                    android:textColor="@color/mainGrey"
+                    android:textColorHint="@color/mainGreyFor50"
+                    android:textSize="@dimen/textsize_default"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+
+                    app:layout_constraintTop_toBottomOf="@+id/memoTv" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
 
     <LinearLayout
+        android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -425,6 +431,19 @@
             android:text="노쇼"
             android:textColor="@color/mainGrey"
             android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/camera_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:fitsSystemWindows="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/outline_photo_camera_black_36"
+            app:tint="@color/black" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/complete_btn"

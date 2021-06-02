@@ -17,10 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer">
         <activity android:name=".ActivityMonthlyPerformance"></activity>
+        <activity android:name=".ActivityDetailedPerformance" />
         <activity
             android:name=".ActivityEditCustomer"
             android:screenOrientation="portrait" />
-        <activity android:name=".ActivityEachEvent" />
+        <activity android:name=".ActivityEachEvent"
+            android:theme="@style/popupTheme"/>
         <activity android:name=".ActivityEachCustomer" />
         <activity
             android:name=".ActivitySelectShopType"
@@ -38,8 +40,7 @@
         <activity android:name=".ActivityJoin2" />
         <activity android:name=".ActivityJoin1" />
         <activity android:name=".ActivityJoin0" />
-        <activity android:name=".ActivityLogin">
-        </activity>
+        <activity android:name=".ActivityLogin"></activity>
         <activity android:name=".ActivityLoading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,13 +53,13 @@
         <activity android:name=".ActivityCreateEventOldCus" />
         <activity android:name=".ActivityCreateEventNewCus" />
         <activity android:name=".ActivityCreateCustomer" />
-        <activity android:name=".ActivityEditMessageGroup"/>
+        <activity android:name=".ActivityEditMessageGroup" />
         <activity android:name=".ActivityHomeMenu" />
         <activity
             android:name=".ActivityBase"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
-        <activity android:name=".ActivityMain"></activity>
+        <activity android:name=".ActivityMain" />
     </application>
 
 </manifest>

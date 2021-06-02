@@ -37,6 +37,7 @@ class FragmentHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.menuIcon.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, ActivityHomeMenu::class.java)
             startActivity(intent)
