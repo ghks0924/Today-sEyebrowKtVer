@@ -2,6 +2,7 @@ package com.example.today_seyebrowktver
 
 import android.graphics.Color
 import android.util.Log
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class RvCustomerBookAdapter : RecyclerView.Adapter<RvCustomerBookAdapter.ViewHol
     }
 
     var data: ArrayList<ContactData>?= null
+    val mSelectedCustomers = SparseBooleanArray()
 
     constructor(data: ArrayList<ContactData>) {
         this.data = data
@@ -46,14 +48,19 @@ class RvCustomerBookAdapter : RecyclerView.Adapter<RvCustomerBookAdapter.ViewHol
                 itemClick!!.onClick(it,position)
             })
         }
+
+        if (mSelectedCustomers.get(position,false)){
+            holder.binding.parentCardview.setBackgroundColor(Color.parseColor("#50ebbdc5"))
+        } else {
+            holder.binding.parentCardview.setBackgroundColor(Color.WHITE)
+        }
     }
 
     override fun getItemCount(): Int {
         return data!!.size
     }
 
-    class ViewHolder(binding: RvItemCustomersBookBinding) : RecyclerView.ViewHolder(binding.root),
-        CompoundButton.OnCheckedChangeListener {
+    class ViewHolder(binding: RvItemCustomersBookBinding) : RecyclerView.ViewHolder(binding.root) {
         var binding: RvItemCustomersBookBinding
         var item : ContactData?= null
 
@@ -69,18 +76,9 @@ class RvCustomerBookAdapter : RecyclerView.Adapter<RvCustomerBookAdapter.ViewHol
                         "-" + item!!.phoneNumber!!.substring(3,7) +
                         "-" + item!!.phoneNumber!!.substring(7)
             }
-
-            binding.checkbox.isChecked = item!!.isChecked
-
-
         }
         init {
             this.binding = binding
-            this.binding.checkbox.setOnCheckedChangeListener(this)
-        }
-
-        override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-            Log.d("check box", "check?")
         }
 
     }

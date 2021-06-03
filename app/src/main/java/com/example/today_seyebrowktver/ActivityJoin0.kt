@@ -8,9 +8,10 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Patterns
 import android.view.View
+import android.widget.Toast
 import com.example.today_seyebrowktver.databinding.ActivityJoin0Binding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import java.util.regex.Pattern
 
 class ActivityJoin0 : ActivityBase(), View.OnClickListener {
@@ -21,6 +22,9 @@ class ActivityJoin0 : ActivityBase(), View.OnClickListener {
     private lateinit var emailStr: String
     private lateinit var passwordStr: String
     private lateinit var rePasswordStr: String
+
+    val database = FirebaseDatabase.getInstance().reference
+    var auth = FirebaseAuth.getInstance()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,11 +118,7 @@ class ActivityJoin0 : ActivityBase(), View.OnClickListener {
 
             binding.nextTv -> {
                 if (isValidToNext()) {
-                    val intent = Intent(this, ActivityJoin1::class.java)
-                    intent.putExtra("email", emailStr)
-                    intent.putExtra("password", passwordStr)
-                    startActivity(intent)
-
+                    emailDuplicateCheck()
                 } else {
 
                 }
@@ -148,8 +148,6 @@ class ActivityJoin0 : ActivityBase(), View.OnClickListener {
     }
 
     private fun isValidToNext(): Boolean {
-
-
         if (!isValidEmail(emailStr)) {
             mShowShortToast("이메일 형식을 확인해주세요")
             return false
@@ -163,6 +161,29 @@ class ActivityJoin0 : ActivityBase(), View.OnClickListener {
                 return true
             }
         }
+    }
+
+    private fun emailDuplicateCheck(){
+        //이메일 중복 체크
+        database.child("users").orderByChild("email").equalTo(emailStr)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        val intent = Intent(applicationContext, ActivityJoin1::class.java)
+                        intent.putExtra("email", emailStr)
+                        intent.putExtra("password", passwordStr)
+                        startActivity(intent)
+                    } else {
+                        mShowShortToast("이미 존재하는 이메일 계정이 있습니다.")
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Toast.makeText(applicationContext,
+                        databaseError.message,
+                        Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
 

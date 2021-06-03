@@ -15,7 +15,6 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.example.today_seyebrowktver.databinding.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -140,18 +139,7 @@ class Example5Fragment : Fragment() {
         binding.fab2.setOnClickListener {
             val intent = Intent(context, ActivityEachEvent::class.java)
             startActivity(intent)
-            val dm: DisplayMetrics = getApplicationContext<Context>().getResources()
-                    .getDisplayMetrics()
 
-            val width = (dm.widthPixels * 0.9).toInt() // Display 사이즈의 90%
-
-
-            val height = (dm.heightPixels * 0.9).toInt() // Display 사이즈의 90%
-
-
-            getWindow().getAttributes().width = width
-
-            getWindow().getAttributes().height = height
         }
 
 //        eventsAdapter.notifyDataSetChanged()
@@ -377,9 +365,9 @@ class Example5Fragment : Fragment() {
                     }
                     data.clear()
                     data.addAll(newEvent2)
-                    Log.d("dataList", data[0].date)
-                    Log.d("dataList", data[1].date)
-                    Log.d("dataList", data[2].date)
+//                    Log.d("dataList", data[0].date)
+//                    Log.d("dataList", data[1].date)
+//                    Log.d("dataList", data[2].date)
 
 
                 }

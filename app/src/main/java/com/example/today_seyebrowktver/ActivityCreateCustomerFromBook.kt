@@ -1,9 +1,14 @@
 package com.example.today_seyebrowktver
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.util.SparseArray
+import android.util.SparseBooleanArray
 import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.ActivityCreateCustomerFromBookBinding
 
@@ -16,7 +21,6 @@ class ActivityCreateCustomerFromBook : ActivityBase() {
 
     companion object{
         private lateinit var contactList: ArrayList<ContactData>
-        private lateinit var checkboxList: ArrayList<CheckboxData>
     }
 
     private lateinit var contactListForSearch: ArrayList<ContactData>
@@ -24,6 +28,7 @@ class ActivityCreateCustomerFromBook : ActivityBase() {
 
     var isCheckAll = false
     var checkCount = 0
+    val mSelectedCustomers = SparseArray<ContactData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,21 +50,10 @@ class ActivityCreateCustomerFromBook : ActivityBase() {
             finish()
         })
 
-        //all check box
-        binding.checkAll.setOnCheckedChangeListener { buttonView, isChecked ->
-            when (isChecked) {
-                true -> {
-                    mShowShortToast("전체 체크됨")
-                    isCheckAll = true
-                }
-
-                false -> {
-                    mShowShortToast("전체 체크 해제됨")
-                    isCheckAll = false
-                }
-            }
+        binding.selectAllTv.setOnClickListener {
+            Log.d("clicked?", "ok")
+//            selectAllCustomers()
         }
-
 
         //검색기능
         binding.edittext.addTextChangedListener(object : TextWatcher {
@@ -123,16 +117,48 @@ class ActivityCreateCustomerFromBook : ActivityBase() {
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         binding.recyclerview.adapter = adapter
 
+        val dividerDecoration: DividerItemDecoration =
+            DividerItemDecoration(
+                binding.recyclerview.context,
+                LinearLayoutManager(this).orientation
+            )
+
+        binding.recyclerview.addItemDecoration(dividerDecoration)
+
         adapter!!.itemClick = object : RvCustomerBookAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-                binding.recyclerview.getChildAt(position)
+
+                if (adapter.mSelectedCustomers.get(position, false)){
+                    adapter.mSelectedCustomers.put(position,false)
+                    view.setBackgroundColor(Color.WHITE)
+                    mSelectedCustomers.delete(position)
+                    Log.d("selectedCustomers",mSelectedCustomers.size().toString())
+                } else{
+                    adapter.mSelectedCustomers.put(position,true)
+                    view.setBackgroundColor(Color.parseColor("#50ebbdc5"))
+                    mSelectedCustomers.put(position, contactList[position])
+                    Log.d("selectedCustomers",mSelectedCustomers.size().toString())
+                }
             }
         }
     }
 
-    class CheckboxData(
-        var id:Long,
-        var checked:Boolean
-    )
+//    fun selectAllCustomers(){
+//        var position:Int
+//        if (mSelectedCustomers.size() == 0){
+//            for (i in 0 until adapter.mSelectedCustomers.size()){
+//                position = adapter.mSelectedCustomers.keyAt(i)
+//                adapter.mSelectedCustomers.put(position, true)
+//                adapter = RvCustomerBookAdapter(contactList)
+//            }
+//        } else{
+//            for (i in 0 until adapter.mSelectedCustomers.size()){
+//                position = adapter.mSelectedCustomers.keyAt(i)
+//                adapter.mSelectedCustomers.put(position, false)
+//                adapter = RvCustomerBookAdapter(contactList)
+//            }
+//        }
+//
+//    }
 
 }
