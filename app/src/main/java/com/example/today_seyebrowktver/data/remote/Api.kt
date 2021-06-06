@@ -43,4 +43,39 @@ class Api {
 
             })
     }
+
+    fun findPcroom(type: String, keyword: String, callback:(Boolean, Any?) -> Unit){
+        retrofit.create(FirebaseApi::class.java).findPcroom(type, keyword)
+            .enqueue(object : Callback<ArrayList<findPcroomResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<findPcroomResponse>>,
+                    response: Response<ArrayList<findPcroomResponse>>,
+                ) {
+                    callback(true, response.body())
+                }
+
+                override fun onFailure(call: Call<ArrayList<findPcroomResponse>>, t: Throwable) {
+                    callback(false, t.message)
+                }
+
+            })
+    }
+
+    fun idCheck(callback:(Boolean, Any?) -> Unit){
+        retrofit.create(FirebaseApi::class.java).idCheck()
+            .enqueue(object : Callback<idCheckResponse>{
+                override fun onResponse(
+                    call: Call<idCheckResponse>,
+                    response: Response<idCheckResponse>,
+                ) {
+                    callback(true, response.body())
+                }
+
+                override fun onFailure(call: Call<idCheckResponse>, t: Throwable) {
+                    callback(false, t.message)
+                }
+
+            })
+    }
+
 }

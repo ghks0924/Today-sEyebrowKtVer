@@ -20,8 +20,8 @@ class ActivityHomeMenu : AppCompatActivity() {
 
         overridePendingTransition(R.anim.horizon_enter, R.anim.fadeout)
 
-        binding.et1.setText("grade")
-        binding.et2.setText("default")
+        binding.et1.setText("menu")
+        binding.et2.setText("기본")
 
         binding.btn.setOnClickListener {
             Api().loadEvents(
@@ -29,12 +29,27 @@ class ActivityHomeMenu : AppCompatActivity() {
                 binding.et2.text.toString()
             ) { isSuccess, data ->
                 callback(isSuccess, data) {
-
                 }
             }
         }
 
+        binding.pcBtn.setOnClickListener {
+            Api().findPcroom(
+                binding.et1.text.toString(),
+                binding.et2.text.toString()
+            ) { isSuccess, data ->
+                callback(isSuccess, data) {
+                }
+            }
+        }
 
+        binding.idcheckBtn.setOnClickListener {
+            Api().idCheck(
+               ) { isSuccess, data ->
+                callback(isSuccess, data) {
+                }
+            }
+        }
 
 
     }
@@ -59,4 +74,6 @@ class ActivityHomeMenu : AppCompatActivity() {
 
         binding.showTv.text = data.toString()
     }
+
+
 }

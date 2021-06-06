@@ -8,7 +8,17 @@ interface FirebaseApi {
 
     @GET("/loadEvents")
     fun loadEvents(
-        @Query("type") a:String,
-        @Query("keyword") b:String
+        @Query("type") type:String,
+        @Query("keyword") keyword:String
     ): Call<ArrayList<LoadEventsResponse>>
+
+    @GET("/findPcroom")
+    fun findPcroom(
+        @Query("type") type:String,
+        @Query("keyword") keyword: String
+    ): Call<ArrayList<findPcroomResponse>>
+
+    @GET("/idCheck")
+    fun idCheck(
+    ): Call<idCheckResponse>
 }
