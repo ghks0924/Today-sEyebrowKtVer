@@ -6,10 +6,16 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.today_seyebrowktver.databinding.ActivityMainBinding
+import com.example.today_seyebrowktver.extensions.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
@@ -20,6 +26,9 @@ import kotlinx.coroutines.launch
 
 
 class ActivityMain : ActivityBase() {
+
+    private var currentNavController: LiveData<NavController>? = null
+    val navGraphIds = listOf(R.layout.example_5_fragment, R.layout.fragment_accounting, R.layout.fragment_customers, R.layout.fragment_memo, R.layout.fragment_message)
 
     private val REQUEST_CREATE_MEMO = 1111
     private val REQUEST_UPDATE_MEMO = 2222
@@ -82,7 +91,26 @@ class ActivityMain : ActivityBase() {
         setContentView(view)
 
         setStatusBarColor(this, R.color.white)
-        setFragments()//초기 프래그먼트 생성
+//        setFragments()//초기 프래그먼트 생성
+
+        initNavigation()
+
+
+
+    }
+
+
+    private fun initNavigation(){
+//        val controller = binding.bottomNavigation.setupWithNavController(
+//            navGraphIds = navGraphIds,
+//            fragmentManager = supportFragmentManager,
+//            containerId = R.id.main_nav_host,
+//            intent = intent)
+//
+//                    currentNavController = controller
+
+        currentNavController = findNavController(R.id.main_nav_host)
+        binding.bottomNavigation.setupWithNavController(navControler)
 
     }
 
@@ -358,6 +386,9 @@ class ActivityMain : ActivityBase() {
 //            Log.d("Room Memo Check", "title : " + memoList!![i].memoTitle)
 //        }
 //    }
+
+    override fun onSupportNavigateUp() =
+        currentNavController?.value?.navigateUp() ?: false
 
 }
 
