@@ -10,16 +10,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
+import com.example.today_seyebrowktver.ui.ActivityEachCustomer
+import com.example.today_seyebrowktver.ui.ActivityMain
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class FragmentCustomers : Fragment() {

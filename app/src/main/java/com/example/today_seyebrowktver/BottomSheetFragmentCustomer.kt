@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.today_seyebrowktver.ui.ActivityCreateCustomer
+import com.example.today_seyebrowktver.ui.ActivityCreateCustomerFromBook
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 

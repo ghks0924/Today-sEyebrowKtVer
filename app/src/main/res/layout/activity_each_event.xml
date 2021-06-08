@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityEachEvent">
+    tools:context=".ui.ActivityEachEvent">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,7 +60,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/header_relative_layout"
         app:layout_constraintBottom_toTopOf="@+id/bottom_layout">
 

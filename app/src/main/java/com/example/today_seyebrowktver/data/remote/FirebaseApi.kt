@@ -18,7 +18,9 @@ interface FirebaseApi {
         @Query("keyword") keyword: String
     ): Call<ArrayList<findPcroomResponse>>
 
-    @GET("/idCheck")
-    fun idCheck(
-    ): Call<idCheckResponse>
+    @GET("/loadEvents2")
+    fun loadEvents2(
+        @Query("type") type:String,
+        @Query("keyword") keyword:String
+    ): Call<ArrayList<LoadEventsResponse2>>
 }

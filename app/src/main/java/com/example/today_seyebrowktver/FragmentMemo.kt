@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.databinding.FragmentMemoBinding
+import com.example.today_seyebrowktver.ui.ActivityCreateMemo
+import com.example.today_seyebrowktver.ui.ActivityMain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -51,15 +54,18 @@ class FragmentMemo : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity()).get(ViewModelMain::class.java)
         super.onViewCreated(view, savedInstanceState)
 
+        setLayout()
         setData()
-        //memo 추가 메서드
+
+    }
+
+    private fun setLayout() {
         mGoToCreateMemo()
     }
 
     private fun mGoToCreateMemo() {
         binding.fab.setOnClickListener(View.OnClickListener {
-            val intent = Intent(context, ActivityCreateMemo::class.java)
-            startActivityForResult(intent, REQUEST_CREATE_MEMO)
+            (activity as ActivityMain).mGoToCreateMemoActivity()
         })
     }//memo 추가 메서드
 
@@ -111,7 +117,7 @@ class FragmentMemo : Fragment() {
         }
 
 
-        binding.recyclerview.layoutManager = GridLayoutManager(context, 2)
+        binding.recyclerview.layoutManager = GridLayoutManager(context,2)
         binding.recyclerview.adapter = adapter
     } //RecyclerView 세팅 메서드
 
@@ -151,34 +157,36 @@ class FragmentMemo : Fragment() {
             }
 
             REQUEST_UPDATE_MEMO -> {
-                //ActivirtCreateMemo에서 넘겨준 데이터 받아오기
-                val memoDate: String = data!!.getStringExtra("memoDate")
-                val prevDate: String = data!!.getStringExtra("prevDate")
-                val memoTitle: String = data!!.getStringExtra("memoTitle")
-                val memoContent: String = data!!.getStringExtra("memoContent")
-
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val memoData: MemoData = mainViewModel.findMemoByDate(prevDate) //이전 메모 객체 찾기
-                    mainViewModel.delete(memoData) //이전 메모 지우고
-                    mainViewModel.insert(MemoData(memoDate, memoTitle, memoContent)) //새로 생성
-
-                }
-
-                mainViewModel.getAll().observe(activity as ActivityMain, Observer { memos ->
-                    var tempMemoDataList = ArrayList<MemoData>()
-                    for (i in 0 until memos.size) {
-                        tempMemoDataList.add(
-                            MemoData(
-                                memos[i].memoDate,
-                                memos[i].memoTitle,
-                                memos[i].memoContent
-                            )
-                        )
-                    }
-                    memoDataList.clear()
-                    memoDataList.addAll(tempMemoDataList)
-
-                })
+//                //ActivirtCreateMemo에서 넘겨준 데이터 받아오기
+//                val memoDate: String = data!!.getStringExtra("memoDate")
+//                val prevDate: String = data!!.getStringExtra("prevDate")
+//                val memoTitle: String = data!!.getStringExtra("memoTitle")
+//                val memoContent: String = data!!.getStringExtra("memoContent")
+//
+//                Log.d("memoCheck", "fragment : " + memoDate)
+//
+//                lifecycleScope.launch(Dispatchers.IO) {
+//                    val memoData: MemoData = mainViewModel.findMemoByDate(prevDate) //이전 메모 객체 찾기
+//                    mainViewModel.delete(memoData) //이전 메모 지우고
+//                    mainViewModel.insert(MemoData(memoDate, memoTitle, memoContent)) //새로 생성
+//
+//                }
+//
+//                mainViewModel.getAll().observe(activity as ActivityMain, Observer { memos ->
+//                    var tempMemoDataList = ArrayList<MemoData>()
+//                    for (i in 0 until memos.size) {
+//                        tempMemoDataList.add(
+//                            MemoData(
+//                                memos[i].memoDate,
+//                                memos[i].memoTitle,
+//                                memos[i].memoContent
+//                            )
+//                        )
+//                    }
+//                    memoDataList.clear()
+//                    memoDataList.addAll(tempMemoDataList)
+//
+//                })
 
             }
         }

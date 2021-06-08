@@ -61,17 +61,17 @@ class Api {
             })
     }
 
-    fun idCheck(callback:(Boolean, Any?) -> Unit){
-        retrofit.create(FirebaseApi::class.java).idCheck()
-            .enqueue(object : Callback<idCheckResponse>{
+    fun loadEvents2 (type: String, keyword: String, callback:(Boolean, Any?) -> Unit){
+        retrofit.create(FirebaseApi::class.java).loadEvents2(type, keyword)
+            .enqueue(object : Callback<ArrayList<LoadEventsResponse2>>{
                 override fun onResponse(
-                    call: Call<idCheckResponse>,
-                    response: Response<idCheckResponse>,
+                    call: Call<ArrayList<LoadEventsResponse2>>,
+                    response: Response<ArrayList<LoadEventsResponse2>>,
                 ) {
                     callback(true, response.body())
                 }
 
-                override fun onFailure(call: Call<idCheckResponse>, t: Throwable) {
+                override fun onFailure(call: Call<ArrayList<LoadEventsResponse2>>, t: Throwable) {
                     callback(false, t.message)
                 }
 

@@ -1,17 +1,13 @@
 package com.example.today_seyebrowktver
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.today_seyebrowktver.databinding.FragmentHomeBinding
+import com.example.today_seyebrowktver.ui.ActivityHomeMenu
 import java.util.*
 
 class FragmentHome : Fragment() {

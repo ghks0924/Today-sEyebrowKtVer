@@ -16,52 +16,52 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer">
-        <activity android:name=".ActivityMonthlyPerformance"></activity>
-        <activity android:name=".ActivityDetailedPerformance" />
+        <activity android:name=".ui.ActivityMonthlyPerformance"></activity>
+        <activity android:name=".ui.ActivityDetailedPerformance" />
         <activity
-            android:name=".ActivityEditCustomer"
+            android:name=".ui.ActivityEditCustomer"
             android:screenOrientation="portrait" />
-        <activity android:name=".ActivityEachEvent"
+        <activity android:name=".ui.ActivityEachEvent"
             android:theme="@style/popupTheme"/>
-        <activity android:name=".ActivityEachCustomer" />
+        <activity android:name=".ui.ActivityEachCustomer" />
         <activity
-            android:name=".ActivitySelectShopType"
+            android:name=".ui.ActivitySelectShopType"
             android:theme="@style/popupTheme" />
         <activity
-            android:name=".ActivitySelectRegion"
+            android:name=".ui.ActivitySelectRegion"
             android:theme="@style/popupTheme" />
-        <activity android:name=".ActivityFindPassword" />
-        <activity android:name=".ActivityFindId" />
-        <activity android:name=".ActivityUpdateMemo" />
-        <activity android:name=".ActivitySendMessage" />
-        <activity android:name=".ActivityCreateMessage" />
-        <activity android:name=".ActivityCreateMemo" />
-        <activity android:name=".ActivityCreateCustomerFromBook">
+        <activity android:name=".ui.ActivityFindPassword" />
+        <activity android:name=".ui.ActivityFindId" />
+        <activity android:name=".ui.ActivityUpdateMemo" />
+        <activity android:name=".ui.ActivitySendMessage" />
+        <activity android:name=".ui.ActivityCreateMessage" />
+        <activity android:name=".ui.ActivityCreateMemo" />
+        <activity android:name=".ui.ActivityCreateCustomerFromBook">
 
         </activity>
-        <activity android:name=".ActivityJoin2" />
-        <activity android:name=".ActivityJoin1" />
-        <activity android:name=".ActivityJoin0" />
-        <activity android:name=".ActivityLogin"></activity>
-        <activity android:name=".ActivityLoading">
+        <activity android:name=".ui.ActivityJoin2" />
+        <activity android:name=".ui.ActivityJoin1" />
+        <activity android:name=".ui.ActivityJoin0" />
+        <activity android:name=".ui.ActivityLogin"></activity>
+        <activity android:name=".ui.ActivityLoading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityLoadCustomers" />
-        <activity android:name=".ActivityCreateEventSkipCus" />
-        <activity android:name=".ActivityCreateEventOldCus" />
-        <activity android:name=".ActivityCreateEventNewCus" />
-        <activity android:name=".ActivityCreateCustomer" />
-        <activity android:name=".ActivityEditMessageGroup" />
-        <activity android:name=".ActivityHomeMenu" />
+        <activity android:name=".ui.ActivityLoadCustomers" />
+        <activity android:name=".ui.ActivityCreateEventSkipCus" />
+        <activity android:name=".ui.ActivityCreateEventOldCus" />
+        <activity android:name=".ui.ActivityCreateEventNewCus" />
+        <activity android:name=".ui.ActivityCreateCustomer" />
+        <activity android:name=".ui.ActivityEditMessageGroup" />
+        <activity android:name=".ui.ActivityHomeMenu" />
         <activity
-            android:name=".ActivityBase"
+            android:name=".ui.ActivityBase"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
-        <activity android:name=".ActivityMain" />
+        <activity android:name=".ui.ActivityMain" />
     </application>
 
 </manifest>

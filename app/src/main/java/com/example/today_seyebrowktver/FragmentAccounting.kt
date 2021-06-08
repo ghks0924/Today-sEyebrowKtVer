@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.today_seyebrowktver.databinding.FragmentAccountingBinding
+import com.example.today_seyebrowktver.ui.ActivityDetailedPerformance
+import com.example.today_seyebrowktver.ui.ActivityMonthlyPerformance
 
 class FragmentAccounting:Fragment() {
 

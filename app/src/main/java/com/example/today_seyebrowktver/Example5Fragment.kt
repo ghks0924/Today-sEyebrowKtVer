@@ -1,9 +1,7 @@
 package com.example.today_seyebrowktver
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -16,6 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.today_seyebrowktver.databinding.*
+import com.example.today_seyebrowktver.ui.ActivityEachEvent
+import com.example.today_seyebrowktver.ui.ActivityHomeMenu
+import com.example.today_seyebrowktver.ui.ActivityMain
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -137,8 +138,11 @@ class Example5Fragment : Fragment() {
         })
 
         binding.fab2.setOnClickListener {
-            val intent = Intent(context, ActivityEachEvent::class.java)
-            startActivity(intent)
+//            val intent = Intent(context, ActivityEachEvent::class.java)
+//            startActivity(intent)
+
+            val dlg = DialogEachEvent(requireContext())
+            dlg.start(requireContext())
 
         }
 
