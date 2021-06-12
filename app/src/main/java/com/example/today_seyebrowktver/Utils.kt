@@ -1,6 +1,6 @@
 package com.example.today_seyebrowktver
 
-import android.provider.CalendarContract
+import com.example.today_seyebrowktver.ui.Flight
 import java.time.YearMonth
 
 private typealias Airport = Flight.Airport

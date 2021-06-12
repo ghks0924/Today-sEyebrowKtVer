@@ -1,4 +1,4 @@
-package com.example.today_seyebrowktver
+package com.example.today_seyebrowktver.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,10 +13,9 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.today_seyebrowktver.*
+import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.databinding.*
-import com.example.today_seyebrowktver.ui.ActivityEachEvent
-import com.example.today_seyebrowktver.ui.ActivityHomeMenu
-import com.example.today_seyebrowktver.ui.ActivityMain
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.kizitonwose.calendarview.model.CalendarDay

@@ -2,15 +2,28 @@ package com.example.today_seyebrowktver.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.today_seyebrowktver.DialogCreateMessageGroup
+import com.example.today_seyebrowktver.DialogEachEvent
+import com.example.today_seyebrowktver.DialogShowMessageGroup
+import com.example.today_seyebrowktver.MessageGroupData
 import com.example.today_seyebrowktver.databinding.ActivityCreateMessageBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ActivityCreateMessage : ActivityBase() {
 
     private lateinit var binding: ActivityCreateMessageBinding
+
+    val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private lateinit var uid: String
+
+    private var messageGroupList = ArrayList<MessageGroupData>()
 
     lateinit var tempType : String
     lateinit var tempTitle : String
@@ -20,7 +33,37 @@ class ActivityCreateMessage : ActivityBase() {
         binding = ActivityCreateMessageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        getGroupMessageData()
         setLayout()
+    }
+
+    private fun getGroupMessageData() {
+        val user = mAuth.currentUser
+        uid = user.uid
+
+        database.child("users").child(uid).child("messageGroups")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val newData: ArrayList<MessageGroupData> = ArrayList()
+                    for (ds in snapshot.children) {
+                        val messageGroupData: MessageGroupData? = ds.getValue(MessageGroupData::class.java)
+                        if (messageGroupData != null) {
+                            newData.add(messageGroupData)
+                            Log.d("messageGroup", messageGroupData.groupName)
+                            Log.d("messageGroup", messageGroupData.order.toString())
+                            Log.d("messageGroup", messageGroupData.numberOfMessages.toString())
+                            Log.d("messageGroup", messageGroupData.savedate)
+                        }
+                    }
+                    messageGroupList.clear()
+                    messageGroupList.addAll(newData)
+
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("messageGroup", error.message)
+                }
+
+            })
     }
 
     private fun setLayout() {
@@ -30,13 +73,17 @@ class ActivityCreateMessage : ActivityBase() {
             finish()
         })
 
-        binding.selectTypeTv.setOnClickListener(View.OnClickListener {
-            Toast.makeText(applicationContext, binding.selectTypeTv.text, Toast.LENGTH_SHORT).show()
+        binding.typeCardview.setOnClickListener(View.OnClickListener {
+            val dlg = DialogCreateMessageGroup(applicationContext)
+            dlg.start(applicationContext)
+
+
+//            Toast.makeText(applicationContext, binding.typeCardview.text, Toast.LENGTH_SHORT).show()
         })
 
         //save button event
         binding.saveMessageButton.setOnClickListener(View.OnClickListener {
-            tempType = binding.selectTypeTv.text.toString().trim()
+//            tempType = binding.selectTypeTv.text.toString().trim()
             tempTitle = binding.messageTitleEt.text.toString().trim() //제목
             tempContent = binding.messageContentEt.text.toString().trim()
 

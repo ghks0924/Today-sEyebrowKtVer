@@ -1,4 +1,4 @@
-package com.example.today_seyebrowktver
+package com.example.today_seyebrowktver.ui
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -13,9 +13,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.today_seyebrowktver.CustomersData
+import com.example.today_seyebrowktver.RvCustomerAdapter
 import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
-import com.example.today_seyebrowktver.ui.ActivityEachCustomer
-import com.example.today_seyebrowktver.ui.ActivityMain
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 

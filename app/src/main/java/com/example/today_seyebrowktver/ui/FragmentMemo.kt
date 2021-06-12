@@ -1,10 +1,9 @@
-package com.example.today_seyebrowktver
+package com.example.today_seyebrowktver.ui
 
 import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.today_seyebrowktver.MemoData
+import com.example.today_seyebrowktver.RvMemoAdapter
+import com.example.today_seyebrowktver.ViewModelMain
 import com.example.today_seyebrowktver.databinding.FragmentMemoBinding
-import com.example.today_seyebrowktver.ui.ActivityCreateMemo
-import com.example.today_seyebrowktver.ui.ActivityMain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -19,8 +19,7 @@
         <activity android:name=".ui.ActivityMonthlyPerformance"></activity>
         <activity android:name=".ui.ActivityDetailedPerformance" />
         <activity
-            android:name=".ui.ActivityEditCustomer"
-            android:screenOrientation="portrait" />
+            android:name=".ui.ActivityEditCustomer"/>
         <activity android:name=".ui.ActivityEachEvent"
             android:theme="@style/popupTheme"/>
         <activity android:name=".ui.ActivityEachCustomer" />
@@ -34,7 +33,9 @@
         <activity android:name=".ui.ActivityFindId" />
         <activity android:name=".ui.ActivityUpdateMemo" />
         <activity android:name=".ui.ActivitySendMessage" />
-        <activity android:name=".ui.ActivityCreateMessage" />
+        <activity android:name=".ui.ActivityCreateMessage">
+
+        </activity>
         <activity android:name=".ui.ActivityCreateMemo" />
         <activity android:name=".ui.ActivityCreateCustomerFromBook">
 

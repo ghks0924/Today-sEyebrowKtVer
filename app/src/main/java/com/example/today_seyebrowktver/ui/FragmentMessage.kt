@@ -1,4 +1,4 @@
-package com.example.today_seyebrowktver
+package com.example.today_seyebrowktver.ui
 
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
@@ -12,10 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.databinding.FragmentMessageBinding
-import com.example.today_seyebrowktver.ui.ActivityCreateMessage
-import com.example.today_seyebrowktver.ui.ActivityEditMessageGroup
-import com.example.today_seyebrowktver.ui.ActivityMain
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +42,8 @@ class FragmentMessage : Fragment() {
     //RecyclerView를 위한 변수들
     private var messageDataList = ArrayList<MessageData>()
     private var adapter: RvMessageAdapter? = null
+
+    private lateinit var messagesByGroupName : LinkedHashMap<String, MutableList<MessageData>>
 
     private lateinit var mainViewModel: ViewModelMain
     private lateinit var tempType: String
@@ -90,7 +91,12 @@ class FragmentMessage : Fragment() {
                     messageGroupList.clear()
                     messageGroupList.addAll(newData)
 
-                    binding.messageGroupTv.text = messageGroupList[0].groupName
+                    binding.messageGroupTv.text = messageGroupList[0].groupName + "("+messageGroupList[0].numberOfMessages+")"
+
+                    //메세지 데이터 받아오기
+                    setMessagData()
+
+
                     setGroupRv()
 
                 }
@@ -99,27 +105,46 @@ class FragmentMessage : Fragment() {
                     Log.e("messageGroup", error.message)
                 }
 
+
             })
 
 
-//        mainViewModel.getAllMessages().observe(activity as ActivityMain) { messages ->
-//            var tempMessageDataList = ArrayList<MessageData>()
-//            for (i in 0 until messages.size) {
-//                tempMessageDataList.add(
-//                    MessageData(
-//                        messages[i].messageType,
-//                        messages[i].messageTitle,
-//                        messages[i].messageContent,
-//                        messages[i].messageDate
-//                    )
-//                )
-//            }
-//
-//            messageDataList.clear()
-//            messageDataList.addAll(tempMessageDataList)
-//
-//            setRv()
-//        }
+    }
+
+    private fun setMessagData() {
+        database.child("users").child(uid).child("messageGroups")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val newData: ArrayList<MessageGroupData> = ArrayList()
+                    for (ds in snapshot.children) {
+                        val messageGroupData: MessageGroupData? = ds.getValue(MessageGroupData::class.java)
+                        if (messageGroupData != null) {
+                            newData.add(messageGroupData)
+                            Log.d("messageGroup", messageGroupData.groupName)
+                            Log.d("messageGroup", messageGroupData.order.toString())
+                            Log.d("messageGroup", messageGroupData.numberOfMessages.toString())
+                            Log.d("messageGroup", messageGroupData.savedate)
+                        }
+                    }
+                    messageGroupList.clear()
+                    messageGroupList.addAll(newData)
+
+                    binding.messageGroupTv.text = messageGroupList[0].groupName + "("+messageGroupList[0].numberOfMessages+")"
+
+                    //메세지 데이터 받아오기
+                    setMessagData()
+
+
+                    setGroupRv()
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("messageGroup", error.message)
+                }
+
+
+            })
 
 
     }
@@ -127,7 +152,7 @@ class FragmentMessage : Fragment() {
     private fun setGroupRv(){
         adapter2 = RvMessageGroupAdapter(messageGroupList)
 
-        binding.groupRv.layoutManager = GridLayoutManager(context, 2)
+        binding.groupRv.layoutManager = LinearLayoutManager(context)
         binding.groupRv.adapter = adapter2
 
         setOnItemClickListener()
@@ -188,7 +213,7 @@ class FragmentMessage : Fragment() {
 //        binding.reservMessages.layoutManager = LinearLayoutManager(context)
 //        binding.reservMessages.adapter = adapter
 //    }
-
+//
     private fun setLayout() {
         //fab click event
         binding.fab.setOnClickListener(View.OnClickListener {
@@ -222,7 +247,7 @@ class FragmentMessage : Fragment() {
 //            intent.type = "vnd.android-dir/mms-sms"
 //            startActivity(intent)
 //        })
-
+//
 //        binding.eventFixedLayout.setOnClickListener {
 //            if (binding.eventHidenView.visibility == View.VISIBLE) {
 ////                TransitionManager.beginDelayedTransition(binding.cardview,
@@ -278,7 +303,7 @@ class FragmentMessage : Fragment() {
 //                binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
 //            }
 //        }
-
+//
         binding.moreIcon.setOnClickListener {
             ShowAlertDialogWithListview()
         }
@@ -355,29 +380,6 @@ class FragmentMessage : Fragment() {
                 val intent = Intent(context, ActivityEditMessageGroup::class.java)
                 startActivity(intent)
 
-
-//                val dlg = DialogCreateMessageGroup(requireActivity())
-//
-//                dlg.setOnOKClickedListener { content ->
-//                    Log.d("messageGroup", "추가가가가가가")
-//
-//                }
-//
-//                dlg.setOnCanCelClickedListener {
-//                    Log.d("messageGroup", "취소소소소")
-//
-//                }
-//
-//
-//                dlg.start(requireContext())
-//
-//                // 키보드 띄우기
-//                val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-//                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-
-//                val uri = Uri.parse("tel:${eachCustomer.customerNumber}")
-//                val intent = Intent(Intent.ACTION_DIAL, uri)
-//                startActivity(intent)
             }  else {
                 val intent = Intent(context, ActivityCreateMessage::class.java)
                 startActivity(intent)
