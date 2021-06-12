@@ -13,7 +13,8 @@ data class MessageData(
     @ColumnInfo(name = "content") var messageContent: String,
     @ColumnInfo(name = "date") var messageDate: String
 
-) {
+)
+{
     @PrimaryKey(autoGenerate = true)
     var idx: Int = 0
 }

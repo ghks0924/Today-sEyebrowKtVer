@@ -6,11 +6,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
-import com.example.today_seyebrowktver.DialogCreateMessageGroup
-import com.example.today_seyebrowktver.DialogEachEvent
-import com.example.today_seyebrowktver.DialogShowMessageGroup
-import com.example.today_seyebrowktver.MessageGroupData
+import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.databinding.ActivityCreateMessageBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.text.SimpleDateFormat
@@ -25,9 +23,9 @@ class ActivityCreateMessage : ActivityBase() {
 
     private var messageGroupList = ArrayList<MessageGroupData>()
 
-    lateinit var tempType : String
-    lateinit var tempTitle : String
-    lateinit var tempContent : String
+    lateinit var tempType: String
+    lateinit var tempTitle: String
+    lateinit var tempContent: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateMessageBinding.inflate(layoutInflater)
@@ -46,7 +44,8 @@ class ActivityCreateMessage : ActivityBase() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val newData: ArrayList<MessageGroupData> = ArrayList()
                     for (ds in snapshot.children) {
-                        val messageGroupData: MessageGroupData? = ds.getValue(MessageGroupData::class.java)
+                        val messageGroupData: MessageGroupData? =
+                            ds.getValue(MessageGroupData::class.java)
                         if (messageGroupData != null) {
                             newData.add(messageGroupData)
                             Log.d("messageGroup", messageGroupData.groupName)
@@ -59,6 +58,7 @@ class ActivityCreateMessage : ActivityBase() {
                     messageGroupList.addAll(newData)
 
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("messageGroup", error.message)
                 }
@@ -74,8 +74,11 @@ class ActivityCreateMessage : ActivityBase() {
         })
 
         binding.typeCardview.setOnClickListener(View.OnClickListener {
-            val dlg = DialogCreateMessageGroup(applicationContext)
-            dlg.start(applicationContext)
+//            val dlg = DialogCreateMessageGroup(this)
+//            dlg.start(this)
+
+            val dlg2 = DialogShowMessageGroup(this)
+            dlg2.start(this, messageGroupList)
 
 
 //            Toast.makeText(applicationContext, binding.typeCardview.text, Toast.LENGTH_SHORT).show()
@@ -87,7 +90,7 @@ class ActivityCreateMessage : ActivityBase() {
             tempTitle = binding.messageTitleEt.text.toString().trim() //제목
             tempContent = binding.messageContentEt.text.toString().trim()
 
-            if (vaildCheck()){
+            if (vaildCheck()) {
                 // 현재시간을 msec 으로 구한다.
                 val now = System.currentTimeMillis()
                 // 현재시간을 date 변수에 저장한다.
@@ -97,6 +100,21 @@ class ActivityCreateMessage : ActivityBase() {
                 // nowDate 변수에 값을 저장한다.
                 val formatDate = sdfNow.format(date) //시간
 
+                val key = database.child("users").child(uid).child("messages").push().key
+                val newMessage = MessageData(
+                    "예약안내", tempTitle, tempContent, formatDate)
+
+                database.child("users").child(uid).child("messages").child(key!!)
+                    .setValue(newMessage).addOnSuccessListener {
+                       mShowShortToast("새로운 메세지가 생성되었습니다")
+
+                        finish()
+
+                    }.addOnFailureListener {
+                        Log.d("errorOfCustomerSave", it.message)
+                    }
+
+
                 val intent = Intent()
                 intent.putExtra("type", "문자유형")
                 intent.putExtra("title", tempTitle)
@@ -104,26 +122,28 @@ class ActivityCreateMessage : ActivityBase() {
                 intent.putExtra("date", formatDate)
                 setResult(RESULT_OK, intent)
                 finish()
+
+
             }
         })
     }
 
-    private fun vaildCheck() : Boolean{
+    private fun vaildCheck(): Boolean {
 //        if (tempType.isNullOrEmpty()){
 //            mShowShortToast("문자유형을 선택해주세요")
 //            return false
 //        }
 
-        if (tempTitle.isNullOrEmpty()){
+        if (tempTitle.isNullOrEmpty()) {
             mShowShortToast("문자 제목을 입력해주세요")
             return false
         }
 
-        if (tempContent.isNullOrEmpty()){
+        if (tempContent.isNullOrEmpty()) {
             mShowShortToast("문자 내용을 입력해주세요")
             return false
         }
 
-        return  true
+        return true
     }
 }

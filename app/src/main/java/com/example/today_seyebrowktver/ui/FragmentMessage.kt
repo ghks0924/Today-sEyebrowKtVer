@@ -91,10 +91,10 @@ class FragmentMessage : Fragment() {
                     messageGroupList.clear()
                     messageGroupList.addAll(newData)
 
-                    binding.messageGroupTv.text = messageGroupList[0].groupName + "("+messageGroupList[0].numberOfMessages+")"
+                    binding.messageGroupTv.text = messageGroupList[0].groupName + " ("+messageGroupList[0].numberOfMessages+")"
 
                     //메세지 데이터 받아오기
-                    setMessagData()
+//                    setMessagData()
 
 
                     setGroupRv()
@@ -129,10 +129,8 @@ class FragmentMessage : Fragment() {
                     messageGroupList.clear()
                     messageGroupList.addAll(newData)
 
-                    binding.messageGroupTv.text = messageGroupList[0].groupName + "("+messageGroupList[0].numberOfMessages+")"
+                    binding.messageGroupTv.text = messageGroupList[0].groupName + " ("+messageGroupList[0].numberOfMessages+")"
 
-                    //메세지 데이터 받아오기
-                    setMessagData()
 
 
                     setGroupRv()
@@ -230,7 +228,7 @@ class FragmentMessage : Fragment() {
             }
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 Log.d("menuItem", it.itemId.toString())
-                binding.messageGroupTv.text = messageGroupList[it.itemId].groupName
+                binding.messageGroupTv.text = messageGroupList[it.itemId].groupName + " ("+messageGroupList[it.itemId].numberOfMessages+")"
                 return@OnMenuItemClickListener true
             })
 
