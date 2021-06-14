@@ -87,6 +87,7 @@ class ActivityCreateMessage : ActivityBase() {
         //save button event
         binding.saveMessageButton.setOnClickListener(View.OnClickListener {
 //            tempType = binding.selectTypeTv.text.toString().trim()
+            tempType = "리터치"
             tempTitle = binding.messageTitleEt.text.toString().trim() //제목
             tempContent = binding.messageContentEt.text.toString().trim()
 
@@ -102,7 +103,7 @@ class ActivityCreateMessage : ActivityBase() {
 
                 val key = database.child("users").child(uid).child("messages").push().key
                 val newMessage = MessageData(
-                    "예약안내", tempTitle, tempContent, formatDate)
+                    tempType, tempTitle, tempContent, formatDate)
 
                 database.child("users").child(uid).child("messages").child(key!!)
                     .setValue(newMessage).addOnSuccessListener {
@@ -114,18 +115,45 @@ class ActivityCreateMessage : ActivityBase() {
                         Log.d("errorOfCustomerSave", it.message)
                     }
 
+                checkMessagesNum()
 
-                val intent = Intent()
-                intent.putExtra("type", "문자유형")
-                intent.putExtra("title", tempTitle)
-                intent.putExtra("content", tempContent)
-                intent.putExtra("date", formatDate)
-                setResult(RESULT_OK, intent)
-                finish()
+
+
+
+
+//                val intent = Intent()
+//                intent.putExtra("type", "문자유형")
+//                intent.putExtra("title", tempTitle)
+//                intent.putExtra("content", tempContent)
+//                intent.putExtra("date", formatDate)
+//                setResult(RESULT_OK, intent)
+//                finish()
 
 
             }
         })
+    }
+
+    private fun checkMessagesNum(){
+        database.child("users").child(uid).child("messages").orderByChild("messageType").equalTo(tempType)
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children
+                    Log.d("checkMessagesNumber", snapshot.children.toString())
+
+                    database.child("users").child(uid).child("messagesGroup").child(tempType).child("numberOfMessages")
+                        .setValue(snapshot.children).addOnSuccessListener {
+                            Log.d("updateMessagesNumber", "success")
+                        }.addOnFailureListener {
+                            Log.d("updateMessagesNumber", "fail")
+                        }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
     }
 
     private fun vaildCheck(): Boolean {

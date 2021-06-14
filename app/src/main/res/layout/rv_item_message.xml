@@ -8,8 +8,8 @@
     android:clickable="true"
     app:rippleColor="@color/weakGrey"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardElevation="0dp"
-    android:backgroundTint="@color/mainGreen"
+    app:cardElevation="2dp"
+    android:backgroundTint="@color/white"
     android:id="@+id/message_item_cardview"
     app:cardCornerRadius="10dp">
 
@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             tools:text="메모 제목"
-            android:textColor="@color/white"/>
+            android:textColor="@color/mainBlue"/>
 
         <TextView
             android:id="@+id/message_date"
@@ -43,7 +43,7 @@
             android:fontFamily="@font/notosanscjkkrregular"
             android:includeFontPadding="false"
 
-            android:textColor="@color/white"
+            android:textColor="@color/mainBlue"
             tools:text="15시 50분"
             android:textSize="12sp"/>
 
@@ -59,7 +59,7 @@
             android:fontFamily="@font/notosanscjkkrbold"
             android:includeFontPadding="false"
             tools:text="메모내용"
-            android:textColor="@color/white"/>
+            android:textColor="@color/mainBlue"/>
 
         <TextView
             android:id="@+id/message_type_tv"
@@ -73,7 +73,7 @@
             android:fontFamily="@font/notosanscjkkrbold"
             android:includeFontPadding="false"
             tools:text="문자 유형"
-            android:textColor="@color/white"/>
+            android:textColor="@color/mainBlue"/>
 
 
 

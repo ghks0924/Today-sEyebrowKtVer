@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.databinding.FragmentMessageBinding
@@ -36,6 +37,7 @@ class FragmentMessage : Fragment() {
     //messageGroup 서버에서 받아오는 변수들
     private var adapter2: RvMessageGroupAdapter? = null
     private var messageGroupList = ArrayList<MessageGroupData>()
+    private var mapByGroup: LinkedHashMap<String, MutableList<EachMessageData>>?= null
 
     //RecyclerView를 위한 변수들
     private var messageDataList = ArrayList<EachMessageData>()
@@ -90,17 +92,13 @@ class FragmentMessage : Fragment() {
                             Log.d("messageGroup", messageGroupData.savedate)
                         }
                     }
+
                     messageGroupList.clear()
                     messageGroupList.addAll(newData)
-
-                    binding.messageGroupTv.text =
-                        messageGroupList[0].groupName + " (" + messageGroupList[0].numberOfMessages + ")"
-
-                    //최초 초가화일때는 자동으로 제일 첫 번째 그릅 선택
-                    selectedMessageType = messageGroupList[0].groupName
+                    messageGroupList.sortBy {it.order}
 
                     //메세지 데이터 받아오기
-//                    setMessagData()
+                    setMessagData()
 
 
 //                    setGroupRv()
@@ -130,6 +128,16 @@ class FragmentMessage : Fragment() {
                     }
                     messageDataList.clear()
                     messageDataList.addAll(newData)
+
+                    //그룹별로 정리
+                    mapByGroup = messageDataList.groupByTo(LinkedHashMap(),
+                        { it.messageType })
+
+                    binding.messageGroupTv.text =
+                        messageGroupList[0].groupName + " (" + messageGroupList[0].numberOfMessages + ")"
+
+                    //최초 초가화일때는 자동으로 제일 첫 번째 그릅 선택
+                    selectedMessageType = messageGroupList[0].groupName
 
                     setRv()
 
@@ -215,7 +223,7 @@ class FragmentMessage : Fragment() {
             }
         }
 
-        binding.messagesRv.layoutManager = LinearLayoutManager(context)
+        binding.messagesRv.layoutManager = GridLayoutManager(context,2)
         binding.messagesRv.adapter = adapter
     }
 
