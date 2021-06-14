@@ -87,9 +87,11 @@ class ActivityCreateMessage : ActivityBase() {
         //save button event
         binding.saveMessageButton.setOnClickListener(View.OnClickListener {
 //            tempType = binding.selectTypeTv.text.toString().trim()
-            tempType = "리터치"
+            tempType = "예약안내"
             tempTitle = binding.messageTitleEt.text.toString().trim() //제목
             tempContent = binding.messageContentEt.text.toString().trim()
+
+
 
             if (vaildCheck()) {
                 // 현재시간을 msec 으로 구한다.
@@ -102,20 +104,21 @@ class ActivityCreateMessage : ActivityBase() {
                 val formatDate = sdfNow.format(date) //시간
 
                 val key = database.child("users").child(uid).child("messages").push().key
-                val newMessage = MessageData(
-                    tempType, tempTitle, tempContent, formatDate)
+                val newMessage = EachMessageData(
+                    tempType, tempTitle, tempContent, formatDate, key.toString())
 
                 database.child("users").child(uid).child("messages").child(key!!)
                     .setValue(newMessage).addOnSuccessListener {
                        mShowShortToast("새로운 메세지가 생성되었습니다")
 
+                        checkMessagesNum()
                         finish()
 
                     }.addOnFailureListener {
                         Log.d("errorOfCustomerSave", it.message)
                     }
 
-                checkMessagesNum()
+
 
 
 
@@ -138,11 +141,11 @@ class ActivityCreateMessage : ActivityBase() {
         database.child("users").child(uid).child("messages").orderByChild("messageType").equalTo(tempType)
             .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.children
-                    Log.d("checkMessagesNumber", snapshot.children.toString())
+                    snapshot.childrenCount
+                    Log.d("checkMessagesNumber", snapshot.childrenCount.toString())
 
-                    database.child("users").child(uid).child("messagesGroup").child(tempType).child("numberOfMessages")
-                        .setValue(snapshot.children).addOnSuccessListener {
+                    database.child("users").child(uid).child("messageGroups").child(tempType).child("numberOfMessages")
+                        .setValue(snapshot.childrenCount.toString()).addOnSuccessListener {
                             Log.d("updateMessagesNumber", "success")
                         }.addOnFailureListener {
                             Log.d("updateMessagesNumber", "fail")

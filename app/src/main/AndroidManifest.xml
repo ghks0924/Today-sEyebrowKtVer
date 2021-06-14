@@ -16,12 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer">
-        <activity android:name=".ui.ActivityMonthlyPerformance"></activity>
+        <activity android:name=".ui.ActivityUpdateMessage"></activity>
+        <activity android:name=".ui.ActivityMonthlyPerformance" />
         <activity android:name=".ui.ActivityDetailedPerformance" />
+        <activity android:name=".ui.ActivityEditCustomer" />
         <activity
-            android:name=".ui.ActivityEditCustomer"/>
-        <activity android:name=".ui.ActivityEachEvent"
-            android:theme="@style/popupTheme"/>
+            android:name=".ui.ActivityEachEvent"
+            android:theme="@style/popupTheme" />
         <activity android:name=".ui.ActivityEachCustomer" />
         <activity
             android:name=".ui.ActivitySelectShopType"
@@ -33,17 +34,13 @@
         <activity android:name=".ui.ActivityFindId" />
         <activity android:name=".ui.ActivityUpdateMemo" />
         <activity android:name=".ui.ActivitySendMessage" />
-        <activity android:name=".ui.ActivityCreateMessage">
-
-        </activity>
+        <activity android:name=".ui.ActivityCreateMessage"></activity>
         <activity android:name=".ui.ActivityCreateMemo" />
-        <activity android:name=".ui.ActivityCreateCustomerFromBook">
-
-        </activity>
+        <activity android:name=".ui.ActivityCreateCustomerFromBook"></activity>
         <activity android:name=".ui.ActivityJoin2" />
         <activity android:name=".ui.ActivityJoin1" />
         <activity android:name=".ui.ActivityJoin0" />
-        <activity android:name=".ui.ActivityLogin"></activity>
+        <activity android:name=".ui.ActivityLogin" />
         <activity android:name=".ui.ActivityLoading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

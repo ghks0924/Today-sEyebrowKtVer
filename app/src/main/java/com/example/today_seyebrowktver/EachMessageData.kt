@@ -7,5 +7,6 @@ class EachMessageData (
     var messageType: String = "",
     var messageTitle : String = "",
     var messageContent : String = "",
-    var messageDate : String = ""
+    var messageDate : String = "",
+    var keyValue : String = ""
     )

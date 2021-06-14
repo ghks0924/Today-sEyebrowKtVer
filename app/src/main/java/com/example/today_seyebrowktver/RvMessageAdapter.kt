@@ -72,9 +72,7 @@ class RvMessageAdapter : RecyclerView.Adapter<RvMessageAdapter.ViewHolder> {
             val messageDate = sdfNow.format(date)
 
 
-            binding.messageTypeTv.text = EachMessageData.messageType
             binding.messageTitle.text = EachMessageData.messageTitle
-            binding.messageDate.text = messageDate.toString().trim()
             binding.messageContent.text = EachMessageData.messageContent
 
         }

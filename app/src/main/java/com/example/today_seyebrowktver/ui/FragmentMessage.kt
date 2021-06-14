@@ -24,7 +24,9 @@ import kotlinx.coroutines.launch
 class FragmentMessage : Fragment() {
 
     val REQUEST_CREATE_MESSAGE = 1111
+    val REQUEST_UPDATE_MEMO = 3333
     val REQUEST_SEND_MESSAGE = 2222
+
 
     private var _binding: FragmentMessageBinding? = null
     private val binding get() = _binding!!
@@ -86,10 +88,6 @@ class FragmentMessage : Fragment() {
                             ds.getValue(MessageGroupData::class.java)
                         if (messageGroupData != null) {
                             newData.add(messageGroupData)
-                            Log.d("messageGroup", messageGroupData.groupName)
-                            Log.d("messageGroup", messageGroupData.order.toString())
-                            Log.d("messageGroup", messageGroupData.numberOfMessages.toString())
-                            Log.d("messageGroup", messageGroupData.savedate)
                         }
                     }
 
@@ -99,10 +97,6 @@ class FragmentMessage : Fragment() {
 
                     //메세지 데이터 받아오기
                     setMessagData()
-
-
-//                    setGroupRv()
-
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -129,12 +123,8 @@ class FragmentMessage : Fragment() {
                     messageDataList.clear()
                     messageDataList.addAll(newData)
 
-                    //그룹별로 정리
-                    mapByGroup = messageDataList.groupByTo(LinkedHashMap(),
-                        { it.messageType })
-
                     binding.messageGroupTv.text =
-                        messageGroupList[0].groupName + " (" + messageGroupList[0].numberOfMessages + ")"
+                        messageGroupList[0].groupName
 
                     //최초 초가화일때는 자동으로 제일 첫 번째 그릅 선택
                     selectedMessageType = messageGroupList[0].groupName
@@ -153,27 +143,6 @@ class FragmentMessage : Fragment() {
 
     }
 
-//    private fun setGroupRv() {
-//        adapter2 = RvMessageGroupAdapter(messageGroupList)
-//
-//        binding.groupRv.layoutManager = LinearLayoutManager(context)
-//        binding.groupRv.adapter = adapter2
-//
-//        setOnItemClickListener()
-//    }
-//
-//    private fun setOnItemClickListener() {
-//        adapter2!!.itemClick = object : RvMessageGroupAdapter.ItemClick {
-//            override fun onClick(view: View, position: Int) {
-//
-//                Log.d("messageGroupRv", messageGroupList[position].groupName)
-//            }
-//
-//
-//        }
-//
-//
-//    }
 
     private fun setRv() {
         messageDisplayData.clear()
@@ -188,13 +157,14 @@ class FragmentMessage : Fragment() {
         //itemClick event
         adapter!!.itemClick = object : RvMessageAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-//                mainViewModel.sendMessageData(
-//                    messageDisplayData[position].messageType,
-//                    messageDisplayData[position].messageTitle,
-//                    messageDisplayData[position].messageContent,
-//                    messageDisplayData[position].messageDate
-//                )
-//                (activity as ActivityMain).mGoToSendMessageActivity()
+                val intent = Intent(context, ActivityUpdateMessage::class.java)
+                intent.putExtra("title", messageDisplayData[position].messageTitle)
+                intent.putExtra("content", messageDisplayData[position].messageContent)
+                intent.putExtra("date", messageDisplayData[position].messageDate)
+                intent.putExtra("type", messageDisplayData[position].messageType)
+                intent.putExtra("key", messageDisplayData[position].keyValue)
+
+                startActivityForResult(intent, REQUEST_UPDATE_MEMO)
                 Log.d("messageClick", "dd")
 
             }
@@ -206,15 +176,15 @@ class FragmentMessage : Fragment() {
             override fun onLongClick(view: View, position: Int) {
 
                 val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
-                ab.setMessage("문자를 삭제 하시겠습니까??")
+                ab.setMessage("해당 문자를 삭제 하시겠습니까?")
                 ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
-
-//                    lifecycleScope.launch(Dispatchers.IO) {
-//                        val EachMessageData =
-//                            mainViewModel.findMessageByDate(messageDataList[position].messageDate)
-//                        mainViewModel.delete(EachMessageData)
-//                    }
-
+                    database.child("users").child(uid).child("messages")
+                        .child(messageDisplayData[position].keyValue).removeValue()
+                        .addOnSuccessListener {
+                            Log.d("removeValue", "삭제 성공")
+                        }.addOnCanceledListener {
+                            Log.d("removeValue", "삭제 실패")
+                        }
 
                 })
                 ab.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which -> })
@@ -242,11 +212,11 @@ class FragmentMessage : Fragment() {
                 menu.add(Menu.NONE, i, Menu.NONE, messageGroupList[i].groupName)
             }
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
-                Log.d("menuItem", it.itemId.toString())
+                selectedMessageType = it.toString().trim()
+
                 setRv()
-                adapter!!.notifyDataSetChanged()
                 binding.messageGroupTv.text =
-                    messageGroupList[it.itemId].groupName + " (" + messageGroupList[it.itemId].numberOfMessages + ")"
+                    messageGroupList[it.itemId].groupName
                 return@OnMenuItemClickListener true
             })
 
@@ -333,39 +303,11 @@ class FragmentMessage : Fragment() {
 
         when (requestCode) {
             REQUEST_CREATE_MESSAGE -> {
-                //ActivityCreateMessage에서 넘어온 데이터 받기
-                val messageType = data!!.getStringExtra("type")
-                val messageTilte = data!!.getStringExtra("title")
-                val messageContent = data!!.getStringExtra("content")
-                val messageDate = data!!.getStringExtra("date")
 
-                lifecycleScope.launch(Dispatchers.IO) {
-//                    mainViewModel.insert(
-//                        EachMessageData(
-//                            messageType,
-//                            messageTilte,
-//                            messageContent,
-//                            messageDate
-//                        )
-//                    )
-                }
+            }
 
-                mainViewModel.getAllMessages()
-                    .observe(activity as ActivityMain, Observer { messages ->
-                        var tempMessageDataList = ArrayList<EachMessageData>()
-                        for (i in 0 until messages.size) {
-                            tempMessageDataList.add(
-                                EachMessageData(
-                                    messages[i].messageType,
-                                    messages[i].messageTitle,
-                                    messages[i].messageContent,
-                                    messages[i].messageDate
-                                )
-                            )
-                        }
-                        messageDataList.clear()
-                        messageDataList.addAll(tempMessageDataList)
-                    })
+            REQUEST_UPDATE_MEMO -> {
+
             }
         }
     }
