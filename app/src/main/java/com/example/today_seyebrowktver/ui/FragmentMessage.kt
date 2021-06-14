@@ -2,6 +2,7 @@ package com.example.today_seyebrowktver.ui
 
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.databinding.FragmentMessageBinding
@@ -33,19 +33,19 @@ class FragmentMessage : Fragment() {
     private lateinit var uid: String
 
 
-
-
     //messageGroup 서버에서 받아오는 변수들
     private var adapter2: RvMessageGroupAdapter? = null
     private var messageGroupList = ArrayList<MessageGroupData>()
 
     //RecyclerView를 위한 변수들
-    private var messageDataList = ArrayList<MessageData>()
+    private var messageDataList = ArrayList<EachMessageData>()
+    private var messageDisplayData = ArrayList<EachMessageData>()
     private var adapter: RvMessageAdapter? = null
 
-    private lateinit var messagesByGroupName : LinkedHashMap<String, MutableList<MessageData>>
+    private lateinit var messagesByGroupName: LinkedHashMap<String, MutableList<MessageData>>
 
     private lateinit var mainViewModel: ViewModelMain
+    private lateinit var selectedMessageType: String
     private lateinit var tempType: String
     private lateinit var tempTitle: String
     private lateinit var tempContent: String
@@ -68,18 +68,20 @@ class FragmentMessage : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity()).get(ViewModelMain::class.java)
         super.onViewCreated(view, savedInstanceState)
 
-        setData()
+        setGroupData()
+        setMessagData()
         setLayout()
     }
 
-    private fun setData() {
+    private fun setGroupData() {
         //그룹 받아오기
         database.child("users").child(uid).child("messageGroups")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val newData: ArrayList<MessageGroupData> = ArrayList()
                     for (ds in snapshot.children) {
-                        val messageGroupData: MessageGroupData? = ds.getValue(MessageGroupData::class.java)
+                        val messageGroupData: MessageGroupData? =
+                            ds.getValue(MessageGroupData::class.java)
                         if (messageGroupData != null) {
                             newData.add(messageGroupData)
                             Log.d("messageGroup", messageGroupData.groupName)
@@ -91,13 +93,17 @@ class FragmentMessage : Fragment() {
                     messageGroupList.clear()
                     messageGroupList.addAll(newData)
 
-                    binding.messageGroupTv.text = messageGroupList[0].groupName + " ("+messageGroupList[0].numberOfMessages+")"
+                    binding.messageGroupTv.text =
+                        messageGroupList[0].groupName + " (" + messageGroupList[0].numberOfMessages + ")"
+
+                    //최초 초가화일때는 자동으로 제일 첫 번째 그릅 선택
+                    selectedMessageType = messageGroupList[0].groupName
 
                     //메세지 데이터 받아오기
 //                    setMessagData()
 
 
-                    setGroupRv()
+//                    setGroupRv()
 
                 }
 
@@ -112,28 +118,20 @@ class FragmentMessage : Fragment() {
     }
 
     private fun setMessagData() {
-        database.child("users").child(uid).child("messageGroups")
+        database.child("users").child(uid).child("messages")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val newData: ArrayList<MessageGroupData> = ArrayList()
+                    val newData: ArrayList<EachMessageData> = ArrayList()
                     for (ds in snapshot.children) {
-                        val messageGroupData: MessageGroupData? = ds.getValue(MessageGroupData::class.java)
-                        if (messageGroupData != null) {
-                            newData.add(messageGroupData)
-                            Log.d("messageGroup", messageGroupData.groupName)
-                            Log.d("messageGroup", messageGroupData.order.toString())
-                            Log.d("messageGroup", messageGroupData.numberOfMessages.toString())
-                            Log.d("messageGroup", messageGroupData.savedate)
+                        val EachMessageData: EachMessageData? = ds.getValue(EachMessageData::class.java)
+                        if (EachMessageData != null) {
+                            newData.add(EachMessageData)
                         }
                     }
-                    messageGroupList.clear()
-                    messageGroupList.addAll(newData)
+                    messageDataList.clear()
+                    messageDataList.addAll(newData)
 
-                    binding.messageGroupTv.text = messageGroupList[0].groupName + " ("+messageGroupList[0].numberOfMessages+")"
-
-
-
-                    setGroupRv()
+                    setRv()
 
                 }
 
@@ -147,71 +145,80 @@ class FragmentMessage : Fragment() {
 
     }
 
-    private fun setGroupRv(){
-        adapter2 = RvMessageGroupAdapter(messageGroupList)
-
-        binding.groupRv.layoutManager = LinearLayoutManager(context)
-        binding.groupRv.adapter = adapter2
-
-        setOnItemClickListener()
-    }
-
-    private fun setOnItemClickListener() {
-        adapter2!!.itemClick = object : RvMessageGroupAdapter.ItemClick {
-            override fun onClick(view: View, position: Int) {
-
-            Log.d("messageGroupRv", messageGroupList[position].groupName)
-            }
-
-
-            }
-
-
-        }
-
-//    private fun setRv() {
-//        adapter = RvMessageAdapter(messageDataList) //adapter 생성
+//    private fun setGroupRv() {
+//        adapter2 = RvMessageGroupAdapter(messageGroupList)
 //
-//        //itemClick event
-//        adapter!!.itemClick = object : RvMessageAdapter.ItemClick {
-//            override fun onClick(view: View, position: Int) {
-//                mainViewModel.sendMessageData(
-//                    messageDataList[position].messageType,
-//                    messageDataList[position].messageTitle,
-//                    messageDataList[position].messageContent,
-//                    messageDataList[position].messageDate
-//                )
-//                (activity as ActivityMain).mGoToSendMessageActivity()
-//            }
-//        }
+//        binding.groupRv.layoutManager = LinearLayoutManager(context)
+//        binding.groupRv.adapter = adapter2
 //
-//
-//        //itemLongClick event
-//        adapter!!.itemLongClick = object : RvMessageAdapter.ItemLongClick {
-//            override fun onLongClick(view: View, position: Int) {
-//
-//                val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
-//                ab.setMessage("문자를 삭제 하시겠습니까??")
-//                ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
-//
-//                    lifecycleScope.launch(Dispatchers.IO) {
-//                        val messageData =
-//                            mainViewModel.findMessageByDate(messageDataList[position].messageDate)
-//                        mainViewModel.delete(messageData)
-//                    }
-//
-//
-//                })
-//                ab.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which -> })
-//                ab.setCancelable(true)
-//                ab.show()
-//            }
-//        }
-//
-//        binding.reservMessages.layoutManager = LinearLayoutManager(context)
-//        binding.reservMessages.adapter = adapter
+//        setOnItemClickListener()
 //    }
 //
+//    private fun setOnItemClickListener() {
+//        adapter2!!.itemClick = object : RvMessageGroupAdapter.ItemClick {
+//            override fun onClick(view: View, position: Int) {
+//
+//                Log.d("messageGroupRv", messageGroupList[position].groupName)
+//            }
+//
+//
+//        }
+//
+//
+//    }
+
+    private fun setRv() {
+        messageDisplayData.clear()
+        for (i in 0 until messageDataList.size){
+            if (messageDataList[i].messageType == selectedMessageType){
+                messageDisplayData.add(messageDataList[i])
+            }
+        }
+
+        adapter = RvMessageAdapter(messageDisplayData) //adapter 생성
+
+        //itemClick event
+        adapter!!.itemClick = object : RvMessageAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+//                mainViewModel.sendMessageData(
+//                    messageDisplayData[position].messageType,
+//                    messageDisplayData[position].messageTitle,
+//                    messageDisplayData[position].messageContent,
+//                    messageDisplayData[position].messageDate
+//                )
+//                (activity as ActivityMain).mGoToSendMessageActivity()
+                Log.d("messageClick", "dd")
+
+            }
+        }
+
+
+        //itemLongClick event
+        adapter!!.itemLongClick = object : RvMessageAdapter.ItemLongClick {
+            override fun onLongClick(view: View, position: Int) {
+
+                val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
+                ab.setMessage("문자를 삭제 하시겠습니까??")
+                ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+
+//                    lifecycleScope.launch(Dispatchers.IO) {
+//                        val EachMessageData =
+//                            mainViewModel.findMessageByDate(messageDataList[position].messageDate)
+//                        mainViewModel.delete(EachMessageData)
+//                    }
+
+
+                })
+                ab.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which -> })
+                ab.setCancelable(true)
+                ab.show()
+            }
+        }
+
+        binding.messagesRv.layoutManager = LinearLayoutManager(context)
+        binding.messagesRv.adapter = adapter
+    }
+
     private fun setLayout() {
         //fab click event
         binding.fab.setOnClickListener(View.OnClickListener {
@@ -223,19 +230,21 @@ class FragmentMessage : Fragment() {
 
             val popupMenu = PopupMenu(context, binding.fab, Gravity.BOTTOM)
             val menu = popupMenu.menu
-            for (i in 0 until  messageGroupList.size){
-                menu.add(Menu.NONE, i , Menu.NONE, messageGroupList[i].groupName)
+            for (i in 0 until messageGroupList.size) {
+                menu.add(Menu.NONE, i, Menu.NONE, messageGroupList[i].groupName)
             }
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 Log.d("menuItem", it.itemId.toString())
-                binding.messageGroupTv.text = messageGroupList[it.itemId].groupName + " ("+messageGroupList[it.itemId].numberOfMessages+")"
+                setRv()
+                adapter!!.notifyDataSetChanged()
+                binding.messageGroupTv.text =
+                    messageGroupList[it.itemId].groupName + " (" + messageGroupList[it.itemId].numberOfMessages + ")"
                 return@OnMenuItemClickListener true
             })
 
             popupMenu.show()
 
         })
-
 
 
 //        send click event
@@ -323,22 +332,22 @@ class FragmentMessage : Fragment() {
                 val messageDate = data!!.getStringExtra("date")
 
                 lifecycleScope.launch(Dispatchers.IO) {
-                    mainViewModel.insert(
-                        MessageData(
-                            messageType,
-                            messageTilte,
-                            messageContent,
-                            messageDate
-                        )
-                    )
+//                    mainViewModel.insert(
+//                        EachMessageData(
+//                            messageType,
+//                            messageTilte,
+//                            messageContent,
+//                            messageDate
+//                        )
+//                    )
                 }
 
                 mainViewModel.getAllMessages()
                     .observe(activity as ActivityMain, Observer { messages ->
-                        var tempMessageDataList = ArrayList<MessageData>()
+                        var tempMessageDataList = ArrayList<EachMessageData>()
                         for (i in 0 until messages.size) {
                             tempMessageDataList.add(
-                                MessageData(
+                                EachMessageData(
                                     messages[i].messageType,
                                     messages[i].messageTitle,
                                     messages[i].messageContent,
@@ -378,7 +387,7 @@ class FragmentMessage : Fragment() {
                 val intent = Intent(context, ActivityEditMessageGroup::class.java)
                 startActivity(intent)
 
-            }  else {
+            } else {
                 val intent = Intent(context, ActivityCreateMessage::class.java)
                 startActivity(intent)
                 Log.d("messageGroup", "순서 수정 버튼")

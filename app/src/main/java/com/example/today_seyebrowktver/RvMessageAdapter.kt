@@ -11,9 +11,9 @@ import kotlin.collections.ArrayList
 
 class RvMessageAdapter : RecyclerView.Adapter<RvMessageAdapter.ViewHolder> {
 
-    var data: ArrayList<MessageData>? = null
+    var data: ArrayList<EachMessageData>? = null
 
-    constructor(data: ArrayList<MessageData>) {
+    constructor(data: ArrayList<EachMessageData>) {
         this.data = data
     }
 
@@ -62,7 +62,7 @@ class RvMessageAdapter : RecyclerView.Adapter<RvMessageAdapter.ViewHolder> {
     class ViewHolder(binding: RvItemMessageBinding) : RecyclerView.ViewHolder(binding.root) {
         var binding: RvItemMessageBinding
 
-        fun bind(messageData: MessageData) {
+        fun bind(EachMessageData: EachMessageData) {
             // 현재시간을 msec 으로 구한다.
             val now = System.currentTimeMillis()
             // 현재시간을 date 변수에 저장한다.
@@ -72,10 +72,10 @@ class RvMessageAdapter : RecyclerView.Adapter<RvMessageAdapter.ViewHolder> {
             val messageDate = sdfNow.format(date)
 
 
-            binding.messageTypeTv.text = messageData.messageType
-            binding.messageTitle.text = messageData.messageTitle
+            binding.messageTypeTv.text = EachMessageData.messageType
+            binding.messageTitle.text = EachMessageData.messageTitle
             binding.messageDate.text = messageDate.toString().trim()
-            binding.messageContent.text = messageData.messageContent
+            binding.messageContent.text = EachMessageData.messageContent
 
         }
 
