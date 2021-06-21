@@ -1,5 +1,6 @@
 package com.example.today_seyebrowktver.ui
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,7 +8,10 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.NumberPicker
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
@@ -35,6 +39,7 @@ import java.time.format.TextStyle
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
+import kotlin.coroutines.coroutineContext
 
 
 data class Flight(
@@ -89,7 +94,7 @@ class Example5Fragment : Fragment() {
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     val mAuth = FirebaseAuth.getInstance()
-    private lateinit var uid : String
+    private lateinit var uid: String
 
     private var selectedDate: LocalDate? = null
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
@@ -99,7 +104,7 @@ class Example5Fragment : Fragment() {
 
     //    private val eventsAdapter = EventsAdapter()
 //    private val events = getEvents()
-    var allEventsData : ArrayList<EventData> = ArrayList()
+    var allEventsData: ArrayList<EventData> = ArrayList()
     private var data: ArrayList<EventData> = ArrayList()
     var data2 = arrayListOf<EventData>()
     var mapByDate: LinkedHashMap<String, MutableList<EventData>> = data.groupByTo(LinkedHashMap(),
@@ -204,7 +209,7 @@ class Example5Fragment : Fragment() {
                             Log.d("dateMap", mapByDate!![day.date.toString()].toString() + "?")
 
 
-                        } else{
+                        } else {
                             (activity as ActivityMain).mSelectTypeOfCustomer()
                         }
                     }
@@ -264,7 +269,7 @@ class Example5Fragment : Fragment() {
                 }
 
                 //오늘 강조하기
-                if (day.date.toString() == nowDate){
+                if (day.date.toString() == nowDate) {
                     textView.setBackgroundResource(R.drawable.example_5_today_bg)
 //                    textView.setBackgroundColor(view.context.getColorCompat(R.color.mainGreen))
                     textView.setTextColorRes(R.color.white)
@@ -327,7 +332,109 @@ class Example5Fragment : Fragment() {
         }
 
         binding.exFiveMonthYearText.setOnClickListener {
+            val dialog = AlertDialog.Builder(context).create()
+            val edialog: LayoutInflater = LayoutInflater.from(context)
+            val mView: View = edialog.inflate(R.layout.dialog_custom_datepicker, null)
 
+            val year: NumberPicker = mView.findViewById(R.id.year_picker)
+            val month: NumberPicker = mView.findViewById(R.id.month_picker)
+            val cancel: TextView = mView.findViewById(R.id.cancel_btn)
+            val ok: TextView = mView.findViewById(R.id.ok_btn)
+
+            //  순환 안되게 막기
+            year.wrapSelectorWheel = false
+            month.wrapSelectorWheel = false
+
+            //  editText 설정 해제
+            year.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            month.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+
+            //  최소값 설정
+            year.minValue = 2015
+            month.minValue = 1
+
+
+//             현재시간을 msec 으로 구한다.
+            val now = System.currentTimeMillis()
+            // 현재시간을 date 변수에 저장한다.
+            val date = Date(now)
+            // 시간을 나타냇 포맷을 정한다 ( yyyy
+            val formatYear = SimpleDateFormat("yyyy")
+            val formatMonth = SimpleDateFormat("MM")
+            // nowDate 변수에 값을 저장한다.
+            val formatDateYear = formatYear.format(date)
+            val formatDateMonth = formatMonth.format(date)
+            val maxYearInt = Integer.parseInt(formatDateYear)+5
+
+            //  최대값 설정
+            year.maxValue = maxYearInt //올해 + 5
+            month.maxValue = 12
+
+
+            //보여지는 값 세팅 ; output은 다름
+//            hour.displayedValues = arrayOf("06시")
+
+            month.displayedValues = arrayOf("01", "02", "03", "04", "05", "06", "07" , "08", "09", "10", "11", "12")
+
+            month.setOnValueChangedListener { picker, oldVal, newVal ->
+            }
+
+            //초기값 세팅
+            year.value = Integer.parseInt(formatDateYear) //현재 년도
+            month.value = Integer.parseInt(formatDateMonth)
+
+            //  취소 버튼 클릭 시
+            cancel.setOnClickListener {
+                dialog.dismiss()
+                dialog.cancel()
+            }
+
+            //  완료 버튼 클릭 시
+            ok.setOnClickListener {
+
+                Toast.makeText(context, year.value.toString() +"년" + month.value +"월", Toast.LENGTH_SHORT).show()
+
+//                var dspHour: String = ""
+//                when (hour.value) {
+//                    6 -> dspHour = "06"
+//                    7 -> dspHour = "07"
+//                    8 -> dspHour = "08"
+//                    9 -> dspHour = "09"
+//                }
+//
+//                var dspMin: String = ""
+//                when (minute.value) {
+//                    0 -> dspMin = "00분"
+//                    1 -> dspMin = "10분"
+//                    2 -> dspMin = "20분"
+//                    3 -> dspMin = "30분"
+//                    4 -> dspMin = "40분"
+//                    5 -> dspMin = "50분"
+//
+//                }
+//
+//                if (hour.value < 10) {
+//                    binding.timeContentTv.text = dspHour + "시 " + dspMin
+//                } else {
+//                    binding.timeContentTv.text =
+//                        (hour.value).toString() + "시 " + dspMin
+//                }
+
+
+                dialog.dismiss()
+                dialog.cancel()
+            }
+
+            dialog.setView(mView)
+            dialog.create()
+            dialog.show()
+
+            //크기조정
+            val dm = resources.displayMetrics
+            val width = (dm.widthPixels * 0.7).toInt() // Display 사이즈의 90%
+            val params: ViewGroup.LayoutParams = dialog.getWindow()!!.getAttributes()
+            params.width = width
+            dialog.getWindow()!!.setAttributes(params as WindowManager.LayoutParams)
         }
 
 
