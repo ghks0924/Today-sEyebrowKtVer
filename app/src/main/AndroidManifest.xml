@@ -16,7 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer">
-        <activity android:name=".ui.ActivityUpdateMessage"></activity>
+        <activity android:name=".ui.ActivityCreateMessageGroup"
+            android:theme="@style/popupTheme"></activity>
+        <activity
+            android:name=".ui.ActivitySelectMessageGroup"
+            android:theme="@style/popupTheme" />
+        <activity android:name=".ui.ActivityUpdateMessage" />
         <activity android:name=".ui.ActivityMonthlyPerformance" />
         <activity android:name=".ui.ActivityDetailedPerformance" />
         <activity android:name=".ui.ActivityEditCustomer" />
@@ -34,20 +39,14 @@
         <activity android:name=".ui.ActivityFindId" />
         <activity android:name=".ui.ActivityUpdateMemo" />
         <activity android:name=".ui.ActivitySendMessage" />
-        <activity android:name=".ui.ActivityCreateMessage"></activity>
+        <activity android:name=".ui.ActivityCreateMessage" />
         <activity android:name=".ui.ActivityCreateMemo" />
-        <activity android:name=".ui.ActivityCreateCustomerFromBook"></activity>
+        <activity android:name=".ui.ActivityCreateCustomerFromBook" />
         <activity android:name=".ui.ActivityJoin2" />
         <activity android:name=".ui.ActivityJoin1" />
-        <activity android:name=".ui.ActivityJoin0" />
+        <activity android:name=".ui.ActivityJoin0"></activity>
         <activity android:name=".ui.ActivityLogin" />
-        <activity android:name=".ui.ActivityLoading">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.ActivityLoading" />
         <activity android:name=".ui.ActivityLoadCustomers" />
         <activity android:name=".ui.ActivityCreateEventSkipCus" />
         <activity android:name=".ui.ActivityCreateEventOldCus" />
@@ -59,7 +58,13 @@
             android:name=".ui.ActivityBase"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
-        <activity android:name=".ui.ActivityMain" />
+        <activity android:name=".ui.ActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

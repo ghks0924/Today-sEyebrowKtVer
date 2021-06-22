@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.snackbar.Snackbar
 
 class DialogShowMessageGroup(context: Context) {
 
@@ -37,6 +39,14 @@ class DialogShowMessageGroup(context: Context) {
         adapter = RvMessageGroupAdapter(data)
         rv.layoutManager = LinearLayoutManager(context)
         rv.adapter = adapter
+
+        adapter!!.itemClick = object :RvMessageGroupAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                Toast.makeText(context, data[position].groupName, Toast.LENGTH_SHORT).show()
+                dlg.dismiss()
+
+            }
+        }
 
         addCardview.setOnClickListener {
 

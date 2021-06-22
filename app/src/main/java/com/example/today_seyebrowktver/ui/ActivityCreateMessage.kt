@@ -1,25 +1,26 @@
 package com.example.today_seyebrowktver.ui
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.databinding.ActivityCreateMessageBinding
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ActivityCreateMessage : ActivityBase() {
 
+    val REQUEST_SELECT_MESSAGE_GROUP = 1111
+    val REQUEST_CREATE_MESSAGE_GROUP = 2222
+
     private lateinit var binding: ActivityCreateMessageBinding
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     private lateinit var uid: String
+
 
     private var messageGroupList = ArrayList<MessageGroupData>()
 
@@ -56,6 +57,7 @@ class ActivityCreateMessage : ActivityBase() {
                     }
                     messageGroupList.clear()
                     messageGroupList.addAll(newData)
+                    messageGroupList.sortBy { it.order }
 
                 }
 
@@ -77,8 +79,11 @@ class ActivityCreateMessage : ActivityBase() {
 //            val dlg = DialogCreateMessageGroup(this)
 //            dlg.start(this)
 
-            val dlg2 = DialogShowMessageGroup(this)
-            dlg2.start(this, messageGroupList)
+            val intent = Intent(applicationContext, ActivitySelectMessageGroup::class.java)
+            startActivityForResult(intent, REQUEST_SELECT_MESSAGE_GROUP)
+
+//            val dlg2 = DialogShowMessageGroup(this)
+//            dlg2.start(this, messageGroupList)
 
 
 //            Toast.makeText(applicationContext, binding.typeCardview.text, Toast.LENGTH_SHORT).show()
@@ -86,8 +91,7 @@ class ActivityCreateMessage : ActivityBase() {
 
         //save button event
         binding.saveMessageButton.setOnClickListener(View.OnClickListener {
-//            tempType = binding.selectTypeTv.text.toString().trim()
-            tempType = "예약안내"
+            tempType = binding.selectedTypeTv.text.toString().trim()//유형
             tempTitle = binding.messageTitleEt.text.toString().trim() //제목
             tempContent = binding.messageContentEt.text.toString().trim()
 
@@ -109,7 +113,7 @@ class ActivityCreateMessage : ActivityBase() {
 
                 database.child("users").child(uid).child("messages").child(key!!)
                     .setValue(newMessage).addOnSuccessListener {
-                       mShowShortToast("새로운 메세지가 생성되었습니다")
+                        mShowShortToast("새로운 메세지가 생성되었습니다")
 
                         checkMessagesNum()
                         finish()
@@ -117,11 +121,6 @@ class ActivityCreateMessage : ActivityBase() {
                     }.addOnFailureListener {
                         Log.d("errorOfCustomerSave", it.message)
                     }
-
-
-
-
-
 
 
 //                val intent = Intent()
@@ -137,14 +136,15 @@ class ActivityCreateMessage : ActivityBase() {
         })
     }
 
-    private fun checkMessagesNum(){
-        database.child("users").child(uid).child("messages").orderByChild("messageType").equalTo(tempType)
-            .addValueEventListener(object : ValueEventListener{
+    private fun checkMessagesNum() {
+        database.child("users").child(uid).child("messages").orderByChild("messageType")
+            .equalTo(tempType)
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.childrenCount
                     Log.d("checkMessagesNumber", snapshot.childrenCount.toString())
 
-                    database.child("users").child(uid).child("messageGroups").child(tempType).child("numberOfMessages")
+                    database.child("users").child(uid).child("messageGroups").child(tempType)
+                        .child("numberOfMessages")
                         .setValue(snapshot.childrenCount.toString()).addOnSuccessListener {
                             Log.d("updateMessagesNumber", "success")
                         }.addOnFailureListener {
@@ -159,11 +159,12 @@ class ActivityCreateMessage : ActivityBase() {
             })
     }
 
+    //문자 생성을 위한 유효성 체크
     private fun vaildCheck(): Boolean {
-//        if (tempType.isNullOrEmpty()){
-//            mShowShortToast("문자유형을 선택해주세요")
-//            return false
-//        }
+        if (tempType.isNullOrEmpty()) {
+            mShowShortToast("문자유형을 선택해주세요")
+            return false
+        }
 
         if (tempTitle.isNullOrEmpty()) {
             mShowShortToast("문자 제목을 입력해주세요")
@@ -176,5 +177,32 @@ class ActivityCreateMessage : ActivityBase() {
         }
 
         return true
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != RESULT_OK) {
+            return
+        }
+
+        when (requestCode) {
+            REQUEST_SELECT_MESSAGE_GROUP -> {
+                if (data!!.getStringExtra("type").toString() == "new") {
+                    val intent = Intent(applicationContext, ActivityCreateMessageGroup::class.java)
+                    startActivityForResult(intent, REQUEST_CREATE_MESSAGE_GROUP)
+                } else {
+                    binding.selectedTypeTv.text = data!!.getStringExtra("type")
+                    binding.selectedTypeTv.setTextColor(Color.parseColor("#221f20"))
+
+                }
+            }
+
+            REQUEST_CREATE_MESSAGE_GROUP ->{
+                binding.selectedTypeTv.text = data!!.getStringExtra("newGroupName")
+                binding.selectedTypeTv.setTextColor(Color.parseColor("#221f20"))
+            }
+        }
     }
 }

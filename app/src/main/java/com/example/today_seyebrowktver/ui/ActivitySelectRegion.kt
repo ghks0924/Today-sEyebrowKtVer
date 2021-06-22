@@ -9,7 +9,7 @@ import com.example.today_seyebrowktver.RvRegionAdapter
 import com.example.today_seyebrowktver.databinding.ActivitySelectRegionBinding
 
 
-class ActivitySelectRegion : AppCompatActivity() {
+class ActivitySelectRegion : ActivityBase() {
     
     //viewBinding
     private lateinit var binding: ActivitySelectRegionBinding
