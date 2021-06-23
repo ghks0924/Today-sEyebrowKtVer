@@ -20,8 +20,8 @@ class ActivityCreateMessageGroup : ActivityBase() {
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     private lateinit var uid: String
 
-    private lateinit var newGroupName : String
-    private lateinit var numOfGroups : String
+    private lateinit var newGroupName: String
+    private var numOfGroups: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +41,6 @@ class ActivityCreateMessageGroup : ActivityBase() {
         checkMessageGroupsNum()
 
 
-
         //키보드 자동으로 올려주기 위해서 edittext에 포커스 줌
         binding.dialogEdittext.requestFocus()
 
@@ -52,9 +51,9 @@ class ActivityCreateMessageGroup : ActivityBase() {
 
         binding.dialogOkBtn.setOnClickListener {
             newGroupName = binding.dialogEdittext.text.toString().trim()
-            if (newGroupName.isNullOrEmpty()){
+            if (newGroupName.isNullOrEmpty()) {
                 mShowShortToast("추가할 그룹명을 입력해주세요")
-            } else{
+            } else {
                 mCreateMessageGroup()
             }
         }
@@ -73,7 +72,8 @@ class ActivityCreateMessageGroup : ActivityBase() {
         val formatDate = sdfNow.format(date) //시간
 
         val key = database.child("users").child(uid).child("messageGroups").push().key
-        val newGroup = MessageGroupData(newGroupName,"0",Integer.parseInt(numOfGroups), formatDate, key.toString(), false)
+        val newGroup =
+            MessageGroupData(newGroupName, "0", numOfGroups, formatDate, key.toString(), false)
 
         database.child("users").child(uid).child("messageGroups").child(key!!)
             .setValue(newGroup).addOnSuccessListener {
@@ -93,7 +93,7 @@ class ActivityCreateMessageGroup : ActivityBase() {
         database.child("users").child(uid).child("messageGroups").orderByChild("order")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    numOfGroups = snapshot.childrenCount.toString()
+                    numOfGroups = snapshot.childrenCount.toInt()
                     Log.d("checkMessagesNumber", snapshot.childrenCount.toString())
 
                 }

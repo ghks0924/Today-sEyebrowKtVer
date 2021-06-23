@@ -8,11 +8,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.today_seyebrowktver.MessageGroupData
+import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.R
-import com.example.today_seyebrowktver.RvMessageGroupAdapter
-import com.example.today_seyebrowktver.RvMessageGroupEditAdapter
 import com.example.today_seyebrowktver.databinding.ActivityEditMessageGroupBinding
 import com.google.firebase.database.*
 import java.text.SimpleDateFormat
@@ -29,6 +28,12 @@ class ActivityEditMessageGroup : ActivityBase() {
     //for recycelrView
     private var adapter: RvMessageGroupEditAdapter? = null
     private var messageGroupList = ArrayList<MessageGroupData>()
+
+    //drag & drop
+    private var callback : RvItemMoveCallback?= null
+    private var touchHelper : ItemTouchHelper?= null
+    private var isDragUsed = false
+
 
     //저장버튼을 누르기전 삭제 되돌리기를 위한 카운트 변수
     private var numOfExistingGroups: Int = 0
@@ -54,7 +59,7 @@ class ActivityEditMessageGroup : ActivityBase() {
 
 
     private fun mSaveMessageGroups() {
-        if (messageGroupList.size == numOfExistingGroups) { //수정된게 없으면
+        if (messageGroupList.size == numOfExistingGroups && !adapter!!.isDragUsed) { //수정된게 없으면
             //일단 저장만 순서바뀐건 나중에 체크
 
         } else{ //수정된게 있으면
@@ -121,6 +126,10 @@ class ActivityEditMessageGroup : ActivityBase() {
 
     private fun setRv() {
         adapter = RvMessageGroupEditAdapter(messageGroupList)
+        callback = RvItemMoveCallback(adapter!!)
+        touchHelper = ItemTouchHelper(callback!!)
+        touchHelper!!.attachToRecyclerView(binding.rv)
+
         binding.rv.layoutManager = LinearLayoutManager(applicationContext)
         binding.rv.adapter = adapter
 
@@ -217,7 +226,6 @@ class ActivityEditMessageGroup : ActivityBase() {
         }
         adapter!!.itemLongClick = object : RvMessageGroupEditAdapter.ItemLongClick {
             override fun onLongClick(view: View, position: Int) {
-//                Log.d()
             }
 
         }

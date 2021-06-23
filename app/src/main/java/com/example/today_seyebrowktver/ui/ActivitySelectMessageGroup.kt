@@ -27,6 +27,8 @@ class ActivitySelectMessageGroup : ActivityBase() {
     private var adapter: RvMessageGroupAdapter? = null
     private var messageGroupList = ArrayList<MessageGroupData>()
 
+    private var numOfGroups : Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectMessageGroupBinding.inflate(layoutInflater)
@@ -45,11 +47,16 @@ class ActivitySelectMessageGroup : ActivityBase() {
 
     private fun setLayout() {
         binding.plusCardview.setOnClickListener {
-            val intent = intent
-            intent.putExtra("type", "new")
-            setResult(RESULT_OK,intent)
-            finish()
+            if (numOfGroups >= 7){
+                mShowShortToast("메세지 그룹은 최대 7개까지 생성할 수 있습니다")
+            } else {
+                val intent = intent
+                intent.putExtra("type", "new")
+                setResult(RESULT_OK,intent)
+                finish()
 //            overridePendingTransition(R.anim.fadein, R.anim.fadeout)
+            }
+
         }
     }
 
@@ -62,6 +69,8 @@ class ActivitySelectMessageGroup : ActivityBase() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val newData: java.util.ArrayList<MessageGroupData> = java.util.ArrayList()
                     for (ds in snapshot.children) {
+                        numOfGroups = snapshot.childrenCount.toInt()
+
                         val messageGroupData: MessageGroupData? =
                             ds.getValue(MessageGroupData::class.java)
                         if (messageGroupData != null) {

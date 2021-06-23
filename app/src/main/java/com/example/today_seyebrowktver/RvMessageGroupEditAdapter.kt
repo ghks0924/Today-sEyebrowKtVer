@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.today_seyebrowktver.databinding.RvItemMessageEditGroupsBinding
 import com.example.today_seyebrowktver.databinding.RvItemMessageGroupsBinding
+import java.util.*
 import kotlin.collections.ArrayList
 
 class RvMessageGroupEditAdapter : RecyclerView.Adapter<RvMessageGroupEditAdapter.ViewHolder> {
@@ -33,11 +34,11 @@ class RvMessageGroupEditAdapter : RecyclerView.Adapter<RvMessageGroupEditAdapter
         fun onLongClick(view: View, position: Int)
     }
 
-
     var deleteClick: DeleteIconClick? = null
     var plusClick: PlusIconClick? = null
-
     var itemLongClick: ItemLongClick? = null
+
+    var isDragUsed = false
 
 
     override fun onCreateViewHolder(
@@ -98,7 +99,8 @@ class RvMessageGroupEditAdapter : RecyclerView.Adapter<RvMessageGroupEditAdapter
 
                 binding.deleteIcon.visibility = View.GONE
                 binding.plusIcon.visibility = View.VISIBLE
-                binding.menuIcon.setColorFilter(Color.parseColor("#dfdfdf"))
+                binding.menuIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#dfdfdf"))
+
             } else {  //삭제 체크가 안 된 애들은 정상적으로 출력
 
                 binding.messageOrderTv.text = (messageGroup.order + 1).toString() + "  "
@@ -119,5 +121,47 @@ class RvMessageGroupEditAdapter : RecyclerView.Adapter<RvMessageGroupEditAdapter
             this.binding = binding
         }
     }
+
+    //arrayList 는 어뎁터에서 사용하고 있는 List, 순서를 변경하는 함수
+    fun onItemDragMove(beforePosition : Int, afterPosition : Int){
+        isDragUsed = true
+        if(beforePosition < afterPosition){
+            for (i in beforePosition until afterPosition) {
+                Collections.swap(data, i, i + 1)
+            }
+        } else {
+            for (i in beforePosition downTo afterPosition + 1) {
+                Collections.swap(data, i, i - 1)
+            }
+        }
+
+        notifyItemMoved(beforePosition, afterPosition)
+    }
+
+    //드래그앤 드롭 터치를 마무리 하였을 경우 들어오는 함수
+    fun changeMoveEvent(){
+        //순서 정리
+        outer@while (true){
+            for (i in 0 until data!!.size-1){
+                if (!data!![i].deleteCheck){ //삭제 클릭된 애가 아니면 그냥 넘김
+
+                } else if (data!![i].deleteCheck && !data!![i+1].deleteCheck) { //이 다음거랑 비교해서 순서바꿈0
+                    Collections.swap(data, i, i+1)
+                    continue@outer
+                } else if (data!![i].deleteCheck && data!![i+1].deleteCheck){
+
+                }
+            }
+            break
+        }
+
+        //다 정리가 되면 새롭게 순서정의
+        for (i in 0 until data!!.size){
+            data!![i].order = i
+        }
+
+        notifyDataSetChanged()
+    }
+
 
 }
