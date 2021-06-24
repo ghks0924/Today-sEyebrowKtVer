@@ -61,6 +61,40 @@ class Api {
             })
     }
 
+    fun findSimplePcroom(type: String, keyword: String, callback:(Boolean, Any?) -> Unit){
+        retrofit.create(FirebaseApi::class.java).findPcroom(type, keyword)
+            .enqueue(object : Callback<ArrayList<findPcroomResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<findPcroomResponse>>,
+                    response: Response<ArrayList<findPcroomResponse>>,
+                ) {
+                    callback(true, response.body())
+                }
+
+                override fun onFailure(call: Call<ArrayList<findPcroomResponse>>, t: Throwable) {
+                    callback(false, t.message)
+                }
+
+            })
+    }
+
+    fun getEvents(type: String, keyword: String, callback:(Boolean, Any?) -> Unit){
+        retrofit.create(FirebaseApi::class.java).getEvents(type, keyword)
+            .enqueue(object : Callback<ArrayList<eventsResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<eventsResponse>>,
+                    response: Response<ArrayList<eventsResponse>>,
+                ) {
+                    callback(true, response.body())
+                }
+
+                override fun onFailure(call: Call<ArrayList<eventsResponse>>, t: Throwable) {
+                    callback(false, t.message)
+                }
+
+            })
+    }
+
     fun loadEvents2 (type: String, keyword: String, callback:(Boolean, Any?) -> Unit){
         retrofit.create(FirebaseApi::class.java).loadEvents2(type, keyword)
             .enqueue(object : Callback<ArrayList<LoadEventsResponse2>>{

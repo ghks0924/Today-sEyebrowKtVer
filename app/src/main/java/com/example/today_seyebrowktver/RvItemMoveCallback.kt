@@ -36,7 +36,6 @@ class RvItemMoveCallback constructor(val adapter: RvMessageGroupEditAdapter) : I
         return false
     }
 
-
     //drag시 색상 변화
     override fun onChildDrawOver(
         c: Canvas,
@@ -52,11 +51,11 @@ class RvItemMoveCallback constructor(val adapter: RvMessageGroupEditAdapter) : I
         if (actionState === ItemTouchHelper.ACTION_STATE_DRAG) {
             val itemView: View = viewHolder!!.itemView
             c.save()
-            c.clipRect(itemView.getLeft() + dX,
-                itemView.getTop() + dY,
-                itemView.getRight() + dX,
-                itemView.getBottom() + dY)
-            c.translate(itemView.getLeft() + dX, itemView.getTop() + dY)
+            c.clipRect(itemView.left + dX,
+                itemView.top + dY,
+                itemView.right + dX,
+                itemView.bottom + dY)
+            c.translate(itemView.left + dX, itemView.right + dY)
 
             // draw the frame
             c.drawColor(Color.parseColor("#4D0c0a4d"))

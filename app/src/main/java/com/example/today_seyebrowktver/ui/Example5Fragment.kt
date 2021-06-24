@@ -142,11 +142,11 @@ class Example5Fragment : Fragment() {
         })
 
         binding.fab2.setOnClickListener {
-//            val intent = Intent(context, ActivityEachEvent::class.java)
-//            startActivity(intent)
+            val intent = Intent(context, ActivityEachEvent::class.java)
+            startActivity(intent)
 
-            val dlg = DialogEachEvent(requireContext())
-            dlg.start(requireContext())
+//            val dlg = DialogEachEvent(requireContext())
+//            dlg.start(requireContext())
 
         }
 

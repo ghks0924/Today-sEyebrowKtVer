@@ -27,13 +27,11 @@ class ActivityHomeMenu : ActivityBase() {
 
         overridePendingTransition(R.anim.horizon_enter, R.anim.fadeout)
 
-        binding.et1.setText("menu")
-        binding.et2.setText("기본")
 
         binding.btn.setOnClickListener {
             Api().loadEvents(
-                binding.et1.text.toString(),
-                binding.et2.text.toString()
+                binding.et1.text.toString().trim(),
+                binding.et2.text.toString().trim()
             ) { isSuccess, data ->
                 callback(isSuccess, data) {
                 }
@@ -53,14 +51,22 @@ class ActivityHomeMenu : ActivityBase() {
         binding.idcheckBtn.setOnClickListener {
             Log.d("uid", uid.trim())
             Api().loadEvents2(
-                typeTest , uid.toString()
+                "uid" , uid
             ) { isSuccess, data ->
                 callback(isSuccess, data) {
                 }
             }
         }
 
+        binding.getEventsBtn.setOnClickListener {
+            Api().findSimplePcroom(binding.et1.text.toString(),
+            binding.et2.text.toString()
+            ){ isSuccess, data ->
+                callback(isSuccess, data){
 
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -74,10 +80,8 @@ class ActivityHomeMenu : ActivityBase() {
 
     private fun callback(success: Boolean, data: Any?, function: () -> Unit) {
         if (success) {
-            Snackbar.make(binding.root, "Success", Snackbar.LENGTH_SHORT)
             Log.d("function", "success")
         } else {
-            Snackbar.make(binding.root, "fial", Snackbar.LENGTH_SHORT)
             Log.d("function", "fail")
         }
 

@@ -18,6 +18,18 @@ interface FirebaseApi {
         @Query("keyword") keyword: String
     ): Call<ArrayList<findPcroomResponse>>
 
+    @GET("/findSimplePcroom")
+    fun findSimplePcroom(
+        @Query("type") type:String,
+        @Query("keyword") keyword: String
+    ): Call<ArrayList<findPcroomResponse>>
+
+    @GET("/getEvents")
+    fun getEvents(
+        @Query("type") type:String,
+        @Query("keyword") keyword: String
+    ): Call<ArrayList<eventsResponse>>
+
     @GET("/loadEvents2")
     fun loadEvents2(
         @Query("type") type:String,
