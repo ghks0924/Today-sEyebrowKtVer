@@ -29,9 +29,10 @@ class ActivityHomeMenu : ActivityBase() {
 
 
         binding.btn.setOnClickListener {
-            Api().loadEvents(
-                binding.et1.text.toString().trim(),
-                binding.et2.text.toString().trim()
+            Api().loadCustomers(
+                typeTest, uid,
+                "grade",
+                "default"
             ) { isSuccess, data ->
                 callback(isSuccess, data) {
                 }
@@ -48,25 +49,10 @@ class ActivityHomeMenu : ActivityBase() {
             }
         }
 
-        binding.idcheckBtn.setOnClickListener {
-            Log.d("uid", uid.trim())
-            Api().loadEvents2(
-                "uid" , uid
-            ) { isSuccess, data ->
-                callback(isSuccess, data) {
-                }
-            }
-        }
 
-        binding.getEventsBtn.setOnClickListener {
-            Api().findSimplePcroom(binding.et1.text.toString(),
-            binding.et2.text.toString()
-            ){ isSuccess, data ->
-                callback(isSuccess, data){
 
-                }
-            }
-        }
+
+
     }
 
     override fun onBackPressed() {
@@ -77,7 +63,6 @@ class ActivityHomeMenu : ActivityBase() {
 
     }
 
-
     private fun callback(success: Boolean, data: Any?, function: () -> Unit) {
         if (success) {
             Log.d("function", "success")
@@ -87,6 +72,5 @@ class ActivityHomeMenu : ActivityBase() {
 
         binding.showTv.text = data.toString()
     }
-
 
 }

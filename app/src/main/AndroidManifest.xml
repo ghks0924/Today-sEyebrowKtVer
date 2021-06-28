@@ -15,9 +15,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TodaysEyebrowKtVer">
-        <activity android:name=".ui.ActivityCreateMessageGroup"
-            android:theme="@style/popupTheme"></activity>
+        android:theme="@style/Theme.TodaysEyebrowKtVer"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".TestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.ActivityCreateMessageGroup"
+            android:theme="@style/popupTheme" />
         <activity
             android:name=".ui.ActivitySelectMessageGroup"
             android:theme="@style/popupTheme" />
@@ -44,8 +53,8 @@
         <activity android:name=".ui.ActivityCreateCustomerFromBook" />
         <activity android:name=".ui.ActivityJoin2" />
         <activity android:name=".ui.ActivityJoin1" />
-        <activity android:name=".ui.ActivityJoin0"></activity>
-        <activity android:name=".ui.ActivityLogin" />
+        <activity android:name=".ui.ActivityJoin0" />
+        <activity android:name=".ui.ActivityLogin"></activity>
         <activity android:name=".ui.ActivityLoading" />
         <activity android:name=".ui.ActivityLoadCustomers" />
         <activity android:name=".ui.ActivityCreateEventSkipCus" />
@@ -59,11 +68,7 @@
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
         <activity android:name=".ui.ActivityMain">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

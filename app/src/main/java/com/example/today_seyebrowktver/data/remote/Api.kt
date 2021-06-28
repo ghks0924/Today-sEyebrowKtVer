@@ -1,6 +1,8 @@
 package com.example.today_seyebrowktver.data.remote
 
+import android.util.Log
 import com.example.today_seyebrowktver.App
+import com.example.today_seyebrowktver.CustomersData
 import com.example.today_seyebrowktver.R
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -25,28 +27,12 @@ class Api {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
+
     }
 
-    fun loadEvents(type: String, keyword: String, callback:(Boolean, Any?) -> Unit){
-        retrofit.create(FirebaseApi::class.java).loadEvents(type, keyword)
-            .enqueue(object : Callback<ArrayList<LoadEventsResponse>>{
-                override fun onResponse(
-                    call: Call<ArrayList<LoadEventsResponse>>,
-                    response: Response<ArrayList<LoadEventsResponse>>,
-                ) {
-                    callback(true, response.body())
-                }
-
-                override fun onFailure(call: Call<ArrayList<LoadEventsResponse>>, t: Throwable) {
-                    callback(false, t.message)
-                }
-
-            })
-    }
-
-    fun findPcroom(type: String, keyword: String, callback:(Boolean, Any?) -> Unit){
+    fun findPcroom(type: String, keyword: String, callback: (Boolean, Any?) -> Unit) {
         retrofit.create(FirebaseApi::class.java).findPcroom(type, keyword)
-            .enqueue(object : Callback<ArrayList<findPcroomResponse>>{
+            .enqueue(object : Callback<ArrayList<findPcroomResponse>> {
                 override fun onResponse(
                     call: Call<ArrayList<findPcroomResponse>>,
                     response: Response<ArrayList<findPcroomResponse>>,
@@ -61,55 +47,42 @@ class Api {
             })
     }
 
-    fun findSimplePcroom(type: String, keyword: String, callback:(Boolean, Any?) -> Unit){
-        retrofit.create(FirebaseApi::class.java).findPcroom(type, keyword)
-            .enqueue(object : Callback<ArrayList<findPcroomResponse>>{
+    fun loadEvents(type: String, keyword: String,
+                   year:String, month:String, callback: (Boolean, Any?) -> Unit) {
+        retrofit.create(FirebaseApi::class.java).loadEvents(type, keyword, year, month)
+            .enqueue(object : Callback<List<LoadEventsResponse>> {
                 override fun onResponse(
-                    call: Call<ArrayList<findPcroomResponse>>,
-                    response: Response<ArrayList<findPcroomResponse>>,
+                    call: Call<List<LoadEventsResponse>>,
+                    response: Response<List<LoadEventsResponse>>,
+                ) {
+                    callback(true, response.body())
+                }
+                override fun onFailure(call: Call<List<LoadEventsResponse>>, t: Throwable) {
+                    callback(false, t.message)
+                }
+            })
+    }
+
+    fun loadCustomers(
+        type: String, keyword: String,
+        type2: String, keyword2: String, callback: (Boolean, Any?) -> Unit,
+    ) {
+        retrofit.create(FirebaseApi::class.java).loadCustomers(type, keyword, type2, keyword2)
+            .enqueue(object : Callback<List<LoadCustomersResponse>> {
+                override fun onResponse(
+                    call: Call<List<LoadCustomersResponse>>,
+                    response: Response<List<LoadCustomersResponse>>,
                 ) {
                     callback(true, response.body())
                 }
 
-                override fun onFailure(call: Call<ArrayList<findPcroomResponse>>, t: Throwable) {
+                override fun onFailure(call: Call<List<LoadCustomersResponse>>, t: Throwable) {
                     callback(false, t.message)
+                    Log.d("function fail", t.message)
                 }
 
             })
     }
 
-    fun getEvents(type: String, keyword: String, callback:(Boolean, Any?) -> Unit){
-        retrofit.create(FirebaseApi::class.java).getEvents(type, keyword)
-            .enqueue(object : Callback<ArrayList<eventsResponse>>{
-                override fun onResponse(
-                    call: Call<ArrayList<eventsResponse>>,
-                    response: Response<ArrayList<eventsResponse>>,
-                ) {
-                    callback(true, response.body())
-                }
-
-                override fun onFailure(call: Call<ArrayList<eventsResponse>>, t: Throwable) {
-                    callback(false, t.message)
-                }
-
-            })
-    }
-
-    fun loadEvents2 (type: String, keyword: String, callback:(Boolean, Any?) -> Unit){
-        retrofit.create(FirebaseApi::class.java).loadEvents2(type, keyword)
-            .enqueue(object : Callback<ArrayList<LoadEventsResponse2>>{
-                override fun onResponse(
-                    call: Call<ArrayList<LoadEventsResponse2>>,
-                    response: Response<ArrayList<LoadEventsResponse2>>,
-                ) {
-                    callback(true, response.body())
-                }
-
-                override fun onFailure(call: Call<ArrayList<LoadEventsResponse2>>, t: Throwable) {
-                    callback(false, t.message)
-                }
-
-            })
-    }
 
 }
