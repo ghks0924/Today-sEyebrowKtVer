@@ -10,7 +10,10 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.today_seyebrowktver.CustomersData
+import com.example.today_seyebrowktver.PhotoData
+import com.example.today_seyebrowktver.RvPhotoAdapter
 import com.example.today_seyebrowktver.databinding.ActivityEachCustomerBinding
 import com.google.firebase.database.*
 import java.util.*
@@ -28,6 +31,11 @@ class ActivityEachCustomer : ActivityBase() {
     private lateinit var customerKeyValue: String
     private lateinit var eachCustomer: CustomersData
 
+
+    //Photo RecyclerView를 위한 변수들
+    private var photoDataList = ArrayList<PhotoData>()
+    private var adapter: RvPhotoAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEachCustomerBinding.inflate(layoutInflater)
@@ -39,8 +47,40 @@ class ActivityEachCustomer : ActivityBase() {
         customerKeyValue = intent.getStringExtra("keyValue")
 
         getCustomerData()
+        mSetPhotoData()
 
+    }
 
+    private fun mSetPhotoData() {
+        //서버에서 섬네일이랑 실제 경로 구해오기
+
+        //Test code
+
+        for (i in 0 until 10){
+            photoDataList.add(PhotoData("www.naver.com"))
+        }
+
+        setRv()
+    }
+
+    private fun setRv() {
+        adapter = RvPhotoAdapter(photoDataList)
+
+        //itemClick event
+        adapter!!.itemClick = object : RvPhotoAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                mShowShortToast("클릭")
+            }
+        }
+
+        //itemLongClick event
+        adapter!!.itemLongClick = object : RvPhotoAdapter.ItemLongClick {
+            override fun onLongClick(view: View, position: Int) {
+            }
+        }
+
+        binding.photoRv.layoutManager = GridLayoutManager(applicationContext,4)
+        binding.photoRv.adapter = adapter
     }
 
     private fun getCustomerData() {

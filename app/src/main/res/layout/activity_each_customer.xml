@@ -100,17 +100,18 @@
         app:layout_constraintTop_toBottomOf="@+id/customer_name_tv"
         tools:text="고객 번호" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="0dp"
 
+        android:orientation="vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customer_number_tv">
+        app:layout_constraintTop_toBottomOf="@+id/customer_number_tv"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -298,6 +299,7 @@
                 app:layout_constraintTop_toBottomOf="@id/history_cardview"/>
 
             <View
+                android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/mainPink"
@@ -309,11 +311,22 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/photo_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintTop_toBottomOf="@+id/line"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="10dp"
+                tools:listitem="@layout/rv_item_photo"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

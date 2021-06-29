@@ -33,8 +33,9 @@ class ActivityEachEvent : ActivityBase() {
         //팝업 액티비티의 크기 조절
         val dm = applicationContext.resources.displayMetrics
         val width = (dm.widthPixels * 0.9).toInt() // Display 사이즈의 90%
-        val height = (dm.widthPixels * 0.8).toInt()
+        val height = (dm.widthPixels * 1.5).toInt()
         window.attributes.width = width
+        window.attributes.height = height
 
 
         mSetPhotoData()
@@ -46,7 +47,7 @@ class ActivityEachEvent : ActivityBase() {
 
         //Test code
 
-        for (i in 0 until 2){
+        for (i in 0 until 10){
             photoDataList.add(PhotoData("www.naver.com"))
         }
 
@@ -60,6 +61,7 @@ class ActivityEachEvent : ActivityBase() {
         //itemClick event
         adapter!!.itemClick = object : RvPhotoAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
+                mShowShortToast("클릭")
             }
         }
 
