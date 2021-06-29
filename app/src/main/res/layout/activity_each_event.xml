@@ -409,6 +409,51 @@
                     app:layout_constraintTop_toBottomOf="@+id/memoTv" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rsv_photo_layout"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="@dimen/activity_big_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_big_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_small_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_big_horizontal_margin"
+                android:background="@drawable/rounded_corner_weakgrey"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rsv_memo_layout">
+
+                <TextView
+                    android:id="@+id/photo_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/notosanscjkkrmedium"
+                    android:gravity="center"
+
+                    android:includeFontPadding="false"
+                    android:text="시술사진"
+                    android:textColor="@color/mainGrey"
+                    android:textSize="@dimen/textsize_default"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/photo_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintTop_toBottomOf="@+id/photo_tv"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:listitem="@layout/rv_item_photo"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

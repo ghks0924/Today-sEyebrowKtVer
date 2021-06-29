@@ -21,7 +21,7 @@ interface FirebaseApi {
         @Query("keyword") keyword: String,
         @Query("year") year: String,
         @Query("month") month: String
-        ):Call<List<LoadEventsResponse>>
+        ):Call<ArrayList<LoadEventsResponse>>
 
 
 

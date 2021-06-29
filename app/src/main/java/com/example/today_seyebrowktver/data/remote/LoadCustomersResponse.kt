@@ -7,11 +7,6 @@ import com.google.gson.annotations.SerializedName
 
 @Keep
 data class LoadCustomersResponse(
-
-    val testArray : List<Customer>
-)
-
-data class Customer(
     val key : String,
     val name : String,
     val type : String,
