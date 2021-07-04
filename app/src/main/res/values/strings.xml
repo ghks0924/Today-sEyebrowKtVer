@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Today-sEyebrowKtVer</string>
+    <string name="app_kor_name">오늘의눈썹</string>
     <string name="title_activity_base">BaseActivity</string>
     <!--
     This string is used for square devices and overridden by hello_world in

@@ -57,7 +57,9 @@
         <activity android:name=".ui.ActivityJoin2" />
         <activity android:name=".ui.ActivityJoin1" />
         <activity android:name=".ui.ActivityJoin0" />
-        <activity android:name=".ui.ActivityLogin" />
+        <activity android:name=".ui.ActivityLogin">
+
+        </activity>
         <activity android:name=".ui.ActivityLoading" />
         <activity android:name=".ui.ActivityLoadCustomers" />
         <activity android:name=".ui.ActivityCreateEventSkipCus" />
@@ -70,7 +72,9 @@
             android:name=".ui.ActivityBase"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
-        <activity android:name=".ui.ActivityMain"></activity>
+        <activity android:name=".ui.ActivityMain">
+
+        </activity>
     </application>
 
 </manifest>

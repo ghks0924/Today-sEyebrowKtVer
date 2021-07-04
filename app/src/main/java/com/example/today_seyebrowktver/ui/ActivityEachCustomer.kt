@@ -7,15 +7,20 @@ import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.today_seyebrowktver.CustomersData
 import com.example.today_seyebrowktver.PhotoData
+import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.RvPhotoAdapter
 import com.example.today_seyebrowktver.databinding.ActivityEachCustomerBinding
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import gun0912.tedimagepicker.builder.TedImagePicker
 import java.util.*
 
 
@@ -36,6 +41,9 @@ class ActivityEachCustomer : ActivityBase() {
     private var photoDataList = ArrayList<PhotoData>()
     private var adapter: RvPhotoAdapter? = null
 
+    //image Picker
+    private var imageUri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEachCustomerBinding.inflate(layoutInflater)
@@ -48,6 +56,8 @@ class ActivityEachCustomer : ActivityBase() {
 
         getCustomerData()
         mSetPhotoData()
+
+
 
     }
 
@@ -69,7 +79,9 @@ class ActivityEachCustomer : ActivityBase() {
         //itemClick event
         adapter!!.itemClick = object : RvPhotoAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-                mShowShortToast("클릭")
+                TedImagePicker.with(this@ActivityEachCustomer).savedDirectoryName(R.string.app_kor_name.toString())
+                    .start { uri -> showSingleImage(uri) }
+//                uploadFile(imageUri)
             }
         }
 
@@ -216,9 +228,56 @@ class ActivityEachCustomer : ActivityBase() {
                 binding.customerNameTv.text = data!!.getStringExtra("edittedName")
                 binding.customerNumberTv.text = data!!.getStringExtra("edittedNumber")
             }
+
         }
 
 
+    }
+
+    private fun showSingleImage(uri: Uri) {
+        if (imageUri != null){
+            imageUri = uri //사진 파일의 Uri 받고
+            Log.d("imageUpload", "uri " + imageUri)
+
+//        Glide.with(this).load(uri).into(binding.iv)
+            uploadFile()
+        }
+    }
+
+
+
+    //찍거나 선택된 사진을 서버에 저장
+    private fun uploadFile() {
+        var file = imageUri
+        val storageRef = FirebaseStorage.getInstance().reference
+        val riversRef = storageRef.child("images/"+uid+"/test.jpg")
+        val uploadTask = riversRef.putFile(file!!)
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener {
+            // Handle unsuccessful uploads
+            Log.d("uploadImage", "실패")
+        }.addOnSuccessListener { taskSnapshot ->
+            Log.d("uploadImage", "성공")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("imagePicker", "resume")
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        Log.d("imagePicker", "stop")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        Log.d("imagePicker", "pause")
     }
 
 

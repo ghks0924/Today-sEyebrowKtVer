@@ -12,11 +12,12 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.today_seyebrowktver.databinding.ActivityImagePickerBinding
+import com.example.today_seyebrowktver.databinding.ItemTedTestBinding
 import com.example.today_seyebrowktver.databinding.RvItemPhotoBinding
 import com.google.firebase.storage.FirebaseStorage
 import gun0912.tedimagepicker.builder.TedImagePicker
 
-class ImagePickerActivity : AppCompatActivity() {
+class ImagePickerActivity : ActivityBase() {
 
     private var imageUri: Uri? = null
     private var selectedUriList: List<Uri>? = null
@@ -58,7 +59,7 @@ class ImagePickerActivity : AppCompatActivity() {
     private fun showMultiImage(uriList: List<Uri>) {
         this.selectedUriList = uriList
         Log.d("ted", "uriList: $uriList")
-//        binding.ivImage.visibility = View.GONE
+        binding.iv.visibility = View.GONE
         binding.containerSelectedPhotos.visibility = View.VISIBLE
 
         binding.containerSelectedPhotos.removeAllViews()
@@ -67,11 +68,11 @@ class ImagePickerActivity : AppCompatActivity() {
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100f, resources.displayMetrics)
                 .toInt()
         uriList.forEach {
-            val itemImageBinding = RvItemPhotoBinding.inflate(LayoutInflater.from(this))
+            val itemImageBinding = ItemTedTestBinding.inflate(LayoutInflater.from(this))
             Glide.with(this)
                 .load(it)
                 .apply(RequestOptions().fitCenter())
-                .into(itemImageBinding.iv)
+                .into(itemImageBinding.ivMedia)
             itemImageBinding.root.layoutParams = FrameLayout.LayoutParams(viewSize, viewSize)
             binding.containerSelectedPhotos.addView(itemImageBinding.root)
         }
@@ -81,7 +82,7 @@ class ImagePickerActivity : AppCompatActivity() {
     private fun uploadFile() {
         var file = imageUri
         val storageRef = FirebaseStorage.getInstance().reference
-        val riversRef = storageRef.child("images/uid/test.jpg")
+        val riversRef = storageRef.child("images/uid/test2.jpg")
         val uploadTask = riversRef.putFile(file!!)
 
         // Register observers to listen for when the download is done or if it fails

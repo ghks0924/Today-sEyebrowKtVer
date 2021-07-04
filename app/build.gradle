@@ -24,10 +24,10 @@ android {
             Properties properties = new Properties()
             properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-            storeFile file(properties["store"])
-            storePassword properties["storePass"]
-            keyAlias properties["alias"]
-            keyPassword properties["pass"]
+//            storeFile file(properties["store"])
+//            storePassword properties["storePass"]
+//            keyAlias properties["alias"]
+//            keyPassword properties["pass"]
         }
         debug {
 //            D0:0C:ED:E5:74:08:A0:3F:DA:7F:CF:FC:69:0F:BA:25:1A:A1:58:EB
