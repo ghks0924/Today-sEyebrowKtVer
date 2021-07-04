@@ -50,14 +50,14 @@ class Api {
     fun loadEvents(type: String, keyword: String,
                    year:String, month:String, callback: (Boolean, Any?) -> Unit) {
         retrofit.create(FirebaseApi::class.java).loadEvents(type, keyword, year, month)
-            .enqueue(object : Callback<ArrayList<LoadEventsResponse>> {
+            .enqueue(object : Callback<LoadEventsResponse2> {
                 override fun onResponse(
-                    call: Call<ArrayList<LoadEventsResponse>>,
-                    response: Response<ArrayList<LoadEventsResponse>>,
+                    call: Call<LoadEventsResponse2>,
+                    response: Response<LoadEventsResponse2>,
                 ) {
                     callback(true, response.body())
                 }
-                override fun onFailure(call: Call<ArrayList<LoadEventsResponse>>, t: Throwable) {
+                override fun onFailure(call: Call<LoadEventsResponse2>, t: Throwable) {
                     callback(false, t.message)
                 }
             })

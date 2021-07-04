@@ -46,7 +46,7 @@ class ActivityCreateEventOldCus : ActivityBase() {
 
     private fun setLayout() {
         //uid 구하기
-        uid = mAuth.currentUser.uid
+        uid = mAuth.currentUser!!.uid
         mChangeStatusBarColor("#ebbdc5")
 
         binding.backIv.setOnClickListener {

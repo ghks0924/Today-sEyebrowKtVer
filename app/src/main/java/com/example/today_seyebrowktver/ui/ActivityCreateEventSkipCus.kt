@@ -29,7 +29,7 @@ class ActivityCreateEventSkipCus : ActivityBase() {
         setContentView(binding.root)
 
         val user = mAuth.currentUser
-        uid = user.uid
+        uid = user!!.uid
 
         setLayout()
     }

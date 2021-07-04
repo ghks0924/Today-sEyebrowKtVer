@@ -90,10 +90,10 @@ class ActivityLogin : ActivityBase() {
                     val intent = Intent(this, ActivityMain::class.java)
                     startActivity(intent)
 
-                    userId = mAuth.currentUser.uid
+                    userId = mAuth.currentUser!!.uid
                     val user = mAuth.currentUser
-                    user.uid
-                    Log.d("uid", user.uid+"?")
+                    user!!.uid
+                    Log.d("uid", user!!.uid+"?")
 //                    updateUI(user)
 
 //                    currentUser = mAuth.getCurrentUser()

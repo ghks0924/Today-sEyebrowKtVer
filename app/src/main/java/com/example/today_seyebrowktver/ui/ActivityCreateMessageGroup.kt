@@ -36,7 +36,7 @@ class ActivityCreateMessageGroup : ActivityBase() {
 
     private fun setLayout() {
         val user = mAuth.currentUser
-        uid = user.uid
+        uid = user!!.uid
 
         checkMessageGroupsNum()
 

@@ -38,7 +38,7 @@ class ActivityCreateCustomer : ActivityBase() {
         checkOrigin()
 
         val user = mAuth.currentUser
-        uid = user.uid
+        uid = user!!.uid
 
         setLayout()
 

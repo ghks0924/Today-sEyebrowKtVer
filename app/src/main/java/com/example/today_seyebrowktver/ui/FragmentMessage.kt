@@ -33,7 +33,7 @@ class FragmentMessage : Fragment() {
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     val mAuth = FirebaseAuth.getInstance()
-    private var uid = mAuth.currentUser.uid
+    private var uid = mAuth.currentUser!!.uid
 
 
     //messageGroup 서버에서 받아오는 변수들

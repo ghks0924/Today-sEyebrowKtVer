@@ -18,7 +18,7 @@ import com.google.firebase.database.FirebaseDatabase
 class ActivityEachEvent : ActivityBase() {
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private var uid = mAuth.currentUser.uid
+    private var uid = mAuth.currentUser!!.uid
 
     //RecyclerView를 위한 변수들
     private var photoDataList = ArrayList<PhotoData>()

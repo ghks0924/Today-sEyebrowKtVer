@@ -151,7 +151,7 @@ class ActivityJoin2 : ActivityBase(), View.OnClickListener {
                 if (task.isSuccessful) {
 
                     val user = mAuth!!.currentUser
-                    uid = user.uid
+                    uid = user!!.uid
 
                     var userData = UserData(
                         email,

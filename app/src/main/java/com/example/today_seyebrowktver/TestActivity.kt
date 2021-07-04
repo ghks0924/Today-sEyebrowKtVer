@@ -19,14 +19,13 @@ class TestActivity : ActivityBase() {
         binding.btn.setOnClickListener {
 
             Api().loadEvents(
-                "uid",mAuth.currentUser.uid,
+                "uid",mAuth.currentUser!!.uid,
                 "2021","04")
             { isSuccess, data ->
                 callback(isSuccess, data) {
                 }
             }
         }
-
     }
 
     private fun callback(success: Boolean, data: Any?, function: () -> Unit) {
@@ -36,6 +35,6 @@ class TestActivity : ActivityBase() {
             Log.d("function", "fail")
         }
 
-        binding.tv.text = data.toString() + mAuth.currentUser.uid
+        binding.tv.text = data.toString() + mAuth.currentUser!!.uid
     }
 }

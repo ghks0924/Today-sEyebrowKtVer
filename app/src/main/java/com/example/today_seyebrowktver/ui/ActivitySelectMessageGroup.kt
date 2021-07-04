@@ -62,7 +62,7 @@ class ActivitySelectMessageGroup : ActivityBase() {
 
     private fun getGroupMessageData() {
         val user = mAuth.currentUser
-        uid = user.uid
+        uid = user!!.uid
 
         database.child("users").child(uid).child("messageGroups")
             .addValueEventListener(object : ValueEventListener {

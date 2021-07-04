@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName
 @Keep
 data class LoadEventsResponse (
     val data : List<EventsTest>
-
 )
 
 data class EventsTest(

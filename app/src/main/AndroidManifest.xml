@@ -3,7 +3,6 @@
     package="com.example.today_seyebrowktver">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -17,9 +16,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodaysEyebrowKtVer"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TestActivity">
+        <activity android:name=".TestLoginActivity">
 
         </activity>
+        <activity android:name=".ui.ImagePickerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".TestActivity" />
         <activity
             android:name=".ui.ActivityCreateMessageGroup"
             android:theme="@style/popupTheme" />
@@ -50,7 +57,7 @@
         <activity android:name=".ui.ActivityJoin2" />
         <activity android:name=".ui.ActivityJoin1" />
         <activity android:name=".ui.ActivityJoin0" />
-        <activity android:name=".ui.ActivityLogin"></activity>
+        <activity android:name=".ui.ActivityLogin" />
         <activity android:name=".ui.ActivityLoading" />
         <activity android:name=".ui.ActivityLoadCustomers" />
         <activity android:name=".ui.ActivityCreateEventSkipCus" />
@@ -63,13 +70,7 @@
             android:name=".ui.ActivityBase"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.TodaysEyebrowKtVer.NoActionBar" />
-        <activity android:name=".ui.ActivityMain">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.ActivityMain"></activity>
     </application>
 
 </manifest>

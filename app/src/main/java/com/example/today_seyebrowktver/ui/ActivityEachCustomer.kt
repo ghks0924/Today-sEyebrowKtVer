@@ -41,7 +41,7 @@ class ActivityEachCustomer : ActivityBase() {
         binding = ActivityEachCustomerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        uid = mAuth.currentUser.uid
+        uid = mAuth.currentUser!!.uid
 
         val intent = intent
         customerKeyValue = intent.getStringExtra("keyValue")

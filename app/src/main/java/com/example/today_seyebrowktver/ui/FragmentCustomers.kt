@@ -43,7 +43,7 @@ class FragmentCustomers : Fragment() {
         _binding = FragmentCustomersBinding.inflate(inflater, container, false)
 
         val user = mAuth.currentUser
-        uid = user.uid
+        uid = user!!.uid
 
         return binding.root
     }

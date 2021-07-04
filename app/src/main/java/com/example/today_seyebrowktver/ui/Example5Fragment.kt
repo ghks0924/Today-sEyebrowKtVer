@@ -461,7 +461,7 @@ class Example5Fragment : Fragment() {
 
     fun getEvents() {
         val user = mAuth.currentUser
-        uid = user.uid
+        uid = user!!.uid
 
         database.child("users").child(uid).child("eventsByDate").child("2021-04")
             .addValueEventListener(object : ValueEventListener {

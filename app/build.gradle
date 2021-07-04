@@ -19,6 +19,28 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+            storeFile file(properties["store"])
+            storePassword properties["storePass"]
+            keyAlias properties["alias"]
+            keyPassword properties["pass"]
+        }
+        debug {
+//            D0:0C:ED:E5:74:08:A0:3F:DA:7F:CF:FC:69:0F:BA:25:1A:A1:58:EB
+//            Properties properties = new Properties()
+//            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//
+//            storeFile file(properties["store"])
+//            storePassword properties["storePass"]
+//            keyAlias properties["alias"]
+//            keyPassword properties["pass"]
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -35,6 +57,11 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    dataBinding {
+        enabled = true
+    }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -51,6 +78,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-functions:20.0.0'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.1'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -63,8 +93,8 @@ dependencies {
     //============Firebase=====================
     implementation platform('com.google.firebase:firebase-bom:26.8.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-database-ktx:19.7.0'
-    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
     //=============Room library================
 
@@ -108,5 +138,13 @@ dependencies {
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    //===============21.06.30========================
+    //image picker
+    implementation 'io.github.ParkSangGwon:tedimagepicker:1.2.2'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
 }

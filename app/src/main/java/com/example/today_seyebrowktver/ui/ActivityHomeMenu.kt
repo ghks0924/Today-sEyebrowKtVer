@@ -23,16 +23,16 @@ class ActivityHomeMenu : ActivityBase() {
         setContentView(binding.root)
 
         val typeTest = "uid"
-        uid = mAuth2.currentUser.uid
+        uid = mAuth2.currentUser!!.uid
 
         overridePendingTransition(R.anim.horizon_enter, R.anim.fadeout)
 
 
         binding.btn.setOnClickListener {
-            Api().loadCustomers(
-                typeTest, uid,
-                "grade",
-                "default"
+            Api().loadEvents(
+                "uid", uid,
+                "2021",
+                "04"
             ) { isSuccess, data ->
                 callback(isSuccess, data) {
                 }
