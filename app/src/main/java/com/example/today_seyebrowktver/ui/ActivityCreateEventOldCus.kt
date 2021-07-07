@@ -70,19 +70,21 @@ class ActivityCreateEventOldCus : ActivityBase() {
                 var month:String = ""
                 var day : String = ""
 
-                if (selectedDate.indexOf("월") == 7 && selectedDate.indexOf("일") == 10){
-                    month = "0" + selectedDate.get(6)
-                    day = "0" + selectedDate.get(9)
-                } else if (selectedDate.indexOf("월") == 7 && selectedDate.indexOf("일") == 11){
-                    month = "0" + selectedDate.get(6)
-                    day = selectedDate.substring(9,11)
-                } else if(selectedDate.indexOf("월") == 8 && selectedDate.indexOf("일") == 11){
-                    month = selectedDate.substring(6,8)
-                    day = "0" + selectedDate.get(10).toString()
-                } else {
-                    month = selectedDate.substring(6,8)
-                    day = selectedDate.substring(10,12)
-                }
+                Log.d("selectedDate", selectedDate)
+
+//                if (selectedDate.indexOf("월") == 7 && selectedDate.indexOf("일") == 10){
+//                    month = "0" + selectedDate.get(6)
+//                    day = "0" + selectedDate.get(9)
+//                } else if (selectedDate.indexOf("월") == 7 && selectedDate.indexOf("일") == 11){
+//                    month = "0" + selectedDate.get(6)
+//                    day = selectedDate.substring(9,11)
+//                } else if(selectedDate.indexOf("월") == 8 && selectedDate.indexOf("일") == 11){
+//                    month = selectedDate.substring(6,8)
+//                    day = "0" + selectedDate.get(10).toString()
+//                } else {
+//                    month = selectedDate.substring(6,8)
+//                    day = selectedDate.substring(10,12)
+//                }
 
                 yearMonthForServer = year+"-"+month
                 dateForServer = year+month+day

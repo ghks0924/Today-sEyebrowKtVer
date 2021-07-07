@@ -28,8 +28,8 @@ class FragmentMessage : Fragment() {
     val REQUEST_SEND_MESSAGE = 2222
 
 
-    private var _binding: FragmentMessageBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentMessageBinding
+//    private val binding get() = _binding!!
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     val mAuth = FirebaseAuth.getInstance()
@@ -61,7 +61,7 @@ class FragmentMessage : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentMessageBinding.inflate(inflater, container, false)
+        binding = FragmentMessageBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -313,7 +313,7 @@ class FragmentMessage : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 
 

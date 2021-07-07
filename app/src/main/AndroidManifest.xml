@@ -20,11 +20,7 @@
 
         </activity>
         <activity android:name=".ui.ImagePickerActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".TestActivity" />
         <activity
@@ -58,7 +54,11 @@
         <activity android:name=".ui.ActivityJoin1" />
         <activity android:name=".ui.ActivityJoin0" />
         <activity android:name=".ui.ActivityLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".ui.ActivityLoading" />
         <activity android:name=".ui.ActivityLoadCustomers" />
