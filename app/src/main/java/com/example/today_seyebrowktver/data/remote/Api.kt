@@ -75,7 +75,7 @@ class Api {
 
                 override fun onFailure(call: Call<List<LoadCustomersResponse>>, t: Throwable) {
                     callback(false, t.message)
-                    Log.d("function fail", t.message)
+                    Log.d("function fail", t.message.toString())
                 }
 
             })

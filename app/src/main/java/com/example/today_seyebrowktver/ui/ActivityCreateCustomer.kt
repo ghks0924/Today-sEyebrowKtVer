@@ -46,7 +46,7 @@ class ActivityCreateCustomer : ActivityBase() {
 
     private fun checkOrigin() {
         val getintent = intent
-        checkOrgStr = getintent.getStringExtra("origin")
+        checkOrgStr = getintent.getStringExtra("origin").toString()
     }
 
     private fun setLayout() {
@@ -110,7 +110,7 @@ class ActivityCreateCustomer : ActivityBase() {
                 }
 
             }.addOnFailureListener {
-                Log.d("errorOfCustomerSave", it.message)
+                Log.d("errorOfCustomerSave", it.message.toString())
             }
 
 

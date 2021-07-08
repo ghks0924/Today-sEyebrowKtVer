@@ -5,8 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
+import com.example.today_seyebrowktver.data.EventData
 import com.example.today_seyebrowktver.data.MemoData
 import com.example.today_seyebrowktver.data.MessageData
+import com.example.today_seyebrowktver.room.EventDatabase
 import com.example.today_seyebrowktver.room.MemoDatabase
 import com.example.today_seyebrowktver.room.MessageDatabase
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +23,11 @@ class ViewModelMain(application: Application) : AndroidViewModel(application) {
     private val messageDB = Room.databaseBuilder(
         application,
         MessageDatabase::class.java, "messages"
+    ).build()
+
+    private val eventsDB = Room.databaseBuilder(
+        application,
+        EventDatabase::class.java, "events"
     ).build()
 
     //==========user Data==========
@@ -98,5 +105,47 @@ class ViewModelMain(application: Application) : AndroidViewModel(application) {
         messageDB.getMessageDao().update(messageData)
     }
 
+    //=================================event db method========================
+    val eventDate = MutableLiveData<String>()
+    val eventTime = MutableLiveData<String>()
+    val eventComplete = MutableLiveData<Boolean>()
+    val eventCustomerName = MutableLiveData<String>()
+    val eventCustomerNumber = MutableLiveData<String>()
+    val eventCustomerGrade = MutableLiveData<String>()
+    val eventIsRetouch = MutableLiveData<Boolean>()
+    val eventMenu = MutableLiveData<String>()
+    val eventPrice = MutableLiveData<Int>()
+    val eventPayment = MutableLiveData<String>()
+    val eventReservMemo = MutableLiveData<String>()
+    val eventSavedate = MutableLiveData<String>()
+    val eventKeyValue = MutableLiveData<String>()
+
+    fun sendEventData(
+        date: String, time: String, complete: Boolean, customerName: String,
+        customerNumber: String, customerGrade: String, isRetouch: Boolean, menu: String,
+        price: Int, payment: String, memo:String, savedate: String, keyValue: String,
+    ) {
+        eventDate.value = date
+        eventTime.value = time
+        eventComplete.value = complete
+        eventCustomerName.value = customerName
+        eventCustomerNumber.value = customerNumber
+        eventCustomerGrade.value = customerGrade
+        eventIsRetouch.value = isRetouch
+        eventMenu.value = menu
+        eventPrice.value = price
+        eventPayment.value = payment
+        eventReservMemo.value = memo
+        eventSavedate.value = savedate
+        eventKeyValue.value = keyValue
+    }
+
+    fun getAllEvents(): LiveData<List<EventData>>{
+        return eventsDB.getEventDao().getAllEvents()
+    }
+
+    suspend fun insert(eventData : EventData){
+        return eventsDB.getEventDao().insert(eventData)
+    }
 
 }

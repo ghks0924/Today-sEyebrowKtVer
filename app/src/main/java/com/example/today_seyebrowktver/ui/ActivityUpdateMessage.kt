@@ -44,11 +44,11 @@ class ActivityUpdateMessage : ActivityBase() {
 
     private fun setLayout() {
         val intent = intent
-        prevMessageTitle = intent.getStringExtra("title")
-        prevMessageContent = intent.getStringExtra("content")
-        prevMessageDate = intent.getStringExtra("date")
-        prevMessageType = intent.getStringExtra("type")
-        keyValue = intent.getStringExtra("key")
+        prevMessageTitle = intent.getStringExtra("title").toString()
+        prevMessageContent = intent.getStringExtra("content").toString()
+        prevMessageDate = intent.getStringExtra("date").toString()
+        prevMessageType = intent.getStringExtra("type").toString()
+        keyValue = intent.getStringExtra("key").toString()
 
         binding.messageTitleEt.setText(prevMessageTitle)
         binding.messageContentEt.setText(prevMessageContent)

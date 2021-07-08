@@ -31,10 +31,10 @@ class ActivitySendMessage : ActivityBase() {
     private fun setLayout() {
 
         val intent = intent
-        messageType = intent.getStringExtra("type")
-        oldMessageTitle = intent.getStringExtra("title")
-        oldMessageContent = intent.getStringExtra("content")
-        oldMessageDate = intent.getStringExtra("date")
+        messageType = intent.getStringExtra("type").toString()
+        oldMessageTitle = intent.getStringExtra("title").toString()
+        oldMessageContent = intent.getStringExtra("content").toString()
+        oldMessageDate = intent.getStringExtra("date").toString()
 
         binding.messageTitleDisplayTv.setText(oldMessageTitle)
         binding.messageContentEt.setText(oldMessageContent)

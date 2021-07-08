@@ -6,7 +6,7 @@ import java.util.LinkedHashMap
 class Converters {
 
     @TypeConverter
-    fun eventListToMap(value: List<EventData>?) = value?.groupByTo( HashMap(),{
+    fun listToMap(value: List<EventData>?) = value?.groupByTo( HashMap(),{
         it.date })
 
     fun mapToList(value: HashMap<String,List<EventData>>) = value.values.toList()

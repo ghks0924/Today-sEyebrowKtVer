@@ -51,7 +51,7 @@ class ActivityEachCustomer : ActivityBase() {
         uid = mAuth.currentUser!!.uid
 
         val intent = intent
-        customerKeyValue = intent.getStringExtra("keyValue")
+        customerKeyValue = intent.getStringExtra("keyValue").toString()
 
         getCustomerData()
         mSetPhotoData()

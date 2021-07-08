@@ -1,4 +1,7 @@
 package com.example.today_seyebrowktver.room
 
-class SalesDao {
+import androidx.room.Dao
+
+@Dao
+interface SalesDao {
 }

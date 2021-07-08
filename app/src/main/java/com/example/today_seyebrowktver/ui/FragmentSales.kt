@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.today_seyebrowktver.databinding.FragmentAccountingBinding
+import com.example.today_seyebrowktver.databinding.FragmentSalesBinding
 
-class FragmentAccounting:Fragment() {
-
-    private var _binding: FragmentAccountingBinding? = null
+class FragmentSales:Fragment() {
+    private var _binding: FragmentSalesBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +18,7 @@ class FragmentAccounting:Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        _binding = FragmentAccountingBinding.inflate(inflater, container, false)
+        _binding = FragmentSalesBinding.inflate(inflater, container, false)
 
 
         return binding.root
@@ -44,8 +43,6 @@ class FragmentAccounting:Fragment() {
             val intent = Intent(context, ActivityMonthlyPerformance::class.java)
             startActivity(intent)
         }
-
-
 
     }
     override fun onDestroyView() {

@@ -46,8 +46,8 @@ class ActivityJoin1 : ActivityBase(), View.OnClickListener {
 
     private fun getDataFromPrevAct() {
         val intent2 = intent
-        email = intent2.getStringExtra("email")
-        password = intent2.getStringExtra("password")
+        email = intent2.getStringExtra("email").toString()
+        password = intent2.getStringExtra("password").toString()
     }
 
     private fun setLayout() {
@@ -133,7 +133,7 @@ class ActivityJoin1 : ActivityBase(), View.OnClickListener {
             REQUEST_SELECT_REGION -> {
                 var selectedRegion = data!!.getStringExtra("region")
                 binding.regionTv.text = selectedRegion
-                region = selectedRegion
+                region = selectedRegion.toString()
                 Log.d("initValue", "region : " + region)
 
                 binding.birthEt.requestFocus()

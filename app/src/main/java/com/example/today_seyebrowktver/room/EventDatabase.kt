@@ -6,10 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.today_seyebrowktver.data.EventData
 
-@Database(entities = [EventData::class], version = 0)
+@Database(entities = [EventData::class], version = 1)
 abstract class EventDatabase : RoomDatabase() {
 
-    abstract fun getEventDao()
+    abstract fun getEventDao(): EventDao
 
     companion object {
         private var INSTANCE: EventDatabase? = null

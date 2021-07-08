@@ -83,7 +83,7 @@ class ActivityCreateMessageGroup : ActivityBase() {
                 finish()
 
             }.addOnFailureListener {
-                Log.d("errorOfCustomerSave", it.message)
+                Log.d("errorOfCustomerSave", it.message.toString())
             }
     }
 

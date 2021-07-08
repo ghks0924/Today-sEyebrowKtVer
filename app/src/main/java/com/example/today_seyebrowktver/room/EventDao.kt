@@ -9,7 +9,10 @@ import com.example.today_seyebrowktver.data.MemoData
 interface EventDao {
 
     @Query("SELECT * FROM events ORDER BY date DESC")
-    fun getAllEvents(): LiveData<HashMap<String,List<EventData>>>
+    fun getAllEvents(): LiveData<List<EventData>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(eventEntity : EventData)
 
 //    @Query("SELECT * FROM memos WHERE date LIKE :date")
 //    suspend fun findByDate(date: String) : MemoData
@@ -23,11 +26,11 @@ interface EventDao {
 //    @Query("DELETE FROM memos WHERE idx = :idx")
 //    fun delete(idx: Int)
 
-    @Update
-    suspend fun update(eventEntity: EventData)
-
-    @Delete
-    suspend fun delete(eventEntity: EventData)
+//    @Update
+//    suspend fun update(eventEntity: EventData)
+//
+//    @Delete
+//    suspend fun delete(eventEntity: EventData)
 
 
 }

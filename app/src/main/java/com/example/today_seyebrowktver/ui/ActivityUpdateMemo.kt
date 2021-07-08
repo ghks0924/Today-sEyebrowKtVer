@@ -34,9 +34,9 @@ class ActivityUpdateMemo : ActivityBase() {
 
     private fun setLayout() {
         val intent = intent
-        prevMemoTitle = intent.getStringExtra("title")
-        prevMemoContent = intent.getStringExtra("content")
-        prevMemoDate = intent.getStringExtra("date")
+        prevMemoTitle = intent.getStringExtra("title").toString()
+        prevMemoContent = intent.getStringExtra("content").toString()
+        prevMemoDate = intent.getStringExtra("date").toString()
 
         binding.memoTitleEt.setText(prevMemoTitle)
         binding.contentEdittext.setText(prevMemoContent)

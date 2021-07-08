@@ -52,13 +52,13 @@ class ActivityJoin2 : ActivityBase(), View.OnClickListener {
 
     private fun getDataFromPrevAct() {
         val intent2 = intent
-        email = intent2.getStringExtra("email")
-        password = intent2.getStringExtra("password")
-        number = intent2.getStringExtra("number")
-        shopName = intent2.getStringExtra("shopName")
-        region = intent2.getStringExtra("region")
-        birth = intent2.getStringExtra("birth")
-        gender = intent2.getStringExtra("gender")
+        email = intent2.getStringExtra("email").toString()
+        password = intent2.getStringExtra("password").toString()
+        number = intent2.getStringExtra("number").toString()
+        shopName = intent2.getStringExtra("shopName").toString()
+        region = intent2.getStringExtra("region").toString()
+        birth = intent2.getStringExtra("birth").toString()
+        gender = intent2.getStringExtra("gender").toString()
     }
 
     private fun setLayout() {
@@ -104,7 +104,7 @@ class ActivityJoin2 : ActivityBase(), View.OnClickListener {
         }
 
         binding.serviceTypeTv.text = data!!.getStringExtra("type")
-        shopType = data!!.getStringExtra("type")
+        shopType = data!!.getStringExtra("type").toString()
         Log.d("shopType", "onResult : " + shopType)
         binding.goalEt.requestFocus()
 

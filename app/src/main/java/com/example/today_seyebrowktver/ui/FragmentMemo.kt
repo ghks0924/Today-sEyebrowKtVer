@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,9 +26,12 @@ class FragmentMemo : Fragment() {
     private val REQUEST_CREATE_MEMO: Int = 1111
     private val REQUEST_UPDATE_MEMO: Int = 2222
 
-    //viewBinding
-    private var _binding: FragmentMemoBinding? = null //onDestory를 위한 변수
-    private val binding get() = _binding!!
+//    //viewBinding
+//    private var _binding: FragmentMemoBinding? = null //onDestory를 위한 변수
+//    private val binding get() = _binding!!
+
+    //dataBinding
+    private var mBinding:FragmentMemoBinding?= null
 
     //RecyclerView를 위한 변수들
     var memoDataList = ArrayList<MemoData>()
@@ -35,18 +39,14 @@ class FragmentMemo : Fragment() {
 
     private lateinit var mainViewModel : ViewModelMain
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMemoBinding.inflate(inflater, container, false)
-        return binding.root
+        //dataBinding
+        mBinding = FragmentMemoBinding.inflate(inflater)
+        return mBinding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +63,7 @@ class FragmentMemo : Fragment() {
     }
 
     private fun mGoToCreateMemo() {
-        binding.fab.setOnClickListener(View.OnClickListener {
+        mBinding!!.fab.setOnClickListener(View.OnClickListener {
             (activity as ActivityMain).mGoToCreateMemoActivity()
         })
     }//memo 추가 메서드
@@ -116,8 +116,9 @@ class FragmentMemo : Fragment() {
         }
 
 
-        binding.recyclerview.layoutManager = GridLayoutManager(context,2)
-        binding.recyclerview.adapter = adapter
+        mBinding!!.recyclerview.layoutManager = GridLayoutManager(context,2)
+        mBinding!!.recyclerview.adapter = adapter
+
     } //RecyclerView 세팅 메서드
 
     private fun setData() {

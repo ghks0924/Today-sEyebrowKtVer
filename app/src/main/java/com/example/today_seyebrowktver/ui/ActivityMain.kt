@@ -24,7 +24,7 @@ class ActivityMain : ActivityBase() {
 
     private var currentNavController: LiveData<NavController>? = null
     val navGraphIds = listOf(R.layout.example_5_fragment,
-        R.layout.fragment_accounting,
+        R.layout.fragment_sales,
         R.layout.fragment_customers,
         R.layout.fragment_memo,
         R.layout.fragment_message)
@@ -49,7 +49,7 @@ class ActivityMain : ActivityBase() {
     var fragmentHome = FragmentHome()
     var fragmentMemo = FragmentMemo()
     var fragmentMessage = FragmentMessage()
-    var fragmentAccounting = FragmentAccounting()
+    var fragmentAccounting = FragmentSales()
     var fragmentCalendar = Example5Fragment()
 
     //onCreate
@@ -220,7 +220,7 @@ class ActivityMain : ActivityBase() {
                     }
                     R.id.nav_accountings -> {
                         if (fragmentAccounting == null) {
-                            fragmentAccounting = FragmentAccounting()
+                            fragmentAccounting = FragmentSales()
                             supportFragmentManager.beginTransaction()
                                 .add(R.id.frame_container, fragmentAccounting).commit();
                         }
@@ -324,11 +324,10 @@ class ActivityMain : ActivityBase() {
                 val memoTitle = data!!.getStringExtra("title")
                 val memoContent = data!!.getStringExtra("content")
 
-                Log.d("memoCheck", memoDate)
+                Log.d("memoCheck", memoDate.toString())
 
                 lifecycleScope.launch(Dispatchers.IO) {
-                    mainViewModel.insert(MemoData(memoDate, memoTitle, memoContent))
-
+                    mainViewModel.insert(MemoData(memoDate.toString(), memoTitle.toString(), memoContent.toString()))
                 }
                 mainViewModel.getAll().observe(this, Observer { memos ->
                     var tempMemoDataList = ArrayList<MemoData>()
@@ -352,8 +351,8 @@ class ActivityMain : ActivityBase() {
                 Log.d("memoCheck", "fragment : " + newMemoDate)
 
                 lifecycleScope.launch(Dispatchers.IO) {
-                    mainViewModel.delete(mainViewModel.findMemoByDate(oldMemoDate))
-                    mainViewModel.insert(MemoData(newMemoDate, memoTitle, memoContent))
+                    mainViewModel.delete(mainViewModel.findMemoByDate(oldMemoDate.toString()))
+                    mainViewModel.insert(MemoData(newMemoDate.toString(), memoTitle.toString(), memoContent.toString()))
                 }
             }
 
@@ -364,9 +363,9 @@ class ActivityMain : ActivityBase() {
                 val newMessageTitle = data!!.getStringExtra("title")
                 val newMessageContent = data!!.getStringExtra("content")
                 lifecycleScope.launch(Dispatchers.IO) {
-                    mainViewModel.delete(mainViewModel.findMessageByDate(oldMessageDate))
-                    mainViewModel.insert(MessageData(messageType, newMessageTitle,
-                        newMessageContent, newMessageDate))
+                    mainViewModel.delete(mainViewModel.findMessageByDate(oldMessageDate.toString()))
+                    mainViewModel.insert(MessageData(messageType.toString(), newMessageTitle.toString(),
+                        newMessageContent.toString(), newMessageDate.toString()))
                 }
             }
         }

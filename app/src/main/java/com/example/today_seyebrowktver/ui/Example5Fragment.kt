@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.today_seyebrowktver.*
@@ -31,6 +33,8 @@ import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.previous
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -113,6 +117,18 @@ class Example5Fragment : Fragment() {
 
     private lateinit var binding: Example5FragmentBinding
 
+
+    //viewModel
+    private lateinit var mainViewModel: ViewModelMain
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.run {
+            mainViewModel = ViewModelProvider(requireActivity()).get(ViewModelMain::class.java)
+        }
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -120,14 +136,13 @@ class Example5Fragment : Fragment() {
     ): View? {
         binding = Example5FragmentBinding.inflate(inflater, container, false)
 
-        getEvents()
+//        getEvents()
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
 //        binding.exFiveRv.apply {
 //            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -136,10 +151,42 @@ class Example5Fragment : Fragment() {
 //            addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
 //        }
 
-        binding.fab.setOnClickListener(View.OnClickListener {
-            (activity as ActivityMain).mSelectTypeOfCustomer()
 
-        })
+
+        binding.fab3.setOnClickListener {
+                lifecycleScope.launch(Dispatchers.IO){
+                    mainViewModel.insert(EventData("20210708", "1540", false,"김순자",
+                    "01030773637", "default",false, "기본", 50000, "현금"
+                    , "없음","20200501", "keyValue123"))
+                }
+//            (activity as ActivityMain).mSelectTypeOfCustomer()
+
+            mainViewModel.getAllEvents().observe(requireActivity(), { events ->
+                var tempEventDataList = ArrayList<EventData>()
+                for(i in 0 until events.size){
+                    tempEventDataList.add(
+                        EventData(
+                            events[i].date,
+                            events[i].time,
+                            events[i].complete,
+                            events[i].customerName,
+                            events[i].customerNumber,
+                            events[i].customerGrade,
+                            events[i].isRetouch,
+                            events[i].menu,
+                            events[i].price,
+                            events[i].payment,
+                            events[i].reservMemo,
+                            events[i].savedate,
+                            events[i].keyValue
+                        )
+                    )
+                }
+
+                binding.testTv.text = tempEventDataList.size.toString()
+            })
+
+        }
 
         binding.fab2.setOnClickListener {
             val intent = Intent(context, ActivityEachEvent::class.java)
@@ -459,34 +506,34 @@ class Example5Fragment : Fragment() {
 //        flightsAdapter.notifyDataSetChanged()
     }
 
-    fun getEvents() {
-        val user = mAuth.currentUser
-        uid = user!!.uid
-
-        database.child("users").child(uid).child("eventsByDate").child("2021-04")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val newEvent2: ArrayList<EventData> = ArrayList()
-                    for (ds in dataSnapshot.children) {
-                        val eventData: EventData? = ds.getValue(EventData::class.java)
-                        if (eventData != null) {
-                            newEvent2.add(eventData)
-                        }
-                    }
-                    data.clear()
-                    data.addAll(newEvent2)
-//                    Log.d("dataList", data[0].date)
-//                    Log.d("dataList", data[1].date)
-//                    Log.d("dataList", data[2].date)
-
-
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-            })
-    }
+//    fun getEvents() {
+//        val user = mAuth.currentUser
+//        uid = user!!.uid
+//
+//        database.child("users").child(uid).child("eventsByDate").child("2021-04")
+//            .addValueEventListener(object : ValueEventListener {
+//                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                    val newEvent2: ArrayList<EventData> = ArrayList()
+//                    for (ds in dataSnapshot.children) {
+//                        val eventData: EventData? = ds.getValue(EventData::class.java)
+//                        if (eventData != null) {
+//                            newEvent2.add(eventData)
+//                        }
+//                    }
+//                    data.clear()
+//                    data.addAll(newEvent2)
+////                    Log.d("dataList", data[0].date)
+////                    Log.d("dataList", data[1].date)
+////                    Log.d("dataList", data[2].date)
+//
+//
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//
+//                }
+//            })
+//    }
 
 
 //        val events = ArrayList<EventData>()

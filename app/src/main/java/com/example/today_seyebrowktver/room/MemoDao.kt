@@ -11,7 +11,6 @@ interface MemoDao {
     fun getAllMemos(): LiveData<List<MemoData>>
 
 
-
     @Query("SELECT * FROM memos WHERE date LIKE :date")
     suspend fun findByDate(date: String) : MemoData
 
