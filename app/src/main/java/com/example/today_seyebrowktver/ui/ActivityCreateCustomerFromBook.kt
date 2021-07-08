@@ -9,7 +9,7 @@ import android.util.SparseArray
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.today_seyebrowktver.ContactData
+import com.example.today_seyebrowktver.data.ContactData
 import com.example.today_seyebrowktver.ContactUtil
 import com.example.today_seyebrowktver.RvCustomerBookAdapter
 import com.example.today_seyebrowktver.databinding.ActivityCreateCustomerFromBookBinding

@@ -12,9 +12,8 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
-import com.example.today_seyebrowktver.CustomersData
-import com.example.today_seyebrowktver.PhotoData
+import com.example.today_seyebrowktver.data.CustomersData
+import com.example.today_seyebrowktver.data.PhotoData
 import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.RvPhotoAdapter
 import com.example.today_seyebrowktver.databinding.ActivityEachCustomerBinding

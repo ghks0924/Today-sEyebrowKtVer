@@ -7,7 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.today_seyebrowktver.CustomersData
+import com.example.today_seyebrowktver.data.CustomersData
 import com.example.today_seyebrowktver.RvCustomerAdapter
 import com.example.today_seyebrowktver.databinding.ActivityLoadCustomersBinding
 import com.google.firebase.database.*

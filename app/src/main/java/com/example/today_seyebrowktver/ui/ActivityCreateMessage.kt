@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.example.today_seyebrowktver.*
+import com.example.today_seyebrowktver.data.EachMessageData
 import com.example.today_seyebrowktver.databinding.ActivityCreateMessageBinding
 import com.google.firebase.database.*
 import java.text.SimpleDateFormat

@@ -1,15 +1,11 @@
 package com.example.today_seyebrowktver.ui
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import com.example.today_seyebrowktver.EachMessageData
-import com.example.today_seyebrowktver.databinding.ActivityUpdateMemoBinding
+import com.example.today_seyebrowktver.data.EachMessageData
 import com.example.today_seyebrowktver.databinding.ActivityUpdateMessageBinding
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat

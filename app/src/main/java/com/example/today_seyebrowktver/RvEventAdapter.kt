@@ -3,6 +3,7 @@ package com.example.today_seyebrowktver
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.today_seyebrowktver.data.EventData
 import com.example.today_seyebrowktver.databinding.RvItemEventBinding
 
 class RvEventAdapter : RecyclerView.Adapter<RvEventAdapter.ViewHolder> {

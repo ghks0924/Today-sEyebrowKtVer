@@ -2,8 +2,7 @@ package com.example.today_seyebrowktver
 
 import android.content.Context
 import android.provider.ContactsContract
-import android.util.Log
-import java.util.*
+import com.example.today_seyebrowktver.data.ContactData
 import kotlin.collections.ArrayList
 
 class ContactUtil {

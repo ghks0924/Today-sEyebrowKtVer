@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.today_seyebrowktver.MemoData
+import com.example.today_seyebrowktver.data.MemoData
 import com.example.today_seyebrowktver.RvMemoAdapter
 import com.example.today_seyebrowktver.ViewModelMain
 import com.example.today_seyebrowktver.databinding.FragmentMemoBinding

@@ -5,7 +5,7 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
 import com.example.today_seyebrowktver.BottomSheetFragmentCheckSave
-import com.example.today_seyebrowktver.CustomersData
+import com.example.today_seyebrowktver.data.CustomersData
 import com.example.today_seyebrowktver.databinding.ActivityEditCustomerBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase

@@ -1,16 +1,13 @@
 package com.example.today_seyebrowktver
 
 import android.graphics.Color
-import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.today_seyebrowktver.data.ContactData
 import com.example.today_seyebrowktver.databinding.RvItemCustomersBookBinding
-import java.util.*
 import kotlin.collections.ArrayList
 
 class RvCustomerBookAdapter : RecyclerView.Adapter<RvCustomerBookAdapter.ViewHolder> {

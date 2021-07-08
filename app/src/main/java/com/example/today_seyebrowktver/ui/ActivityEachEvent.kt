@@ -1,17 +1,11 @@
 package com.example.today_seyebrowktver.ui
 
-import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.today_seyebrowktver.EachMessageData
-import com.example.today_seyebrowktver.PhotoData
-import com.example.today_seyebrowktver.RvMessageAdapter
+import com.example.today_seyebrowktver.data.PhotoData
 import com.example.today_seyebrowktver.RvPhotoAdapter
 import com.example.today_seyebrowktver.databinding.ActivityEachEventBinding
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 

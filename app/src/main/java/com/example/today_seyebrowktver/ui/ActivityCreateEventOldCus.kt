@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.NumberPicker
 import android.widget.TextView
-import com.example.today_seyebrowktver.EventData
+import com.example.today_seyebrowktver.data.EventData
 import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.databinding.ActivityCreateEventOldCusBinding
 import com.google.android.material.datepicker.MaterialDatePicker

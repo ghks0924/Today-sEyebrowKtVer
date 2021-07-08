@@ -5,8 +5,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
+import com.example.today_seyebrowktver.data.MemoData
+import com.example.today_seyebrowktver.data.MessageData
+import com.example.today_seyebrowktver.room.MemoDatabase
+import com.example.today_seyebrowktver.room.MessageDatabase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 
 class ViewModelMain(application: Application) : AndroidViewModel(application) {
 

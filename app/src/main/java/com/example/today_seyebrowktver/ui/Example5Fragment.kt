@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.R
+import com.example.today_seyebrowktver.data.EventData
 import com.example.today_seyebrowktver.databinding.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -39,7 +40,6 @@ import java.time.format.TextStyle
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
-import kotlin.coroutines.coroutineContext
 
 
 data class Flight(

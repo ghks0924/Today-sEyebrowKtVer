@@ -1,9 +1,10 @@
-package com.example.today_seyebrowktver
+package com.example.today_seyebrowktver.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.today_seyebrowktver.data.MessageData
 
 @Database(entities = [MessageData::class], version = 1)
 abstract class MessageDatabase :RoomDatabase() {

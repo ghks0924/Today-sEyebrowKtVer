@@ -6,7 +6,7 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.example.today_seyebrowktver.CustomersData
+import com.example.today_seyebrowktver.data.CustomersData
 import com.example.today_seyebrowktver.databinding.ActivityCreateCustomerBinding
 import com.google.firebase.database.*
 import java.text.SimpleDateFormat

@@ -1,10 +1,8 @@
 package com.example.today_seyebrowktver.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.today_seyebrowktver.EachMessageData
 import com.example.today_seyebrowktver.MessageGroupData
 import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.databinding.ActivityCreateMessageGroupBinding

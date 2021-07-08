@@ -1,7 +1,8 @@
-package com.example.today_seyebrowktver
+package com.example.today_seyebrowktver.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.today_seyebrowktver.data.MessageData
 
 @Dao
 interface MessageDao {

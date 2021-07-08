@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.today_seyebrowktver.databinding.RvItemMemoBinding
+import com.example.today_seyebrowktver.data.PhotoData
 import com.example.today_seyebrowktver.databinding.RvItemPhotoBinding
 import java.text.SimpleDateFormat
 import java.util.*

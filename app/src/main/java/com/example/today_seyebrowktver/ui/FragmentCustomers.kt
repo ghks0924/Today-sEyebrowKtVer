@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.today_seyebrowktver.CustomersData
+import com.example.today_seyebrowktver.data.CustomersData
 import com.example.today_seyebrowktver.RvCustomerAdapter
 import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
 import com.google.firebase.auth.FirebaseAuth

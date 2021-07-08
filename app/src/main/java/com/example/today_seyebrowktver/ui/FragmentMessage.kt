@@ -9,17 +9,14 @@ import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.*
+import com.example.today_seyebrowktver.data.EachMessageData
+import com.example.today_seyebrowktver.data.MessageData
 import com.example.today_seyebrowktver.databinding.FragmentMessageBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class FragmentMessage : Fragment() {
 
