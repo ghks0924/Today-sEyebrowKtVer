@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.room.Room
 import com.example.today_seyebrowktver.data.EventData
 import com.example.today_seyebrowktver.data.MemoData
@@ -140,9 +141,32 @@ class ViewModelMain(application: Application) : AndroidViewModel(application) {
         eventKeyValue.value = keyValue
     }
 
-    fun getAllEvents(): LiveData<List<EventData>>{
+    fun getAllEvents() : LiveData<List<EventData>>{
         return eventsDB.getEventDao().getAllEvents()
     }
+
+    fun convertToMap() : LiveData<HashMap<String,MutableList<EventData>>> {
+        var map = Transformations.map(getAllEvents()) {
+            it.groupByTo(HashMap(), {
+                it.date
+            })
+        }
+        return map
+    }
+
+//    fun getAllEvents(): HashMap<String,MutableList<EventData>>{
+//        var dataList = eventsDB.getEventDao().getAllEvents()
+//
+//        var dataMap : HashMap<String, MutableList<EventData>> = HashMap()
+//        Transformations.map(dataList!!){
+//            dataMap = it.groupByTo(HashMap(), {
+//                it.date
+//            })
+//
+//        }
+//
+//        return dataMap
+//    }
 
     suspend fun insert(eventData : EventData){
         return eventsDB.getEventDao().insert(eventData)

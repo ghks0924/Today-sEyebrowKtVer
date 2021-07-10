@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,7 +45,9 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
+import kotlin.collections.Map as Map1
 
 
 data class Flight(
@@ -109,10 +113,9 @@ class Example5Fragment : Fragment() {
     //    private val eventsAdapter = EventsAdapter()
 //    private val events = getEvents()
     var allEventsData: ArrayList<EventData> = ArrayList()
-    private var data: ArrayList<EventData> = ArrayList()
+    private var data: MutableList<EventData> = ArrayList()
     var data2 = arrayListOf<EventData>()
-    var mapByDate: LinkedHashMap<String, MutableList<EventData>> = data.groupByTo(LinkedHashMap(),
-        { it.date })
+    private lateinit var mapByDate: LiveData<HashMap<String, MutableList<EventData>>>
     var eventAdapter: RvEventAdapter? = null
 
     private lateinit var binding: Example5FragmentBinding
@@ -144,6 +147,9 @@ class Example5Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //event data load
+        mapByDate = mainViewModel.convertToMap()
+
 //        binding.exFiveRv.apply {
 //            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 ////            adapter = flightsAdapter
@@ -155,36 +161,45 @@ class Example5Fragment : Fragment() {
 
         binding.fab3.setOnClickListener {
                 lifecycleScope.launch(Dispatchers.IO){
-                    mainViewModel.insert(EventData("20210708", "1540", false,"김순자",
+                    mainViewModel.insert(EventData("20210709", "1540", false,"김순자",
                     "01030773637", "default",false, "기본", 50000, "현금"
                     , "없음","20200501", "keyValue123"))
+
+                    Log.d("eventCreate", "만들어짐")
                 }
 //            (activity as ActivityMain).mSelectTypeOfCustomer()
+//
+//            var mapData = mainViewModel.getAllEvents()
+//            binding.testTv.text = mapData.keys.toString()
 
-            mainViewModel.getAllEvents().observe(requireActivity(), { events ->
-                var tempEventDataList = ArrayList<EventData>()
-                for(i in 0 until events.size){
-                    tempEventDataList.add(
-                        EventData(
-                            events[i].date,
-                            events[i].time,
-                            events[i].complete,
-                            events[i].customerName,
-                            events[i].customerNumber,
-                            events[i].customerGrade,
-                            events[i].isRetouch,
-                            events[i].menu,
-                            events[i].price,
-                            events[i].payment,
-                            events[i].reservMemo,
-                            events[i].savedate,
-                            events[i].keyValue
-                        )
-                    )
-                }
-
-                binding.testTv.text = tempEventDataList.size.toString()
+            mainViewModel.convertToMap().observe(requireActivity(), {
+                binding.testTv.text = it.keys.toString()
             })
+
+//            mainViewModel.getAllEvents().observe(requireActivity(), { events ->
+//                var tempEventData = ArrayList<EventData>()
+//                for(i in 0 until events.size){
+//                    tempEventData.add(
+//                        EventData(
+//                            events[i].date,
+//                            events[i].time,
+//                            events[i].complete,
+//                            events[i].customerName,
+//                            events[i].customerNumber,
+//                            events[i].customerGrade,
+//                            events[i].isRetouch,
+//                            events[i].menu,
+//                            events[i].price,
+//                            events[i].payment,
+//                            events[i].reservMemo,
+//                            events[i].savedate,
+//                            events[i].keyValue
+//                        )
+//                    )
+//                }
+//
+//                binding.testTv.text = tempEventData.toString()
+//            })
 
         }
 
@@ -230,33 +245,52 @@ class Example5Fragment : Fragment() {
             init {
                 view.setOnClickListener {
                     if (day.owner == DayOwner.THIS_MONTH) {
+                        //날짜 최초 클릭시
                         if (selectedDate != day.date) {
-                            val oldDate = selectedDate
-                            selectedDate = day.date
+                            val oldDate = selectedDate //기존에 선택된 날짜를 저장
+                            selectedDate = day.date //방금 선택된 날짜를 저장
                             val binding = this@Example5Fragment.binding
                             binding.exFiveCalendar.notifyDateChanged(day.date)
                             oldDate?.let { binding.exFiveCalendar.notifyDateChanged(it) }
 //                            updateAdapterForDate(day.date)
 
-                            data.clear()
-                            if (mapByDate!![day.date.toString()]?.size ?: 0 != 0) {
-                                for (i in 0 until mapByDate!![day.date.toString()]!!.size) {
-                                    data.add(mapByDate!![day.date.toString()]!!.get(i))
-                                }
+//                            data.clear()
+//                            //LiveData라 TransForm해줌
+//                            var hashMap = HashMap<String, MutableList<EventData>>()
+//                            Transformations.map(mapByDate, {
+//                               hashMap = it
+//                            })
+//
+//                            //선택한 날짜의 예약 리스트가 있는지 확인
+//                            if(hashMap.get(day.date.toString())?.size != 0){ // 있으면
+//                                data = hashMap.get(day.date.toString())!!
+//
+//                                eventAdapter = RvEventAdapter(data)
+//                                binding.exFiveRv.layoutManager = LinearLayoutManager(context)
+//                                binding.exFiveRv.adapter = eventAdapter
+//                            } else{
+//
+//                            }
 
-                                eventAdapter = RvEventAdapter(data)
-                                binding.exFiveRv.layoutManager = LinearLayoutManager(context)
-                                binding.exFiveRv.adapter = eventAdapter
-                            } else {
-                                eventAdapter = RvEventAdapter(data)
-                                binding.exFiveRv.layoutManager = LinearLayoutManager(context)
-                                binding.exFiveRv.adapter = eventAdapter
-                            }
 
-                            Log.d("dateMap", mapByDate!![day.date.toString()].toString() + "?")
+//                            if (mapByDate!![day.date.toString()]?.size ?: 0 != 0) {
+//                                for (i in 0 until mapByDate!![day.date.toString()]!!.size) {
+//                                    data.add(mapByDate!![day.date.toString()]!!.get(i))
+//                                }
+//
+//                                eventAdapter = RvEventAdapter(data)
+//                                binding.exFiveRv.layoutManager = LinearLayoutManager(context)
+//                                binding.exFiveRv.adapter = eventAdapter
+//                            } else {
+//                                eventAdapter = RvEventAdapter(data)
+//                                binding.exFiveRv.layoutManager = LinearLayoutManager(context)
+//                                binding.exFiveRv.adapter = eventAdapter
+//                            }
+//
+//                            Log.d("dateMap", mapByDate!![day.date.toString()].toString() + "?")
 
 
-                        } else {
+                        } else { //선택된 날짜가 다시 한번 클릭되면
                             (activity as ActivityMain).mSelectTypeOfCustomer()
                         }
                     }
@@ -267,6 +301,7 @@ class Example5Fragment : Fragment() {
             }
 
         }
+
         binding.exFiveCalendar.dayBinder = object : DayBinder<DayViewContainer> {
             override fun create(view: View) = DayViewContainer(view)
             override fun bind(container: DayViewContainer, day: CalendarDay) {
@@ -293,7 +328,11 @@ class Example5Fragment : Fragment() {
 
 //                    val events = events[day.date]
                     val flights = flights[day.date]
-                    val events = mapByDate!![day.date.toString()]
+                    var events = listOf<EventData>()
+                    Transformations.map(mapByDate, {
+                        events = it.get(day.date)!!
+                    })
+
                     if (events != null) {
                         eventCountTextView.text = events.size.toString() + "개 예약"
 

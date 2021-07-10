@@ -11,6 +11,8 @@ interface EventDao {
     @Query("SELECT * FROM events ORDER BY date DESC")
     fun getAllEvents(): LiveData<List<EventData>>
 
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(eventEntity : EventData)
 

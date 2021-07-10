@@ -1,9 +1,8 @@
 package com.example.today_seyebrowktver.room
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import com.example.today_seyebrowktver.data.Converters
 import com.example.today_seyebrowktver.data.EventData
 
 @Database(entities = [EventData::class], version = 1)
