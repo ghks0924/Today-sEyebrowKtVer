@@ -22,9 +22,9 @@ class RvMemoAdapter: RecyclerView.Adapter<RvMemoAdapter.ViewHolder> {
     var itemClick: ItemClick? = null
     var itemLongClick: ItemLongClick? = null
 
-    var data: ArrayList<MemoData>? = null
+    var data: List<MemoData>? = null
 
-    constructor(data: ArrayList<MemoData>){
+    constructor(data: List<MemoData>){
         this.data = data
     }
 

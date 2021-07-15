@@ -163,6 +163,7 @@ class ActivityCreateMemo : ActivityBase() {
             intent.putExtra("title", memoTitle)
             intent.putExtra("content", memoContent)
             intent.putExtra("date", formatDate)
+            intent.putExtra("id", UUID.randomUUID().toString()+"/"+formatDate)
             setResult(RESULT_OK, intent)
             finish()
 

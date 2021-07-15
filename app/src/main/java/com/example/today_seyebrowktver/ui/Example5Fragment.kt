@@ -15,16 +15,14 @@ import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.data.EventData
 import com.example.today_seyebrowktver.databinding.*
+import com.example.today_seyebrowktver.viewmodel.MainActivityViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -46,8 +44,6 @@ import java.time.format.TextStyle
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.collections.LinkedHashMap
-import kotlin.collections.Map as Map1
 
 
 data class Flight(
@@ -100,14 +96,17 @@ class Example5FlightsAdapter :
 //Class
 class Example5Fragment : Fragment() {
 
+    //Firebase DB & auth
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     val mAuth = FirebaseAuth.getInstance()
     private lateinit var uid: String
+
 
     private var selectedDate: LocalDate? = null
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
 
     private val flightsAdapter = Example5FlightsAdapter()
+
     private val flights = generateFlights().groupBy { it.time.toLocalDate() }
 
     //    private val eventsAdapter = EventsAdapter()
@@ -115,20 +114,29 @@ class Example5Fragment : Fragment() {
     var allEventsData: ArrayList<EventData> = ArrayList()
     private var data: MutableList<EventData> = ArrayList()
     var data2 = arrayListOf<EventData>()
-    private lateinit var mapByDate: LiveData<HashMap<String, MutableList<EventData>>>
+    private lateinit var mapByDate: HashMap<String, MutableList<EventData>>
     var eventAdapter: RvEventAdapter? = null
 
     private lateinit var binding: Example5FragmentBinding
 
-
     //viewModel
-    private lateinit var mainViewModel: ViewModelMain
+    private lateinit var mainViewModel: MainActivityViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.run {
-            mainViewModel = ViewModelProvider(requireActivity()).get(ViewModelMain::class.java)
-        }
+        mainViewModel =
+            ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
+//        mapByDate = mainViewModel.eventsMapByDate
+
+//        Log.d("eventsList", "fromUtils : " + eventsListTest.toString())
+
+//            mainViewModel.convertToMap().observe(requireActivity(), {
+//                binding.testTv.text = it.keys.toString() + it.get("2021-07-09")?.size
+//                mapByDate = it
+//                Log.d("mapByDay", "123" + mapByDate.values.toString())
+//            })
+
     }
 
 
@@ -147,8 +155,6 @@ class Example5Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //event data load
-        mapByDate = mainViewModel.convertToMap()
 
 //        binding.exFiveRv.apply {
 //            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -157,24 +163,33 @@ class Example5Fragment : Fragment() {
 //            addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
 //        }
 
-
-
         binding.fab3.setOnClickListener {
-                lifecycleScope.launch(Dispatchers.IO){
-                    mainViewModel.insert(EventData("20210709", "1540", false,"김순자",
-                    "01030773637", "default",false, "기본", 50000, "현금"
-                    , "없음","20200501", "keyValue123"))
+            lifecycleScope.launch(Dispatchers.IO) {
+                mainViewModel.insert(EventData("2021-07-09",
+                    "1540",
+                    false,
+                    "김순자",
+                    "01030773637",
+                    "default",
+                    false,
+                    "기본",
+                    50000,
+                    "현금",
+                    "없음",
+                    "20200501",
+                    "keyValue123"))
 
-                    Log.d("eventCreate", "만들어짐")
-                }
+                Log.d("eventCreate", "만들어짐")
+            }
 //            (activity as ActivityMain).mSelectTypeOfCustomer()
 //
 //            var mapData = mainViewModel.getAllEvents()
 //            binding.testTv.text = mapData.keys.toString()
 
-            mainViewModel.convertToMap().observe(requireActivity(), {
-                binding.testTv.text = it.keys.toString()
-            })
+//            mainViewModel.convertToMap().observe(requireActivity(), {
+//                binding.testTv.text = it.keys.toString() + it.get("2021-07-09")?.size
+//
+//            })
 
 //            mainViewModel.getAllEvents().observe(requireActivity(), { events ->
 //                var tempEventData = ArrayList<EventData>()
@@ -216,42 +231,45 @@ class Example5Fragment : Fragment() {
 //        flightsAdapter.notifyDataSetChanged()
 
         val daysOfWeek = daysOfWeekFromLocale()
-        Log.d("dateCheck", daysOfWeek.toString())
+        Log.d("dateCheck", "daysOfWeek" + daysOfWeek.toString())
 
         //현재 달 구하기
         val currentMonth = YearMonth.now()
+        Log.d("dateCheck", "currentMonth" + currentMonth.toString())
 
         // 현재시간을 msec 으로 구한다.
         val now = System.currentTimeMillis()
-        // 현재시간을 date 변수에 저장한다.
         val date = Date(now)
-        // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
         val sdfNow = SimpleDateFormat("yyyy-MM-dd")
-        // nowDate 변수에 값을 저장한다.
         val nowDate: String = sdfNow.format(date)
 
-        Log.d("dateCheck", currentMonth.toString())
-        binding.exFiveCalendar.setup(
+        binding.calendarView.setup(
             currentMonth.minusMonths(100),
             currentMonth.plusMonths(100),
             daysOfWeek.first()
         )
-        binding.exFiveCalendar.scrollToMonth(currentMonth)
 
+        binding.calendarView.scrollToMonth(currentMonth)
+
+        //각각 날짜 컨트롤
         class DayViewContainer(view: View) : ViewContainer(view) {
             lateinit var day: CalendarDay // Will be set when this container is bound.
             val binding = Example5CalendarDayBinding.bind(view)
 
             init {
                 view.setOnClickListener {
-                    if (day.owner == DayOwner.THIS_MONTH) {
-                        //날짜 최초 클릭시
-                        if (selectedDate != day.date) {
-                            val oldDate = selectedDate //기존에 선택된 날짜를 저장
-                            selectedDate = day.date //방금 선택된 날짜를 저장
-                            val binding = this@Example5Fragment.binding
-                            binding.exFiveCalendar.notifyDateChanged(day.date)
-                            oldDate?.let { binding.exFiveCalendar.notifyDateChanged(it) }
+                    //이번달만 클릭되게 하려면 if (day.owner == DayOwner.THIS_MONTH) {}로 감싸야함
+                    
+                    //날짜 최초 클릭시
+                    if (selectedDate != day.date) {
+                        val oldDate = selectedDate //기존에 선택된 날짜를 저장
+                        selectedDate = day.date //방금 선택된 날짜를 저장
+                        val binding = this@Example5Fragment.binding
+                        binding.calendarView.notifyDateChanged(day.date)
+                        oldDate?.let { binding.calendarView.notifyDateChanged(it) }
+
+                        Log.d("selectedDate",
+                            selectedDate.toString()) //selectedData = "yyyy-MM-dd"
 //                            updateAdapterForDate(day.date)
 
 //                            data.clear()
@@ -290,11 +308,9 @@ class Example5Fragment : Fragment() {
 //                            Log.d("dateMap", mapByDate!![day.date.toString()].toString() + "?")
 
 
-                        } else { //선택된 날짜가 다시 한번 클릭되면
-                            (activity as ActivityMain).mSelectTypeOfCustomer()
-                        }
+                    } else { //선택된 날짜가 다시 한번 클릭되면
+                        (activity as ActivityMain).mSelectTypeOfCustomer()
                     }
-
                 }
 
 
@@ -302,53 +318,60 @@ class Example5Fragment : Fragment() {
 
         }
 
-        binding.exFiveCalendar.dayBinder = object : DayBinder<DayViewContainer> {
+        binding.calendarView.dayBinder = object : DayBinder<DayViewContainer> {
             override fun create(view: View) = DayViewContainer(view)
             override fun bind(container: DayViewContainer, day: CalendarDay) {
                 container.day = day
-                val textView = container.binding.exFiveDayText
-                val layout = container.binding.exFiveDayLayout
+                val textView = container.binding.exFiveDayText //날짜 day,
+                val layout = container.binding.exFiveDayLayout //daily view container
+                val eventCountTextView = container.binding.countTv //예약 날짜 " n 개의 예약 "
+                val flightBottomView = container.binding.flightBottomView
+                val flightTopView = container.binding.flightTopView
+
+                eventCountTextView.text = "예약 개수"
+
+//                val events = mapByDate.value?.get(day.date.toString())
+//                Log.d("events", "day : " + day)
+//                Log.d("events", "day : " + day.date)
+
                 textView.text = day.date.dayOfMonth.toString()
 
-                val newContainer = container.binding.newDot
-                val oldContainer = container.binding.oldDot
-                val retouchContainer = container.binding.retouchDot
-                val skipContainer = container.binding.skipDot
-
-                val eventCountTextView = container.binding.countTv
-                newContainer.background = null
-                oldContainer.background = null
-                retouchContainer.background = null
-                skipContainer.background = null
-
+//                if (events?.size != 0){ //예약 개수가 있을때만 나타내기
+//                    eventCountTextView.text = events?.size.toString() + "개 예약"
+//                } else {
+//                    eventCountTextView.visibility = View.GONE
+//                }
 
                 if (day.owner == DayOwner.THIS_MONTH) {
                     textView.setTextColorRes(R.color.black)
-                    layout.setBackgroundResource(if (selectedDate == day.date) R.drawable.example_5_selected_bg else 0)
+                    layout.setBackgroundResource(if (selectedDate == day.date) {
+                        R.drawable.example_5_selected_bg
+                    } else 0)
 
-//                    val events = events[day.date]
+//                    val eventsList = mainViewModel.eventsMapByDate[day.date.toString()]
+//                    Log.d("eventsMap", day.date.toString() + ":" + eventsList.toString())
                     val flights = flights[day.date]
-                    var events = listOf<EventData>()
-                    Transformations.map(mapByDate, {
-                        events = it.get(day.date)!!
-                    })
 
-                    if (events != null) {
-                        eventCountTextView.text = events.size.toString() + "개 예약"
-
-                        newContainer.setBackgroundColor(view.context.getColorCompat(R.color.mainYellow))
-                        oldContainer.setBackgroundColor(view.context.getColorCompat(R.color.mainGreen))
-
-                    }
-
-//                    if (flights != null) {
-//                        if (flights.count() == 1) {
-//                            flightBottomView.setBackgroundColor(view.context.getColorCompat(flights[0].color))
+//                    if (eventsList != null) {
+//                        if (eventsList.size == 0){
+//                            eventCountTextView.visibility = View.GONE
 //                        } else {
-//                            flightTopView.setBackgroundColor(view.context.getColorCompat(flights[0].color))
-//                            flightBottomView.setBackgroundColor(view.context.getColorCompat(flights[1].color))
+//                            eventCountTextView.text = eventsList.size.toString() + " 개의 예약"
 //                        }
+//
+////                        newContainer.setBackgroundColor(view.context.getColorCompat(R.color.mainYellow))
+////                        oldContainer.setBackgroundColor(view.context.getColorCompat(R.color.mainGreen))
+//
 //                    }
+
+                    if (flights != null) {
+                        if (flights.count() == 1) {
+                            flightBottomView.setBackgroundColor(view.context.getColorCompat(flights[0].color))
+                        } else {
+                            flightTopView.setBackgroundColor(view.context.getColorCompat(flights[0].color))
+                            flightBottomView.setBackgroundColor(view.context.getColorCompat(flights[1].color))
+                        }
+                    }
                 } else {
                     textView.setTextColorRes(R.color.mainGreyFor30)
                     layout.background = null
@@ -366,7 +389,7 @@ class Example5Fragment : Fragment() {
         class MonthViewContainer(view: View) : ViewContainer(view) {
             val legendLayout = Example5CalendarHeaderBinding.bind(view).legendLayout.root
         }
-        binding.exFiveCalendar.monthHeaderBinder =
+        binding.calendarView.monthHeaderBinder =
             object : MonthHeaderFooterBinder<MonthViewContainer> {
                 override fun create(view: View) = MonthViewContainer(view)
                 override fun bind(container: MonthViewContainer, month: CalendarMonth) {
@@ -388,27 +411,27 @@ class Example5Fragment : Fragment() {
                 }
             }
 
-        binding.exFiveCalendar.monthScrollListener = { month ->
+        binding.calendarView.monthScrollListener = { month ->
             val title = "${monthTitleFormatter.format(month.yearMonth)} ${month.yearMonth.year}"
             binding.exFiveMonthYearText.text = title
 
             selectedDate?.let {
                 // Clear selection if we scroll to a new month.
                 selectedDate = null
-                binding.exFiveCalendar.notifyDateChanged(it)
+                binding.calendarView.notifyDateChanged(it)
                 updateAdapterForDate(null)
             }
         }
 
         binding.exFiveNextMonthImage.setOnClickListener {
-            binding.exFiveCalendar.findFirstVisibleMonth()?.let {
-                binding.exFiveCalendar.smoothScrollToMonth(it.yearMonth.next)
+            binding.calendarView.findFirstVisibleMonth()?.let {
+                binding.calendarView.smoothScrollToMonth(it.yearMonth.next)
             }
         }
 
         binding.exFivePreviousMonthImage.setOnClickListener {
-            binding.exFiveCalendar.findFirstVisibleMonth()?.let {
-                binding.exFiveCalendar.smoothScrollToMonth(it.yearMonth.previous)
+            binding.calendarView.findFirstVisibleMonth()?.let {
+                binding.calendarView.smoothScrollToMonth(it.yearMonth.previous)
             }
         }
 
@@ -450,7 +473,7 @@ class Example5Fragment : Fragment() {
             // nowDate 변수에 값을 저장한다.
             val formatDateYear = formatYear.format(date)
             val formatDateMonth = formatMonth.format(date)
-            val maxYearInt = Integer.parseInt(formatDateYear)+5
+            val maxYearInt = Integer.parseInt(formatDateYear) + 5
 
             //  최대값 설정
             year.maxValue = maxYearInt //올해 + 5
@@ -460,7 +483,8 @@ class Example5Fragment : Fragment() {
             //보여지는 값 세팅 ; output은 다름
 //            hour.displayedValues = arrayOf("06시")
 
-            month.displayedValues = arrayOf("01", "02", "03", "04", "05", "06", "07" , "08", "09", "10", "11", "12")
+            month.displayedValues =
+                arrayOf("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
 
             month.setOnValueChangedListener { picker, oldVal, newVal ->
             }
@@ -478,7 +502,9 @@ class Example5Fragment : Fragment() {
             //  완료 버튼 클릭 시
             ok.setOnClickListener {
 
-                Toast.makeText(context, year.value.toString() +"년" + month.value +"월", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,
+                    year.value.toString() + "년" + month.value + "월",
+                    Toast.LENGTH_SHORT).show()
 
 //                var dspHour: String = ""
 //                when (hour.value) {
@@ -610,3 +636,4 @@ class Example5Fragment : Fragment() {
 //        return events
 
 }
+

@@ -11,7 +11,8 @@ import java.util.*
 data class  MemoData(
     @ColumnInfo(name = "date") var memoDate: String,
     @ColumnInfo(name = "title") var memoTitle: String,
-    @ColumnInfo(name = "content") var memoContent: String
+    @ColumnInfo(name = "content") var memoContent: String,
+    @ColumnInfo(name = "id") val memoId:String
 ) {
     @PrimaryKey(autoGenerate = true)
     var idx: Int = 0

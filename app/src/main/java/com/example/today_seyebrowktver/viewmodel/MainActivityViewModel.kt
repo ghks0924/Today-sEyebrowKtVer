@@ -1,4 +1,4 @@
-package com.example.today_seyebrowktver
+package com.example.today_seyebrowktver.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -14,12 +14,12 @@ import com.example.today_seyebrowktver.room.MemoDatabase
 import com.example.today_seyebrowktver.room.MessageDatabase
 import com.google.firebase.auth.FirebaseAuth
 
-class ViewModelMain(application: Application) : AndroidViewModel(application) {
+class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val memoDB = Room.databaseBuilder(
-        application,
-        MemoDatabase::class.java, "memos"
-    ).fallbackToDestructiveMigration().build()
+    lateinit var eventsMapByDate:HashMap<String, MutableList<EventData>>
+
+    lateinit var eventsList:LiveData<List<EventData>>
+    lateinit var eventsMap:LiveData<HashMap<String, MutableList<EventData>>>
 
     private val messageDB = Room.databaseBuilder(
         application,
@@ -31,41 +31,17 @@ class ViewModelMain(application: Application) : AndroidViewModel(application) {
         EventDatabase::class.java, "events"
     ).build()
 
+    private val memoDB = Room.databaseBuilder(
+        application,
+        MemoDatabase::class.java, "memos"
+    ).build()
+
+
+
     //==========user Data==========
     val mAuth = FirebaseAuth.getInstance()
 
-    //===================Memo db method===================
 
-    val memoTitle = MutableLiveData<String>()
-    val memoContent = MutableLiveData<String>()
-    val memoDate = MutableLiveData<String>()
-
-    fun sendMemoData(title: String, content: String, date: String) {
-        memoTitle.value = title
-        memoContent.value = content
-        memoDate.value = date
-    }
-
-    fun getAll(): LiveData<List<MemoData>> {
-        return memoDB.getMemeDao().getAllMemos()
-    }
-
-    suspend fun insert(memoData: MemoData) {
-        memoDB.getMemeDao().insert(memoData)
-    }
-
-    suspend fun delete(memoData: MemoData) {
-        memoDB.getMemeDao().delete(memoData)
-    }
-
-    suspend fun findMemoByDate(date: String): MemoData {
-        val memoData = memoDB.getMemeDao().findByDate(date)
-        return memoData
-    }
-
-    suspend fun update(memoData: MemoData) {
-        memoDB.getMemeDao().update(memoData)
-    }
 
 
     //===================================Message===================================
@@ -141,17 +117,20 @@ class ViewModelMain(application: Application) : AndroidViewModel(application) {
         eventKeyValue.value = keyValue
     }
 
-    fun getAllEvents() : LiveData<List<EventData>>{
-        return eventsDB.getEventDao().getAllEvents()
+    fun getAllEvents(){
+        if (eventsDB.getEventDao().getAllEvents() != null){
+            eventsList = eventsDB.getEventDao().getAllEvents()
+        }
     }
 
-    fun convertToMap() : LiveData<HashMap<String,MutableList<EventData>>> {
-        var map = Transformations.map(getAllEvents()) {
-            it.groupByTo(HashMap(), {
-                it.date
-            })
+    fun convertToMap() {
+        if (getAllEvents() != null){
+            eventsMap = Transformations.map(eventsList) {
+                it.groupByTo(HashMap(), {
+                    it.date
+                })
+            }
         }
-        return map
     }
 
 //    fun getAllEvents(): HashMap<String,MutableList<EventData>>{
@@ -170,6 +149,39 @@ class ViewModelMain(application: Application) : AndroidViewModel(application) {
 
     suspend fun insert(eventData : EventData){
         return eventsDB.getEventDao().insert(eventData)
+    }
+
+
+
+
+
+
+    //==========memo==================
+//    fun sendMemoData(title: String, content: String, date: String) {
+//        memoTitle.value = title
+//        memoContent.value = content
+//        memoDate.value = date
+//    }
+
+    fun getAll(): LiveData<List<MemoData>> {
+        return memoDB.getMemeDao().getAllMemos()
+    }
+
+    suspend fun insert(memoData: MemoData) {
+        memoDB.getMemeDao().insert(memoData)
+    }
+
+    suspend fun delete(memoData: MemoData) {
+        memoDB.getMemeDao().delete(memoData)
+    }
+
+    suspend fun findMemoByDate(date: String): MemoData {
+        val memoData = memoDB.getMemeDao().findByDate(date)
+        return memoData
+    }
+
+    suspend fun update(memoData: MemoData) {
+        memoDB.getMemeDao().update(memoData)
     }
 
 }

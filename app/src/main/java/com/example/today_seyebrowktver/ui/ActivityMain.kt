@@ -6,21 +6,21 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import androidx.navigation.NavController
 import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.data.MemoData
 import com.example.today_seyebrowktver.data.MessageData
 import com.example.today_seyebrowktver.databinding.ActivityMainBinding
+import com.example.today_seyebrowktver.viewmodel.MainActivityViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class ActivityMain : ActivityBase() {
+
+    private val TAG = "ActivityMain"
 
     private var currentNavController: LiveData<NavController>? = null
     val navGraphIds = listOf(R.layout.example_5_fragment,
@@ -37,7 +37,7 @@ class ActivityMain : ActivityBase() {
     internal lateinit var binding: ActivityMainBinding
 
     //viewModel
-    private lateinit var mainViewModel: ViewModelMain
+    lateinit var mainViewModel: MainActivityViewModel
 
     //fragment
     val fm = supportFragmentManager
@@ -58,6 +58,8 @@ class ActivityMain : ActivityBase() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setPermittionCheck() //권한체크
+
+        Log.d(TAG, "onCreate")
 
 //        //test login
 //        mAuth.signInWithEmailAndPassword("ngh_0925@naver.com", "dnswjs12!@")
@@ -85,8 +87,18 @@ class ActivityMain : ActivityBase() {
 //                }
 //            }
 
+        val eventsListTest = generateEvents(this).groupByTo(HashMap(), {
+            it.date
+        })
+
         //뷰모델 생성
-        mainViewModel = ViewModelProvider(this)[ViewModelMain::class.java]
+        mainViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
+        mainViewModel.getAllEvents()
+        mainViewModel.convertToMap()
+        Transformations.map(mainViewModel.eventsMap) {
+            mainViewModel.eventsMapByDate = it
+        }
+
         setContentView(view)
 
         setStatusBarColor(this, R.color.white)
@@ -95,11 +107,10 @@ class ActivityMain : ActivityBase() {
 //        initNavigation()
 
 
-
     }
 
 
-    private fun initNavigation(){
+    private fun initNavigation() {
 //        val controller = binding.bottomNavigation.setupWithNavController(
 //            navGraphIds = navGraphIds,
 //            fragmentManager = supportFragmentManager,
@@ -123,7 +134,8 @@ class ActivityMain : ActivityBase() {
         supportFragmentManager.beginTransaction().add(R.id.frame_container, fragmentMemo, "memo")
             .addToBackStack("memo").hide(fragmentMemo).commit()
 
-        supportFragmentManager.beginTransaction().add(R.id.frame_container, fragmentCalendar, "home")
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentCalendar, "home")
             .addToBackStack("home").commit()
 
         supportFragmentManager.beginTransaction()
@@ -156,7 +168,8 @@ class ActivityMain : ActivityBase() {
                             supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
                         }
                         if (fragmentCalendar != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCalendar).commit()
+                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
+                                .commit()
                         }
                         if (fragmentAccounting != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentAccounting)
@@ -181,7 +194,8 @@ class ActivityMain : ActivityBase() {
                             supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
                         }
                         if (fragmentCalendar != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCalendar).commit()
+                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
+                                .commit()
                         }
                         if (fragmentAccounting != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentAccounting)
@@ -200,7 +214,8 @@ class ActivityMain : ActivityBase() {
                                 .add(R.id.frame_container, fragmentCalendar).commit()
                         }
                         if (fragmentCalendar != null) {
-                            supportFragmentManager.beginTransaction().show(fragmentCalendar).commit()
+                            supportFragmentManager.beginTransaction().show(fragmentCalendar)
+                                .commit()
                         }
                         if (fragmentMemo != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
@@ -235,7 +250,8 @@ class ActivityMain : ActivityBase() {
                             supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
                         }
                         if (fragmentCalendar != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCalendar).commit()
+                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
+                                .commit()
                         }
                         if (fragmentCustomers != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentCustomers)
@@ -264,7 +280,8 @@ class ActivityMain : ActivityBase() {
                                 .commit()
                         }
                         if (fragmentCalendar != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCalendar).commit()
+                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
+                                .commit()
                         }
                         return true
                     }
@@ -304,11 +321,7 @@ class ActivityMain : ActivityBase() {
     }
 
     fun mGoToUpdateMemoActivity() {
-        val intent = Intent(this, ActivityUpdateMemo::class.java)
-        intent.putExtra("title", mainViewModel.memoTitle.value)
-        intent.putExtra("content", mainViewModel.memoContent.value)
-        intent.putExtra("date", mainViewModel.memoDate.value)
-        startActivityForResult(intent, REQUEST_UPDATE_MEMO)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -316,56 +329,65 @@ class ActivityMain : ActivityBase() {
         if (resultCode != RESULT_OK) {
             return
         }
+        Log.d("memoCreate", "requestCode" + requestCode)
+        if (data != null) {
+            Log.d(TAG, "CreateMemo" + requestCode)
+            when (requestCode) {
+                REQUEST_CREATE_MEMO -> {
+                    Log.d(TAG, "CreateMemo" + REQUEST_CREATE_MEMO)
 
-        when (requestCode) {
-            REQUEST_CREATE_MEMO -> {
                 //ActivirtCreateMemo에서 넘겨준 데이터 받아오기
-                val memoDate = data!!.getStringExtra("date")
-                val memoTitle = data!!.getStringExtra("title")
-                val memoContent = data!!.getStringExtra("content")
+                    val memo = MemoData(data?.getStringExtra("title").toString(),
+                        data?.getStringExtra("content").toString(),
+                        data!!.getStringExtra("date").toString(),
+                        data!!.getStringExtra("id").toString())
 
-                Log.d("memoCheck", memoDate.toString())
+                Log.d("memoCheck", "id" + memo.memoId)
 
                 lifecycleScope.launch(Dispatchers.IO) {
-                    mainViewModel.insert(MemoData(memoDate.toString(), memoTitle.toString(), memoContent.toString()))
+                    mainViewModel.insert(memo)
+                    Log.d("memoCheck", "id" + memo.memoId)
                 }
-                mainViewModel.getAll().observe(this, Observer { memos ->
-                    var tempMemoDataList = ArrayList<MemoData>()
-                    for (i in 0 until memos.size) {
-                        tempMemoDataList.add(
-                            MemoData(
-                                memos[i].memoDate,
-                                memos[i].memoTitle,
-                                memos[i].memoContent
-                            )
-                        )
+//                mainViewModel.getAll().observe(this, Observer { memos ->
+//                    var tempMemoDataList = ArrayList<MemoData>()
+//                    for (i in 0 until memos.size) {
+//                        tempMemoDataList.add(
+//                            MemoData(
+//                                memos[i].memoDate,
+//                                memos[i].memoTitle,
+//                                memos[i].memoContent
+//                            )
+//                        )
+//                    }
+//                })
+                }
+                REQUEST_UPDATE_MEMO -> {
+//                val oldMemoDate = data!!.getStringExtra("oldDate")
+//                val newMemoDate = data!!.getStringExtra("newDate")
+//                val memoTitle = data!!.getStringExtra("title")
+//                val memoContent = data!!.getStringExtra("content")
+//
+//                Log.d("memoCheck", "fragment : " + newMemoDate)
+//
+//                lifecycleScope.launch(Dispatchers.IO) {
+//                    mainViewModel.delete(mainViewModel.findMemoByDate(oldMemoDate.toString()))
+//                    mainViewModel.insert(MemoData(newMemoDate.toString(), memoTitle.toString(), memoContent.toString()))
+//                }
+                }
+
+                REQUEST_SEND_MESSAGE -> {
+                    val messageType = data!!.getStringExtra("type")
+                    val oldMessageDate = data!!.getStringExtra("oldDate")
+                    val newMessageDate = data!!.getStringExtra("newDate")
+                    val newMessageTitle = data!!.getStringExtra("title")
+                    val newMessageContent = data!!.getStringExtra("content")
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        mainViewModel.delete(mainViewModel.findMessageByDate(oldMessageDate.toString()))
+                        mainViewModel.insert(MessageData(messageType.toString(),
+                            newMessageTitle.toString(),
+                            newMessageContent.toString(),
+                            newMessageDate.toString()))
                     }
-                })
-            }
-            REQUEST_UPDATE_MEMO -> {
-                val oldMemoDate = data!!.getStringExtra("oldDate")
-                val newMemoDate = data!!.getStringExtra("newDate")
-                val memoTitle = data!!.getStringExtra("title")
-                val memoContent = data!!.getStringExtra("content")
-
-                Log.d("memoCheck", "fragment : " + newMemoDate)
-
-                lifecycleScope.launch(Dispatchers.IO) {
-                    mainViewModel.delete(mainViewModel.findMemoByDate(oldMemoDate.toString()))
-                    mainViewModel.insert(MemoData(newMemoDate.toString(), memoTitle.toString(), memoContent.toString()))
-                }
-            }
-
-            REQUEST_SEND_MESSAGE -> {
-                val messageType = data!!.getStringExtra("type")
-                val oldMessageDate = data!!.getStringExtra("oldDate")
-                val newMessageDate = data!!.getStringExtra("newDate")
-                val newMessageTitle = data!!.getStringExtra("title")
-                val newMessageContent = data!!.getStringExtra("content")
-                lifecycleScope.launch(Dispatchers.IO) {
-                    mainViewModel.delete(mainViewModel.findMessageByDate(oldMessageDate.toString()))
-                    mainViewModel.insert(MessageData(messageType.toString(), newMessageTitle.toString(),
-                        newMessageContent.toString(), newMessageDate.toString()))
                 }
             }
         }

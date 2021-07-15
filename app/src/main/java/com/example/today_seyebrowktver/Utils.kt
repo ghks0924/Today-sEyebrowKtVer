@@ -1,10 +1,28 @@
 package com.example.today_seyebrowktver
 
+import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.example.today_seyebrowktver.data.EventData
+import com.example.today_seyebrowktver.room.EventDatabase
 import com.example.today_seyebrowktver.ui.Flight
 import java.time.YearMonth
 
 private typealias Airport = Flight.Airport
 
+fun generateEvents(context: Context) : List<EventData> {
+    val eventsDB = Room.databaseBuilder(context, EventDatabase::class.java, "events").build()
+    var eventsList:List<EventData> = ArrayList<EventData>()
+    if (eventsDB.getEventDao().getAllEvents() != null){
+        Transformations.map(eventsDB.getEventDao().getAllEvents()){
+            eventsList = it
+        }
+    }
+
+    return eventsList
+}
 
 fun generateFlights(): List<Flight> {
     val list = mutableListOf<Flight>()
