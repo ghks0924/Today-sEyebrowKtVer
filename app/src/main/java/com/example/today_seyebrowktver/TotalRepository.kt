@@ -11,9 +11,7 @@ class TotalRepository private constructor(context: Context){
 
     //Local DB
 
-
-
-    //memo DB
+    //memo RoomDB
     private val memoDB : MemoDatabase = Room.databaseBuilder(
         context.applicationContext,
         MemoDatabase::class.java,

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.*
 import androidx.navigation.NavController
@@ -21,6 +22,13 @@ import kotlinx.coroutines.launch
 class ActivityMain : ActivityBase() {
 
     private val TAG = "ActivityMain"
+
+    private val FRAGMENT_TAG_MEMO = "memo"
+    private val FRAGMENT_TAG_MESSAGE = "message"
+    private val FRAGMENT_TAG_CALENDAR = "calendar"
+    private val FRAGMENT_TAG_SALES = "sales"
+    private val FRAGMENT_TAG_CUSTOMER = "customer"
+
 
     private var currentNavController: LiveData<NavController>? = null
     val navGraphIds = listOf(R.layout.example_5_fragment,
@@ -45,12 +53,11 @@ class ActivityMain : ActivityBase() {
 
 
     //bottomNavigationView를 위한 fragments
-    var fragmentCustomers = FragmentCustomers()
-    var fragmentHome = FragmentHome()
-    var fragmentMemo = FragmentMemo()
-    var fragmentMessage = FragmentMessage()
-    var fragmentAccounting = FragmentSales()
-    var fragmentCalendar = Example5Fragment()
+    var fragmentCustomers = FragmentCustomers.newInstance()
+    var fragmentMemo = FragmentMemo.newInstance()
+    var fragmentMessage = FragmentMessage.newInstance()
+    var fragmentSales = FragmentSales.newInstance()
+    var fragmentCalendar = Example5Fragment.newInstance()
 
     //onCreate
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +67,12 @@ class ActivityMain : ActivityBase() {
         setPermittionCheck() //권한체크
 
         Log.d(TAG, "onCreate")
+
+        /**
+         * navigationView revise
+         */
+
+
 
 //        //test login
 //        mAuth.signInWithEmailAndPassword("ngh_0925@naver.com", "dnswjs12!@")
@@ -87,9 +100,6 @@ class ActivityMain : ActivityBase() {
 //                }
 //            }
 
-        val eventsListTest = generateEvents(this).groupByTo(HashMap(), {
-            it.date
-        })
 
         //뷰모델 생성
         mainViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
@@ -102,27 +112,35 @@ class ActivityMain : ActivityBase() {
         setContentView(view)
 
         setStatusBarColor(this, R.color.white)
-        setFragments()//초기 프래그먼트 생성
-
-//        initNavigation()
-
-
-    }
+        initNavigationBar()
+//        setFragments()//초기 프래그먼트 생성
 
 
-    private fun initNavigation() {
-//        val controller = binding.bottomNavigation.setupWithNavController(
-//            navGraphIds = navGraphIds,
-//            fragmentManager = supportFragmentManager,
-//            containerId = R.id.main_nav_host,
-//            intent = intent)
-//
-//                    currentNavController = controller
-
-//        currentNavController = findNavController(R.id.main_nav_host)
-//        binding.bottomNavigation.setupWithNavController(navControler)
 
     }
+
+    private fun initNavigationBar() {
+
+        binding.bottomNavigation.run{
+            setOnNavigationItemReselectedListener {
+                when(it.itemId){
+                    R.id.nav_memo -> changeFragment(fragmentMemo, FRAGMENT_TAG_MEMO)
+                    R.id.nav_message -> changeFragment(fragmentMessage, FRAGMENT_TAG_MESSAGE)
+                    R.id.nav_home -> changeFragment(fragmentCalendar, FRAGMENT_TAG_CALENDAR)
+                    R.id.nav_sales -> changeFragment(fragmentSales, FRAGMENT_TAG_SALES)
+                    R.id.nav_customers -> changeFragment(fragmentCustomers, FRAGMENT_TAG_CUSTOMER)
+                }
+            }
+        }
+    }
+
+    private fun changeFragment(fragment :Fragment, tag : String) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frame_container, fragment, tag)
+            .commit()
+    }
+
 
     //fragment 세팅
     fun setFragments() {
@@ -139,8 +157,8 @@ class ActivityMain : ActivityBase() {
             .addToBackStack("home").commit()
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.frame_container, fragmentAccounting, "accounting")
-            .addToBackStack("accounting").hide(fragmentAccounting).commit()
+            .add(R.id.frame_container, fragmentSales, "accounting")
+            .addToBackStack("accounting").hide(fragmentSales).commit()
 
         supportFragmentManager.beginTransaction()
             .add(R.id.frame_container, fragmentMessage, "message")
@@ -171,8 +189,8 @@ class ActivityMain : ActivityBase() {
                             supportFragmentManager.beginTransaction().hide(fragmentCalendar)
                                 .commit()
                         }
-                        if (fragmentAccounting != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentAccounting)
+                        if (fragmentSales != null) {
+                            supportFragmentManager.beginTransaction().hide(fragmentSales)
                                 .commit()
                         }
                         if (fragmentCustomers != null) {
@@ -197,8 +215,8 @@ class ActivityMain : ActivityBase() {
                             supportFragmentManager.beginTransaction().hide(fragmentCalendar)
                                 .commit()
                         }
-                        if (fragmentAccounting != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentAccounting)
+                        if (fragmentSales != null) {
+                            supportFragmentManager.beginTransaction().hide(fragmentSales)
                                 .commit()
                         }
                         if (fragmentCustomers != null) {
@@ -223,8 +241,8 @@ class ActivityMain : ActivityBase() {
                         if (fragmentMessage != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
                         }
-                        if (fragmentAccounting != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentAccounting)
+                        if (fragmentSales != null) {
+                            supportFragmentManager.beginTransaction().hide(fragmentSales)
                                 .commit()
                         }
                         if (fragmentCustomers != null) {
@@ -233,14 +251,14 @@ class ActivityMain : ActivityBase() {
                         }
                         return true
                     }
-                    R.id.nav_accountings -> {
-                        if (fragmentAccounting == null) {
-                            fragmentAccounting = FragmentSales()
+                    R.id.nav_sales -> {
+                        if (fragmentSales == null) {
+                            fragmentSales = FragmentSales()
                             supportFragmentManager.beginTransaction()
-                                .add(R.id.frame_container, fragmentAccounting).commit();
+                                .add(R.id.frame_container, fragmentSales).commit();
                         }
-                        if (fragmentAccounting != null) {
-                            supportFragmentManager.beginTransaction().show(fragmentAccounting)
+                        if (fragmentSales != null) {
+                            supportFragmentManager.beginTransaction().show(fragmentSales)
                                 .commit()
                         }
                         if (fragmentMemo != null) {
@@ -275,8 +293,8 @@ class ActivityMain : ActivityBase() {
                         if (fragmentMessage != null) {
                             supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
                         }
-                        if (fragmentAccounting != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentAccounting)
+                        if (fragmentSales != null) {
+                            supportFragmentManager.beginTransaction().hide(fragmentSales)
                                 .commit()
                         }
                         if (fragmentCalendar != null) {

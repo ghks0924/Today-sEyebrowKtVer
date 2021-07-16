@@ -11,9 +11,9 @@ import com.example.today_seyebrowktver.room.MemoDatabase
 import com.example.today_seyebrowktver.ui.FragmentMemo
 
 
-class MemoFragmentViewModel(application: Application) : AndroidViewModel(application) {
+class FragmentMemoViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val TAG = "MemoFragmentViewModel"
+    private val TAG = "FragmentMemoViewModel"
 
     var memos : List<MemoData>?=null
 

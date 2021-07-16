@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.today_seyebrowktver.databinding.FragmentHomeBinding
 import java.util.*
 
+private val TAG = "FragmentHome"
 class FragmentHome : Fragment() {
 
     //viewBinding
@@ -61,6 +62,11 @@ class FragmentHome : Fragment() {
         _binding = null
     }
 
+    companion object {
+        fun newInstance(): FragmentHome{
+            return FragmentHome()
+        }
+    }
 
 
 

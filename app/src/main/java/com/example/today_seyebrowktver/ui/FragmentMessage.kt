@@ -15,10 +15,13 @@ import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.data.EachMessageData
 import com.example.today_seyebrowktver.data.MessageData
 import com.example.today_seyebrowktver.databinding.FragmentMessageBinding
+import com.example.today_seyebrowktver.viewmodel.FragmentMessageViewModel
+import com.example.today_seyebrowktver.viewmodel.FragmentSalesViewModel
 import com.example.today_seyebrowktver.viewmodel.MainActivityViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
+private val TAG = "FragmentMessages"
 class FragmentMessage : Fragment() {
 
     val REQUEST_CREATE_MESSAGE = 1111
@@ -28,6 +31,11 @@ class FragmentMessage : Fragment() {
 
     private lateinit var binding: FragmentMessageBinding
 //    private val binding get() = _binding!!
+
+    //viewModel
+    private val fragmentMessageViewModel : FragmentMessageViewModel by lazy {
+        ViewModelProvider(this).get(FragmentMessageViewModel::class.java)
+    }
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     val mAuth = FirebaseAuth.getInstance()
@@ -346,4 +354,9 @@ class FragmentMessage : Fragment() {
     }
 
 
+    companion object {
+        fun newInstance(): FragmentMessage{
+            return FragmentMessage()
+        }
+    }
 }

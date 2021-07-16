@@ -15,18 +15,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.today_seyebrowktver.data.MemoData
 import com.example.today_seyebrowktver.RvMemoAdapter
-import com.example.today_seyebrowktver.databinding.ActivityImagePickerBinding
 import com.example.today_seyebrowktver.databinding.FragmentMemoBinding
-import com.example.today_seyebrowktver.viewmodel.MemoFragmentViewModel
+import com.example.today_seyebrowktver.viewmodel.FragmentMemoViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+private val TAG = "FragmentMemo"
 class FragmentMemo : Fragment() {
-
-    private val TAG = "FragmentMemo"
 
     private val REQUEST_CREATE_MEMO: Int = 1111
     private val REQUEST_UPDATE_MEMO: Int = 2222
@@ -43,8 +40,8 @@ class FragmentMemo : Fragment() {
     var adapter: RvMemoAdapter? = null
 
     //viewModel
-    private val memoFragmentViewModel: MemoFragmentViewModel by lazy {
-        ViewModelProvider(this).get(MemoFragmentViewModel::class.java)
+    private val fragmentMemoViewModel: FragmentMemoViewModel by lazy {
+        ViewModelProvider(this).get(FragmentMemoViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +101,7 @@ class FragmentMemo : Fragment() {
     }
 
     private fun setRv() {
-        memoFragmentViewModel.memoListLiveData.observe(
+        fragmentMemoViewModel.memoListLiveData.observe(
             viewLifecycleOwner,
             Observer { memos ->
                 memos?.let{
@@ -144,7 +141,7 @@ class FragmentMemo : Fragment() {
 
                     //memo 삭제
                     lifecycleScope.launch(Dispatchers.IO) {
-                        memoFragmentViewModel.delete(memoDataList[position])
+                        fragmentMemoViewModel.delete(memoDataList[position])
                     }
 
                 })
@@ -182,7 +179,7 @@ class FragmentMemo : Fragment() {
 
                     Log.d(TAG, "memoCreate data : " + memoData.toString())
 
-                    memoFragmentViewModel.insert(memoData)
+                    fragmentMemoViewModel.insert(memoData)
                 }
             }
 
@@ -221,5 +218,11 @@ class FragmentMemo : Fragment() {
             }
         }
 
+    }
+
+    companion object {
+        fun newInstance(): FragmentMemo{
+            return FragmentMemo()
+        }
     }
 }

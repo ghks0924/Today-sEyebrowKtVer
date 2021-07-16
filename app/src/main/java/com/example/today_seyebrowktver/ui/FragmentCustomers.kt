@@ -11,20 +11,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.data.CustomersData
 import com.example.today_seyebrowktver.RvCustomerAdapter
 import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
+import com.example.today_seyebrowktver.viewmodel.FragmentCustomerViewModel
+import com.example.today_seyebrowktver.viewmodel.FragmentMessageViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-
+private val TAG = "FragmentCustomers"
 class FragmentCustomers : Fragment() {
 
     private var _binding: FragmentCustomersBinding? = null //onDestory를 위한 변수
 
     private val binding get() = _binding!!
+
+    //viewModel
+    private val fragmentCustomerViewModel : FragmentCustomerViewModel by lazy {
+        ViewModelProvider(this).get(FragmentCustomerViewModel::class.java)
+    }
 
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     val mAuth = FirebaseAuth.getInstance()
@@ -245,6 +253,12 @@ class FragmentCustomers : Fragment() {
             binding.recyclerview.adapter = adapter
         }
 
+    }
+
+    companion object {
+        fun newInstance(): FragmentCustomers{
+            return FragmentCustomers()
+        }
     }
 
 

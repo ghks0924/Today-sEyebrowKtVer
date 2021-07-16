@@ -22,6 +22,7 @@ import com.example.today_seyebrowktver.*
 import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.data.EventData
 import com.example.today_seyebrowktver.databinding.*
+import com.example.today_seyebrowktver.viewmodel.FragmentCalendarViewModel
 import com.example.today_seyebrowktver.viewmodel.MainActivityViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -93,6 +94,7 @@ class Example5FlightsAdapter :
     }
 }
 
+private val TAG = "FragmentCalendar"
 //Class
 class Example5Fragment : Fragment() {
 
@@ -100,6 +102,11 @@ class Example5Fragment : Fragment() {
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     val mAuth = FirebaseAuth.getInstance()
     private lateinit var uid: String
+
+    //viewModel
+    private val fragmentCalendarViewModel : FragmentCalendarViewModel by lazy {
+        ViewModelProvider(this).get(FragmentCalendarViewModel::class.java)
+    }
 
 
     private var selectedDate: LocalDate? = null
@@ -634,6 +641,12 @@ class Example5Fragment : Fragment() {
 //        )
 //
 //        return events
+
+    companion object {
+        fun newInstance(): Example5Fragment{
+            return Example5Fragment()
+        }
+    }
 
 }
 
