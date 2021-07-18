@@ -25,7 +25,6 @@ private const val FRAGMENT_TAG_MESSAGE = "FragmentMessage"
 private const val FRAGMENT_TAG_CALENDAR = "FragmentCalendar"
 private const val FRAGMENT_TAG_SALES = "FragmentSales"
 private const val FRAGMENT_TAG_CUSTOMER = "FragmentCustomer"
-private const val FRAGMENT_TAG_CUSTOMER2 = "FragmentCustomer"
 
 class ActivityMain : ActivityBase() {
 
@@ -105,68 +104,56 @@ class ActivityMain : ActivityBase() {
     }
 
     private fun initNavigationBar() {
+        //fragment hide&&show를 위해 일단 다 생성하고 숨김
+        initFragments()
 
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.frame_container)
-
-        //초기화면에 FragmentCalendar 보여주기 && nav_home clicked
-        if (currentFragment == null) {
-            val fragment = Example5Fragment.newInstance()
-            supportFragmentManager.beginTransaction()
-                .add(R.id.frame_container, fragment, FRAGMENT_TAG_CALENDAR)
-                .commit()
-
-            //초기화면에 홈 클릭 세팅
-            binding.bottomNavigation.menu.findItem(R.id.nav_home).isChecked = true
-
-        }
+        //처음에 fragmentCalendar clicked 세팅
+//        binding.bottomNavigation.menu.findItem(R.id.nav_home).isChecked = true
 
         //ItemSelectedListener 세팅
-
-        binding.bottomNavigation.run{
+        binding.bottomNavigation.run {
             setOnNavigationItemSelectedListener {
-                when(it.itemId) {
-                    R.id.nav_memo -> {
-                        changeFragment(fragmentMemo, FRAGMENT_TAG_MEMO)
-                    }
-                    R.id.nav_message -> changeFragment(fragmentMessage, FRAGMENT_TAG_MESSAGE)
-                    R.id.nav_home -> changeFragment(fragmentCalendar, FRAGMENT_TAG_CALENDAR)
-                    R.id.nav_sales -> changeFragment(fragmentSales, FRAGMENT_TAG_SALES)
-                    R.id.nav_customers -> changeFragment(fragmentCustomers, FRAGMENT_TAG_CUSTOMER)
+                val currentFragment = supportFragmentManager.findFragmentById(R.id.frame_container)
+
+                when (it.itemId) {
+                    R.id.nav_memo -> changeFragment(currentFragment!!, fragmentMemo)
+                    R.id.nav_message -> changeFragment(currentFragment!!,fragmentMessage)
+                    R.id.nav_home -> changeFragment(currentFragment!!,fragmentCalendar)
+                    R.id.nav_sales -> changeFragment(currentFragment!!,fragmentSales)
+                    R.id.nav_customers -> changeFragment(currentFragment!!,fragmentCustomers)
                 }
                 true
             }
             selectedItemId = R.id.nav_home
         }
 
-//        binding.bottomNavigation.setOnNavigationItemSelectedListener(object :
-//            BottomNavigationView.OnNavigationItemSelectedListener {
-//            private var menuItem: MenuItem? = null
-//            override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//                this.menuItem = menuItem
-//                when (menuItem?.itemId) {
-//                    R.id.nav_memo -> {
-//                        changeFragment(fragmentMemo, FRAGMENT_TAG_MEMO)
-//                        Log.d(TAG, "nav_memo")
-//                    }
-//                    R.id.nav_message -> changeFragment(fragmentMessage, FRAGMENT_TAG_MESSAGE)
-//                    R.id.nav_home -> changeFragment(fragmentCalendar, FRAGMENT_TAG_CALENDAR)
-//                    R.id.nav_sales -> changeFragment(fragmentSales, FRAGMENT_TAG_SALES)
-//                    R.id.nav_customers -> changeFragment(fragmentCustomers, FRAGMENT_TAG_CUSTOMER)
-//
-//                }
-//                return true
-//            }
-//        })
-
     }
 
+    private fun initFragments() {
+        //fragment hide&&show를 위해 일단 다 생성하고 숨김
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentMemo, FRAGMENT_TAG_MEMO).hide(fragmentMemo).commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentMessage, FRAGMENT_TAG_MESSAGE).hide(fragmentMessage)
+            .commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentCalendar, FRAGMENT_TAG_CALENDAR)
+            .show(fragmentCalendar).commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentSales, FRAGMENT_TAG_SALES).hide(fragmentSales)
+            .commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentMemo, FRAGMENT_TAG_CUSTOMER).hide(fragmentCustomers)
+            .commit()
+    }
 
-private fun changeFragment(fragment: Fragment, tag: String) {
-    supportFragmentManager
-        .beginTransaction()
-        .replace(R.id.frame_container, fragment, tag)
-        .commit()
-}
+    private fun changeFragment(currentFragment: Fragment, showFragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .show(showFragment).commit()
+
+        supportFragmentManager.beginTransaction().hide(currentFragment).commit()
+    }
 
 
 //fragment 세팅
@@ -338,61 +325,61 @@ private fun changeFragment(fragment: Fragment, tag: String) {
 //
 //    }
 
-//고객등록 bottomSheetDialog
-fun mSelectHowToCreateCustomer() {
-    val frag = BottomSheetFragmentCustomer()
-    frag.show(supportFragmentManager, frag.tag)
-}
-
-//예약등록 bottomSheetDialog
-fun mSelectTypeOfCustomer() {
-    val frag = BottomSheetFragmentEvent()
-    frag.show(supportFragmentManager, frag.tag)
-}
-
-fun mGoToSendMessageActivity() {
-    val intent = Intent(this, ActivitySendMessage::class.java)
-    intent.putExtra("type", mainViewModel.messageType.value)
-    intent.putExtra("title", mainViewModel.messageTitle.value)
-    intent.putExtra("content", mainViewModel.messageContent.value)
-    intent.putExtra("date", mainViewModel.messageDate.value)
-    startActivityForResult(intent, REQUEST_SEND_MESSAGE)
-
-}
-
-fun mGoToCreateMemoActivity() {
-    val intent = Intent(this, ActivityCreateMemo::class.java)
-    startActivityForResult(intent, REQUEST_CREATE_MEMO)
-}
-
-fun mGoToUpdateMemoActivity() {
-
-}
-
-override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    if (resultCode != RESULT_OK) {
-        return
+    //고객등록 bottomSheetDialog
+    fun mSelectHowToCreateCustomer() {
+        val frag = BottomSheetFragmentCustomer()
+        frag.show(supportFragmentManager, frag.tag)
     }
-    Log.d("memoCreate", "requestCode" + requestCode)
-    if (data != null) {
-        Log.d(TAG, "CreateMemo" + requestCode)
-        when (requestCode) {
-            REQUEST_CREATE_MEMO -> {
-                Log.d(TAG, "CreateMemo" + REQUEST_CREATE_MEMO)
 
-                //ActivirtCreateMemo에서 넘겨준 데이터 받아오기
-                val memo = MemoData(data?.getStringExtra("title").toString(),
-                    data?.getStringExtra("content").toString(),
-                    data!!.getStringExtra("date").toString(),
-                    data!!.getStringExtra("id").toString())
+    //예약등록 bottomSheetDialog
+    fun mSelectTypeOfCustomer() {
+        val frag = BottomSheetFragmentEvent()
+        frag.show(supportFragmentManager, frag.tag)
+    }
 
-                Log.d("memoCheck", "id" + memo.memoId)
+    fun mGoToSendMessageActivity() {
+        val intent = Intent(this, ActivitySendMessage::class.java)
+        intent.putExtra("type", mainViewModel.messageType.value)
+        intent.putExtra("title", mainViewModel.messageTitle.value)
+        intent.putExtra("content", mainViewModel.messageContent.value)
+        intent.putExtra("date", mainViewModel.messageDate.value)
+        startActivityForResult(intent, REQUEST_SEND_MESSAGE)
 
-                lifecycleScope.launch(Dispatchers.IO) {
-                    mainViewModel.insert(memo)
+    }
+
+    fun mGoToCreateMemoActivity() {
+        val intent = Intent(this, ActivityCreateMemo::class.java)
+        startActivityForResult(intent, REQUEST_CREATE_MEMO)
+    }
+
+    fun mGoToUpdateMemoActivity() {
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK) {
+            return
+        }
+        Log.d("memoCreate", "requestCode" + requestCode)
+        if (data != null) {
+            Log.d(TAG, "CreateMemo" + requestCode)
+            when (requestCode) {
+                REQUEST_CREATE_MEMO -> {
+                    Log.d(TAG, "CreateMemo" + REQUEST_CREATE_MEMO)
+
+                    //ActivirtCreateMemo에서 넘겨준 데이터 받아오기
+                    val memo = MemoData(data?.getStringExtra("title").toString(),
+                        data?.getStringExtra("content").toString(),
+                        data!!.getStringExtra("date").toString(),
+                        data!!.getStringExtra("id").toString())
+
                     Log.d("memoCheck", "id" + memo.memoId)
-                }
+
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        mainViewModel.insert(memo)
+                        Log.d("memoCheck", "id" + memo.memoId)
+                    }
 //                mainViewModel.getAll().observe(this, Observer { memos ->
 //                    var tempMemoDataList = ArrayList<MemoData>()
 //                    for (i in 0 until memos.size) {
@@ -405,8 +392,8 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 //                        )
 //                    }
 //                })
-            }
-            REQUEST_UPDATE_MEMO -> {
+                }
+                REQUEST_UPDATE_MEMO -> {
 //                val oldMemoDate = data!!.getStringExtra("oldDate")
 //                val newMemoDate = data!!.getStringExtra("newDate")
 //                val memoTitle = data!!.getStringExtra("title")
@@ -418,35 +405,35 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 //                    mainViewModel.delete(mainViewModel.findMemoByDate(oldMemoDate.toString()))
 //                    mainViewModel.insert(MemoData(newMemoDate.toString(), memoTitle.toString(), memoContent.toString()))
 //                }
-            }
+                }
 
-            REQUEST_SEND_MESSAGE -> {
-                val messageType = data!!.getStringExtra("type")
-                val oldMessageDate = data!!.getStringExtra("oldDate")
-                val newMessageDate = data!!.getStringExtra("newDate")
-                val newMessageTitle = data!!.getStringExtra("title")
-                val newMessageContent = data!!.getStringExtra("content")
-                lifecycleScope.launch(Dispatchers.IO) {
-                    mainViewModel.delete(mainViewModel.findMessageByDate(oldMessageDate.toString()))
-                    mainViewModel.insert(MessageData(messageType.toString(),
-                        newMessageTitle.toString(),
-                        newMessageContent.toString(),
-                        newMessageDate.toString()))
+                REQUEST_SEND_MESSAGE -> {
+                    val messageType = data!!.getStringExtra("type")
+                    val oldMessageDate = data!!.getStringExtra("oldDate")
+                    val newMessageDate = data!!.getStringExtra("newDate")
+                    val newMessageTitle = data!!.getStringExtra("title")
+                    val newMessageContent = data!!.getStringExtra("content")
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        mainViewModel.delete(mainViewModel.findMessageByDate(oldMessageDate.toString()))
+                        mainViewModel.insert(MessageData(messageType.toString(),
+                            newMessageTitle.toString(),
+                            newMessageContent.toString(),
+                            newMessageDate.toString()))
+                    }
                 }
             }
         }
     }
-}
 
-private var time: Long = 0
-override fun onBackPressed() {
-    if (System.currentTimeMillis() - time >= 2000) {
-        time = System.currentTimeMillis()
-        Toast.makeText(applicationContext, "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show()
-    } else if (System.currentTimeMillis() - time < 2000) {
-        finish()
+    private var time: Long = 0
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() - time >= 2000) {
+            time = System.currentTimeMillis()
+            Toast.makeText(applicationContext, "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show()
+        } else if (System.currentTimeMillis() - time < 2000) {
+            finish()
+        }
     }
-}
 
 //    //Room Library Methods...
 //    fun addMemo(){
