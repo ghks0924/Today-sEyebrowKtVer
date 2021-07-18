@@ -18,24 +18,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+private const val TAG = "ActivityMain"
+
+private const val FRAGMENT_TAG_MEMO = "FragmentMemo"
+private const val FRAGMENT_TAG_MESSAGE = "FragmentMessage"
+private const val FRAGMENT_TAG_CALENDAR = "FragmentCalendar"
+private const val FRAGMENT_TAG_SALES = "FragmentSales"
+private const val FRAGMENT_TAG_CUSTOMER = "FragmentCustomer"
 
 class ActivityMain : ActivityBase() {
-
-    private val TAG = "ActivityMain"
-
-    private val FRAGMENT_TAG_MEMO = "memo"
-    private val FRAGMENT_TAG_MESSAGE = "message"
-    private val FRAGMENT_TAG_CALENDAR = "calendar"
-    private val FRAGMENT_TAG_SALES = "sales"
-    private val FRAGMENT_TAG_CUSTOMER = "customer"
-
-
-    private var currentNavController: LiveData<NavController>? = null
-    val navGraphIds = listOf(R.layout.example_5_fragment,
-        R.layout.fragment_sales,
-        R.layout.fragment_customers,
-        R.layout.fragment_memo,
-        R.layout.fragment_message)
 
     private val REQUEST_CREATE_MEMO = 1111
     private val REQUEST_UPDATE_MEMO = 2222
@@ -47,17 +38,12 @@ class ActivityMain : ActivityBase() {
     //viewModel
     lateinit var mainViewModel: MainActivityViewModel
 
-    //fragment
-    val fm = supportFragmentManager
-    val fmTransaction: FragmentTransaction = fm.beginTransaction()
-
-
     //bottomNavigationView를 위한 fragments
-    var fragmentCustomers = FragmentCustomers.newInstance()
-    var fragmentMemo = FragmentMemo.newInstance()
-    var fragmentMessage = FragmentMessage.newInstance()
-    var fragmentSales = FragmentSales.newInstance()
-    var fragmentCalendar = Example5Fragment.newInstance()
+    val fragmentCustomers = FragmentCustomers.newInstance()
+    val fragmentMemo = FragmentMemo.newInstance()
+    val fragmentMessage = FragmentMessage.newInstance()
+    val fragmentSales = FragmentSales.newInstance()
+    val fragmentCalendar = Example5Fragment.newInstance()
 
     //onCreate
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +57,6 @@ class ActivityMain : ActivityBase() {
         /**
          * navigationView revise
          */
-
 
 
 //        //test login
@@ -116,249 +101,290 @@ class ActivityMain : ActivityBase() {
 //        setFragments()//초기 프래그먼트 생성
 
 
-
     }
 
     private fun initNavigationBar() {
 
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.frame_container)
+
+        //초기화면에 FragmentCalendar 보여주기 && nav_home clicked
+        if (currentFragment == null) {
+            val fragment = Example5Fragment.newInstance()
+            supportFragmentManager.beginTransaction()
+                .add(R.id.frame_container, fragment, FRAGMENT_TAG_CALENDAR)
+                .commit()
+
+            //초기화면에 홈 클릭 세팅
+            binding.bottomNavigation.menu.findItem(R.id.nav_home).isChecked = true
+
+        }
+
+        //ItemSelectedListener 세팅
+
         binding.bottomNavigation.run{
-            setOnNavigationItemReselectedListener {
-                when(it.itemId){
-                    R.id.nav_memo -> changeFragment(fragmentMemo, FRAGMENT_TAG_MEMO)
+            setOnNavigationItemSelectedListener {
+                when(it.itemId) {
+                    R.id.nav_memo -> {
+                        changeFragment(fragmentMemo, FRAGMENT_TAG_MEMO)
+                    }
                     R.id.nav_message -> changeFragment(fragmentMessage, FRAGMENT_TAG_MESSAGE)
                     R.id.nav_home -> changeFragment(fragmentCalendar, FRAGMENT_TAG_CALENDAR)
                     R.id.nav_sales -> changeFragment(fragmentSales, FRAGMENT_TAG_SALES)
                     R.id.nav_customers -> changeFragment(fragmentCustomers, FRAGMENT_TAG_CUSTOMER)
                 }
+                true
             }
+            selectedItemId = R.id.nav_home
         }
-    }
 
-    private fun changeFragment(fragment :Fragment, tag : String) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.frame_container, fragment, tag)
-            .commit()
-    }
-
-
-    //fragment 세팅
-    fun setFragments() {
-        //viewpager 없는버전
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frame_container, fragmentCustomers, "customers")
-            .addToBackStack("customers").hide(fragmentCustomers).commit()
-
-        supportFragmentManager.beginTransaction().add(R.id.frame_container, fragmentMemo, "memo")
-            .addToBackStack("memo").hide(fragmentMemo).commit()
-
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frame_container, fragmentCalendar, "home")
-            .addToBackStack("home").commit()
-
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frame_container, fragmentSales, "accounting")
-            .addToBackStack("accounting").hide(fragmentSales).commit()
-
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frame_container, fragmentMessage, "message")
-            .addToBackStack("message").hide(fragmentMessage).commit()
-
-        binding.bottomNavigation.menu.findItem(R.id.nav_home).setChecked(true)
-
-        //바텀 네비게이션뷰 안의 아이템 설정
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(object :
-            BottomNavigationView.OnNavigationItemSelectedListener {
-            private var menuItem: MenuItem? = null
-            override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-                this.menuItem = menuItem
-                when (menuItem.itemId) {
-                    R.id.nav_memo -> {
-                        if (fragmentMemo == null) {
-                            fragmentMemo = FragmentMemo()
-                            supportFragmentManager.beginTransaction()
-                                .add(R.id.frame_container, fragmentMemo).commit()
-                        }
-                        if (fragmentMemo != null) {
-                            supportFragmentManager.beginTransaction().show(fragmentMemo).commit()
-                        }
-                        if (fragmentMessage != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
-                        }
-                        if (fragmentCalendar != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
-                                .commit()
-                        }
-                        if (fragmentSales != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentSales)
-                                .commit()
-                        }
-                        if (fragmentCustomers != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCustomers)
-                                .commit()
-                        }
-                        return true
-                    }
-                    R.id.nav_message -> {
-                        if (fragmentMessage == null) {
-                            fragmentMessage = FragmentMessage()
-                            supportFragmentManager.beginTransaction()
-                                .add(R.id.frame_container, fragmentMessage).commit()
-                        }
-                        if (fragmentMessage != null) {
-                            supportFragmentManager.beginTransaction().show(fragmentMessage).commit()
-                        }
-                        if (fragmentMemo != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
-                        }
-                        if (fragmentCalendar != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
-                                .commit()
-                        }
-                        if (fragmentSales != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentSales)
-                                .commit()
-                        }
-                        if (fragmentCustomers != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCustomers)
-                                .commit()
-                        }
-                        return true
-                    }
-                    R.id.nav_home -> {
-                        if (fragmentCalendar == null) {
-                            fragmentCalendar = Example5Fragment()
-                            supportFragmentManager.beginTransaction()
-                                .add(R.id.frame_container, fragmentCalendar).commit()
-                        }
-                        if (fragmentCalendar != null) {
-                            supportFragmentManager.beginTransaction().show(fragmentCalendar)
-                                .commit()
-                        }
-                        if (fragmentMemo != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
-                        }
-                        if (fragmentMessage != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
-                        }
-                        if (fragmentSales != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentSales)
-                                .commit()
-                        }
-                        if (fragmentCustomers != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCustomers)
-                                .commit()
-                        }
-                        return true
-                    }
-                    R.id.nav_sales -> {
-                        if (fragmentSales == null) {
-                            fragmentSales = FragmentSales()
-                            supportFragmentManager.beginTransaction()
-                                .add(R.id.frame_container, fragmentSales).commit();
-                        }
-                        if (fragmentSales != null) {
-                            supportFragmentManager.beginTransaction().show(fragmentSales)
-                                .commit()
-                        }
-                        if (fragmentMemo != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
-                        }
-                        if (fragmentMessage != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
-                        }
-                        if (fragmentCalendar != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
-                                .commit()
-                        }
-                        if (fragmentCustomers != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCustomers)
-                                .commit()
-                        }
-                        return true
-                    }
-                    R.id.nav_customers -> {
-                        if (fragmentCustomers == null) {
-                            fragmentCustomers = FragmentCustomers()
-                            supportFragmentManager.beginTransaction()
-                                .add(R.id.frame_container, fragmentCustomers).commit()
-                        }
-                        if (fragmentCustomers != null) {
-                            supportFragmentManager.beginTransaction().show(fragmentCustomers)
-                                .commit()
-                        }
-                        if (fragmentMemo != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
-                        }
-                        if (fragmentMessage != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
-                        }
-                        if (fragmentSales != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentSales)
-                                .commit()
-                        }
-                        if (fragmentCalendar != null) {
-                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
-                                .commit()
-                        }
-                        return true
-                    }
-                }
-                return true
-            }
-        })
-
+//        binding.bottomNavigation.setOnNavigationItemSelectedListener(object :
+//            BottomNavigationView.OnNavigationItemSelectedListener {
+//            private var menuItem: MenuItem? = null
+//            override fun onNavigationItemSelected(item: MenuItem): Boolean {
+//                this.menuItem = menuItem
+//                when (menuItem?.itemId) {
+//                    R.id.nav_memo -> {
+//                        changeFragment(fragmentMemo, FRAGMENT_TAG_MEMO)
+//                        Log.d(TAG, "nav_memo")
+//                    }
+//                    R.id.nav_message -> changeFragment(fragmentMessage, FRAGMENT_TAG_MESSAGE)
+//                    R.id.nav_home -> changeFragment(fragmentCalendar, FRAGMENT_TAG_CALENDAR)
+//                    R.id.nav_sales -> changeFragment(fragmentSales, FRAGMENT_TAG_SALES)
+//                    R.id.nav_customers -> changeFragment(fragmentCustomers, FRAGMENT_TAG_CUSTOMER)
+//
+//                }
+//                return true
+//            }
+//        })
 
     }
 
-    //고객등록 bottomSheetDialog
-    fun mSelectHowToCreateCustomer() {
-        val frag = BottomSheetFragmentCustomer()
-        frag.show(supportFragmentManager, frag.tag)
+
+private fun changeFragment(fragment: Fragment, tag: String) {
+    supportFragmentManager
+        .beginTransaction()
+        .replace(R.id.frame_container, fragment, tag)
+        .commit()
+}
+
+
+//fragment 세팅
+//    fun setFragments() {
+//        //viewpager 없는버전
+//        supportFragmentManager.beginTransaction()
+//            .add(R.id.frame_container, fragmentCustomers, "customers")
+//            .addToBackStack("customers").hide(fragmentCustomers).commit()
+//
+//        supportFragmentManager.beginTransaction().add(R.id.frame_container, fragmentMemo, "memo")
+//            .addToBackStack("memo").hide(fragmentMemo).commit()
+//
+//        supportFragmentManager.beginTransaction()
+//            .add(R.id.frame_container, fragmentCalendar, "home")
+//            .addToBackStack("home").commit()
+//
+//        supportFragmentManager.beginTransaction()
+//            .add(R.id.frame_container, fragmentSales, "accounting")
+//            .addToBackStack("accounting").hide(fragmentSales).commit()
+//
+//        supportFragmentManager.beginTransaction()
+//            .add(R.id.frame_container, fragmentMessage, "message")
+//            .addToBackStack("message").hide(fragmentMessage).commit()
+//
+//        binding.bottomNavigation.menu.findItem(R.id.nav_home).setChecked(true)
+//
+//        //바텀 네비게이션뷰 안의 아이템 설정
+//        binding.bottomNavigation.setOnNavigationItemSelectedListener(object :
+//            BottomNavigationView.OnNavigationItemSelectedListener {
+//            private var menuItem: MenuItem? = null
+//            override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+//                this.menuItem = menuItem
+//                when (menuItem.itemId) {
+//                    R.id.nav_memo -> {
+//                        if (fragmentMemo == null) {
+//                            fragmentMemo = FragmentMemo()
+//                            supportFragmentManager.beginTransaction()
+//                                .add(R.id.frame_container, fragmentMemo).commit()
+//                        }
+//                        if (fragmentMemo != null) {
+//                            supportFragmentManager.beginTransaction().show(fragmentMemo).commit()
+//                        }
+//                        if (fragmentMessage != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
+//                        }
+//                        if (fragmentCalendar != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
+//                                .commit()
+//                        }
+//                        if (fragmentSales != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentSales)
+//                                .commit()
+//                        }
+//                        if (fragmentCustomers != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentCustomers)
+//                                .commit()
+//                        }
+//                        return true
+//                    }
+//                    R.id.nav_message -> {
+//                        if (fragmentMessage == null) {
+//                            fragmentMessage = FragmentMessage()
+//                            supportFragmentManager.beginTransaction()
+//                                .add(R.id.frame_container, fragmentMessage).commit()
+//                        }
+//                        if (fragmentMessage != null) {
+//                            supportFragmentManager.beginTransaction().show(fragmentMessage).commit()
+//                        }
+//                        if (fragmentMemo != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
+//                        }
+//                        if (fragmentCalendar != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
+//                                .commit()
+//                        }
+//                        if (fragmentSales != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentSales)
+//                                .commit()
+//                        }
+//                        if (fragmentCustomers != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentCustomers)
+//                                .commit()
+//                        }
+//                        return true
+//                    }
+//                    R.id.nav_home -> {
+//                        if (fragmentCalendar == null) {
+//                            fragmentCalendar = Example5Fragment()
+//                            supportFragmentManager.beginTransaction()
+//                                .add(R.id.frame_container, fragmentCalendar).commit()
+//                        }
+//                        if (fragmentCalendar != null) {
+//                            supportFragmentManager.beginTransaction().show(fragmentCalendar)
+//                                .commit()
+//                        }
+//                        if (fragmentMemo != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
+//                        }
+//                        if (fragmentMessage != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
+//                        }
+//                        if (fragmentSales != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentSales)
+//                                .commit()
+//                        }
+//                        if (fragmentCustomers != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentCustomers)
+//                                .commit()
+//                        }
+//                        return true
+//                    }
+//                    R.id.nav_sales -> {
+//                        if (fragmentSales == null) {
+//                            fragmentSales = FragmentSales()
+//                            supportFragmentManager.beginTransaction()
+//                                .add(R.id.frame_container, fragmentSales).commit();
+//                        }
+//                        if (fragmentSales != null) {
+//                            supportFragmentManager.beginTransaction().show(fragmentSales)
+//                                .commit()
+//                        }
+//                        if (fragmentMemo != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
+//                        }
+//                        if (fragmentMessage != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
+//                        }
+//                        if (fragmentCalendar != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
+//                                .commit()
+//                        }
+//                        if (fragmentCustomers != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentCustomers)
+//                                .commit()
+//                        }
+//                        return true
+//                    }
+//                    R.id.nav_customers -> {
+//                        if (fragmentCustomers == null) {
+//                            fragmentCustomers = FragmentCustomers()
+//                            supportFragmentManager.beginTransaction()
+//                                .add(R.id.frame_container, fragmentCustomers).commit()
+//                        }
+//                        if (fragmentCustomers != null) {
+//                            supportFragmentManager.beginTransaction().show(fragmentCustomers)
+//                                .commit()
+//                        }
+//                        if (fragmentMemo != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentMemo).commit()
+//                        }
+//                        if (fragmentMessage != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentMessage).commit()
+//                        }
+//                        if (fragmentSales != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentSales)
+//                                .commit()
+//                        }
+//                        if (fragmentCalendar != null) {
+//                            supportFragmentManager.beginTransaction().hide(fragmentCalendar)
+//                                .commit()
+//                        }
+//                        return true
+//                    }
+//                }
+//                return true
+//            }
+//        })
+//
+//
+//    }
+
+//고객등록 bottomSheetDialog
+fun mSelectHowToCreateCustomer() {
+    val frag = BottomSheetFragmentCustomer()
+    frag.show(supportFragmentManager, frag.tag)
+}
+
+//예약등록 bottomSheetDialog
+fun mSelectTypeOfCustomer() {
+    val frag = BottomSheetFragmentEvent()
+    frag.show(supportFragmentManager, frag.tag)
+}
+
+fun mGoToSendMessageActivity() {
+    val intent = Intent(this, ActivitySendMessage::class.java)
+    intent.putExtra("type", mainViewModel.messageType.value)
+    intent.putExtra("title", mainViewModel.messageTitle.value)
+    intent.putExtra("content", mainViewModel.messageContent.value)
+    intent.putExtra("date", mainViewModel.messageDate.value)
+    startActivityForResult(intent, REQUEST_SEND_MESSAGE)
+
+}
+
+fun mGoToCreateMemoActivity() {
+    val intent = Intent(this, ActivityCreateMemo::class.java)
+    startActivityForResult(intent, REQUEST_CREATE_MEMO)
+}
+
+fun mGoToUpdateMemoActivity() {
+
+}
+
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (resultCode != RESULT_OK) {
+        return
     }
-
-    //예약등록 bottomSheetDialog
-    fun mSelectTypeOfCustomer() {
-        val frag = BottomSheetFragmentEvent()
-        frag.show(supportFragmentManager, frag.tag)
-    }
-
-    fun mGoToSendMessageActivity() {
-        val intent = Intent(this, ActivitySendMessage::class.java)
-        intent.putExtra("type", mainViewModel.messageType.value)
-        intent.putExtra("title", mainViewModel.messageTitle.value)
-        intent.putExtra("content", mainViewModel.messageContent.value)
-        intent.putExtra("date", mainViewModel.messageDate.value)
-        startActivityForResult(intent, REQUEST_SEND_MESSAGE)
-
-    }
-
-    fun mGoToCreateMemoActivity() {
-        val intent = Intent(this, ActivityCreateMemo::class.java)
-        startActivityForResult(intent, REQUEST_CREATE_MEMO)
-    }
-
-    fun mGoToUpdateMemoActivity() {
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode != RESULT_OK) {
-            return
-        }
-        Log.d("memoCreate", "requestCode" + requestCode)
-        if (data != null) {
-            Log.d(TAG, "CreateMemo" + requestCode)
-            when (requestCode) {
-                REQUEST_CREATE_MEMO -> {
-                    Log.d(TAG, "CreateMemo" + REQUEST_CREATE_MEMO)
+    Log.d("memoCreate", "requestCode" + requestCode)
+    if (data != null) {
+        Log.d(TAG, "CreateMemo" + requestCode)
+        when (requestCode) {
+            REQUEST_CREATE_MEMO -> {
+                Log.d(TAG, "CreateMemo" + REQUEST_CREATE_MEMO)
 
                 //ActivirtCreateMemo에서 넘겨준 데이터 받아오기
-                    val memo = MemoData(data?.getStringExtra("title").toString(),
-                        data?.getStringExtra("content").toString(),
-                        data!!.getStringExtra("date").toString(),
-                        data!!.getStringExtra("id").toString())
+                val memo = MemoData(data?.getStringExtra("title").toString(),
+                    data?.getStringExtra("content").toString(),
+                    data!!.getStringExtra("date").toString(),
+                    data!!.getStringExtra("id").toString())
 
                 Log.d("memoCheck", "id" + memo.memoId)
 
@@ -378,8 +404,8 @@ class ActivityMain : ActivityBase() {
 //                        )
 //                    }
 //                })
-                }
-                REQUEST_UPDATE_MEMO -> {
+            }
+            REQUEST_UPDATE_MEMO -> {
 //                val oldMemoDate = data!!.getStringExtra("oldDate")
 //                val newMemoDate = data!!.getStringExtra("newDate")
 //                val memoTitle = data!!.getStringExtra("title")
@@ -391,35 +417,35 @@ class ActivityMain : ActivityBase() {
 //                    mainViewModel.delete(mainViewModel.findMemoByDate(oldMemoDate.toString()))
 //                    mainViewModel.insert(MemoData(newMemoDate.toString(), memoTitle.toString(), memoContent.toString()))
 //                }
-                }
+            }
 
-                REQUEST_SEND_MESSAGE -> {
-                    val messageType = data!!.getStringExtra("type")
-                    val oldMessageDate = data!!.getStringExtra("oldDate")
-                    val newMessageDate = data!!.getStringExtra("newDate")
-                    val newMessageTitle = data!!.getStringExtra("title")
-                    val newMessageContent = data!!.getStringExtra("content")
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        mainViewModel.delete(mainViewModel.findMessageByDate(oldMessageDate.toString()))
-                        mainViewModel.insert(MessageData(messageType.toString(),
-                            newMessageTitle.toString(),
-                            newMessageContent.toString(),
-                            newMessageDate.toString()))
-                    }
+            REQUEST_SEND_MESSAGE -> {
+                val messageType = data!!.getStringExtra("type")
+                val oldMessageDate = data!!.getStringExtra("oldDate")
+                val newMessageDate = data!!.getStringExtra("newDate")
+                val newMessageTitle = data!!.getStringExtra("title")
+                val newMessageContent = data!!.getStringExtra("content")
+                lifecycleScope.launch(Dispatchers.IO) {
+                    mainViewModel.delete(mainViewModel.findMessageByDate(oldMessageDate.toString()))
+                    mainViewModel.insert(MessageData(messageType.toString(),
+                        newMessageTitle.toString(),
+                        newMessageContent.toString(),
+                        newMessageDate.toString()))
                 }
             }
         }
     }
+}
 
-    private var time: Long = 0
-    override fun onBackPressed() {
-        if (System.currentTimeMillis() - time >= 2000) {
-            time = System.currentTimeMillis()
-            Toast.makeText(applicationContext, "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show()
-        } else if (System.currentTimeMillis() - time < 2000) {
-            finish()
-        }
+private var time: Long = 0
+override fun onBackPressed() {
+    if (System.currentTimeMillis() - time >= 2000) {
+        time = System.currentTimeMillis()
+        Toast.makeText(applicationContext, "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show()
+    } else if (System.currentTimeMillis() - time < 2000) {
+        finish()
     }
+}
 
 //    //Room Library Methods...
 //    fun addMemo(){
@@ -429,8 +455,6 @@ class ActivityMain : ActivityBase() {
 //        }
 //    }
 
-    override fun onSupportNavigateUp() =
-        currentNavController?.value?.navigateUp() ?: false
 
 }
 

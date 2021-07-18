@@ -55,6 +55,5 @@ class FragmentMemoViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private val totalRepository = TotalRepository.get()
-
     val memoListLiveData = totalRepository.getMemos()
 }
