@@ -25,6 +25,7 @@ private const val FRAGMENT_TAG_MESSAGE = "FragmentMessage"
 private const val FRAGMENT_TAG_CALENDAR = "FragmentCalendar"
 private const val FRAGMENT_TAG_SALES = "FragmentSales"
 private const val FRAGMENT_TAG_CUSTOMER = "FragmentCustomer"
+private const val FRAGMENT_TAG_CUSTOMER2 = "FragmentCustomer"
 
 class ActivityMain : ActivityBase() {
 
