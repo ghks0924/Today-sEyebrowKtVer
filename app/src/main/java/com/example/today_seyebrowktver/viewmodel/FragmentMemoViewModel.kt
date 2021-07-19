@@ -10,10 +10,8 @@ import com.example.today_seyebrowktver.room.MemoDao
 import com.example.today_seyebrowktver.room.MemoDatabase
 import com.example.today_seyebrowktver.ui.FragmentMemo
 
-
+private val TAG = "FragmentMemoViewModel"
 class FragmentMemoViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val TAG = "FragmentMemoViewModel"
 
     var memos : List<MemoData>?=null
 
@@ -21,39 +19,16 @@ class FragmentMemoViewModel(application: Application) : AndroidViewModel(applica
     val memoContent = MutableLiveData<String>()
     val memoDate = MutableLiveData<String>()
 
-    //Room memoDB
-    private val memoDB = Room.databaseBuilder(
-        application,
-        MemoDatabase::class.java, "memos"
-    ).build()
-
     fun sendMemoData(title: String, content: String, date: String) {
         memoTitle.value = title
         memoContent.value = content
         memoDate.value = date
     }
 
-    fun getAll(): LiveData<List<MemoData>> {
-        return memoDB.getMemeDao().getAllMemos()
-    }
-
-    suspend fun insert(memoData: MemoData) {
-        memoDB.getMemeDao().insert(memoData)
-    }
-
-    suspend fun delete(memoData: MemoData) {
-        memoDB.getMemeDao().delete(memoData)
-    }
-
-    suspend fun findMemoByDate(date: String): MemoData {
-        val memoData = memoDB.getMemeDao().findByDate(date)
-        return memoData
-    }
-
-    suspend fun update(memoData: MemoData) {
-        memoDB.getMemeDao().update(memoData)
-    }
-
+    //repository version
     private val totalRepository = TotalRepository.get()
     val memoListLiveData = totalRepository.getMemos()
+    fun deleteMemo(memo : MemoData){
+        totalRepository.deleteMemo(memo)
+    }
 }

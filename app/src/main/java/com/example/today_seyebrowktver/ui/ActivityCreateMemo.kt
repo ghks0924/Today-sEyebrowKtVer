@@ -1,19 +1,30 @@
 package com.example.today_seyebrowktver.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
+import com.example.today_seyebrowktver.data.MemoData
 import com.example.today_seyebrowktver.databinding.ActivityCreateMemoBinding
+import com.example.today_seyebrowktver.viewmodel.ActivityCreateMemoViewModel
 import java.text.SimpleDateFormat
 import java.util.*
+
+private const val TAG = "ActivityCreateMemo"
 
 class ActivityCreateMemo : ActivityBase() {
 
     //viewBinding
     private lateinit var binding: ActivityCreateMemoBinding
+
+    //viewModel
+    private val activityCreateMemoViewModel: ActivityCreateMemoViewModel by lazy {
+        ViewModelProvider(this).get(ActivityCreateMemoViewModel::class.java)
+    }
 
     //memo 객체를 받을 변수들
     private var wasTyped = false
@@ -33,15 +44,15 @@ class ActivityCreateMemo : ActivityBase() {
 
         //backIv 클릭이벤트
         binding.backIv.setOnClickListener(View.OnClickListener {
-
             memoTitle = binding.memoTitleEt.text.toString().trim()
             memoContent = binding.contentEdittext.text.toString().trim()
 
+            //제목과 내용이 모두 비어있으면 아무 이벤트 없이 나가는 것으로 간주
             if (memoTitle.isNullOrEmpty() && memoContent.isNullOrEmpty()) {
                 mKeyboardDown()
                 finish()
 
-            } else {
+            } else { //제목, 내용 둘 중 하나라도 내용이 있으면 new Memo를 생성하는 것으로 간주
                 mCreateMemo()
                 mKeyboardDown()
             }
@@ -79,7 +90,7 @@ class ActivityCreateMemo : ActivityBase() {
     }
 
     override fun onBackPressed() {
-
+        super.onBackPressed()
         memoTitle = binding.memoTitleEt.text.toString().trim()
         memoContent = binding.contentEdittext.text.toString().trim()
 
@@ -88,9 +99,8 @@ class ActivityCreateMemo : ActivityBase() {
         } else {
             mCreateMemo()
         }
-
-
     }
+
 
 //    //메모 업데이트 처리
 //    private fun mUpdateMemo() {
@@ -159,13 +169,18 @@ class ActivityCreateMemo : ActivityBase() {
             // nowDate 변수에 값을 저장한다.
             val formatDate = sdfNow.format(date)
 
-            val intent = Intent()
-            intent.putExtra("title", memoTitle)
-            intent.putExtra("content", memoContent)
-            intent.putExtra("date", formatDate)
-            intent.putExtra("id", UUID.randomUUID().toString()+"/"+formatDate)
-            setResult(RESULT_OK, intent)
-            finish()
+            activityCreateMemoViewModel.addMemo(
+                MemoData(formatDate, memoTitle, memoContent, UUID.randomUUID().toString())
+            )
+
+//            val intent = Intent()
+//            intent.putExtra("title", memoTitle)
+//            intent.putExtra("content", memoContent)
+//            intent.putExtra("date", formatDate)
+//            intent.putExtra("id", UUID.randomUUID().toString()+"/"+formatDate)
+//            setResult(Activity.RESULT_OK, intent)
+
+            if(isFinishing) finish()
 
         }
 

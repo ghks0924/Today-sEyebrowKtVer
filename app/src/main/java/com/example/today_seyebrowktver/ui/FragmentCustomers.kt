@@ -25,9 +25,9 @@ import com.google.firebase.database.*
 private val TAG = "FragmentCustomers"
 class FragmentCustomers : Fragment() {
 
-    private var _binding: FragmentCustomersBinding? = null //onDestory를 위한 변수
+    //dataBinding
+    private var mBinding: FragmentCustomersBinding?= null
 
-    private val binding get() = _binding!!
 
     //viewModel
     private val fragmentCustomerViewModel : FragmentCustomerViewModel by lazy {
@@ -48,12 +48,12 @@ class FragmentCustomers : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentCustomersBinding.inflate(inflater, container, false)
+        mBinding = FragmentCustomersBinding.inflate(inflater)
 
         val user = mAuth.currentUser
         uid = user!!.uid
 
-        return binding.root
+        return mBinding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,12 +63,12 @@ class FragmentCustomers : Fragment() {
     }
 
     private fun setLayout() {
-        binding.abcTv.setOnClickListener(
+        mBinding!!.abcTv.setOnClickListener(
             View.OnClickListener
             //가나다순 버튼
             {
-                binding.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
-                binding.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+                mBinding!!.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
+                mBinding!!.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
                 data.sortBy { data1 -> data1.customerName }
                 adapter!!.notifyDataSetChanged()
                 database.child("users").child(uid).child("customersSort").setValue("name").addOnSuccessListener {
@@ -76,11 +76,11 @@ class FragmentCustomers : Fragment() {
                     }
             })
 
-        binding.savedTv.setOnClickListener(View.OnClickListener
+        mBinding!!.savedTv.setOnClickListener(View.OnClickListener
         //저장순
         {
-            binding.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
-            binding.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
+            mBinding!!.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+            mBinding!!.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
             data.sortByDescending { data1 -> data1.savedate }
 //            data.sortBy { data1 -> data1.savedate }
             adapter!!.notifyDataSetChanged()
@@ -89,15 +89,15 @@ class FragmentCustomers : Fragment() {
             }
         })
 
-        binding.edittext.clearFocus()
+        mBinding!!.edittext.clearFocus()
 
-        binding.fab.setOnClickListener(View.OnClickListener {
+        mBinding!!.fab.setOnClickListener(View.OnClickListener {
 
             (activity as ActivityMain).mSelectHowToCreateCustomer()
 
         })
 
-        binding.edittext.addTextChangedListener(object : TextWatcher {
+        mBinding!!.edittext.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -105,7 +105,7 @@ class FragmentCustomers : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                var searchText: String = binding.edittext.text.toString().toLowerCase()
+                var searchText: String = mBinding!!.edittext.text.toString().toLowerCase()
                 search(searchText)
 
                 if (searchText.isEmpty()) {
@@ -142,13 +142,13 @@ class FragmentCustomers : Fragment() {
                             if (customersSort == "name"){
                                 data.sortBy { data1 -> data1.customerName }
                                 dataForSearch.sortBy { data1 -> data1.customerName }
-                                binding.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
-                                binding.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+                                mBinding!!.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
+                                mBinding!!.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
                             } else{
                                 data.sortByDescending { data1 -> data1.savedate }
                                 dataForSearch.sortByDescending { data1 -> data1.savedate }
-                                binding.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
-                                binding.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
+                                mBinding!!.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+                                mBinding!!.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
                             }
 
                             setRv()
@@ -169,16 +169,16 @@ class FragmentCustomers : Fragment() {
     private fun setRv() {
         adapter = RvCustomerAdapter(data)
 
-        binding.recyclerview.layoutManager = LinearLayoutManager(context)
-        binding.recyclerview.adapter = adapter
+        mBinding!!.recyclerview.layoutManager = LinearLayoutManager(context)
+        mBinding!!.recyclerview.adapter = adapter
 
         val dividerDecoration: DividerItemDecoration =
             DividerItemDecoration(
-                binding.recyclerview.context,
+                mBinding!!.recyclerview.context,
                 LinearLayoutManager(context).orientation
             )
 
-        binding.recyclerview.addItemDecoration(dividerDecoration)
+        mBinding!!.recyclerview.addItemDecoration(dividerDecoration)
 
         setClickListener(data)
 
@@ -226,7 +226,6 @@ class FragmentCustomers : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 
     //검색 기능 메소드 생성
@@ -236,7 +235,7 @@ class FragmentCustomers : Fragment() {
         //문자입력이 없을때는 모든 데이터를 보여준다.
         if (charText.length == 0) {
             adapter = RvCustomerAdapter(data)
-            binding.recyclerview.adapter = adapter
+            mBinding!!.recyclerview.adapter = adapter
         } else { //문자입력시
             for (i in data.indices) { //리소스의 모든 데이터를 검색한다.
                 if (data.get(i).customerName!!.toLowerCase().contains(charText)
@@ -250,7 +249,7 @@ class FragmentCustomers : Fragment() {
 
 
             adapter = RvCustomerAdapter(dataForSearch)
-            binding.recyclerview.adapter = adapter
+            mBinding!!.recyclerview.adapter = adapter
         }
 
     }

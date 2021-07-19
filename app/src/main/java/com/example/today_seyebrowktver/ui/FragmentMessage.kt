@@ -16,8 +16,7 @@ import com.example.today_seyebrowktver.data.EachMessageData
 import com.example.today_seyebrowktver.data.MessageData
 import com.example.today_seyebrowktver.databinding.FragmentMessageBinding
 import com.example.today_seyebrowktver.viewmodel.FragmentMessageViewModel
-import com.example.today_seyebrowktver.viewmodel.FragmentSalesViewModel
-import com.example.today_seyebrowktver.viewmodel.MainActivityViewModel
+import com.example.today_seyebrowktver.viewmodel.ActivityMainViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
@@ -54,7 +53,7 @@ class FragmentMessage : Fragment() {
 
     private lateinit var messagesByGroupName: LinkedHashMap<String, MutableList<MessageData>>
 
-    private lateinit var mainViewModel: MainActivityViewModel
+    private lateinit var mainViewModel: ActivityMainViewModel
     private lateinit var selectedMessageType: String
     private lateinit var tempType: String
     private lateinit var tempTitle: String
@@ -73,7 +72,7 @@ class FragmentMessage : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mainViewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
+        mainViewModel = ViewModelProvider(requireActivity()).get(ActivityMainViewModel::class.java)
         super.onViewCreated(view, savedInstanceState)
 
         setGroupData()

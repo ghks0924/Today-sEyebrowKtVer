@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.room.Room
+import com.example.today_seyebrowktver.TotalRepository
 import com.example.today_seyebrowktver.data.EventData
 import com.example.today_seyebrowktver.data.MemoData
 import com.example.today_seyebrowktver.data.MessageData
@@ -14,7 +15,7 @@ import com.example.today_seyebrowktver.room.MemoDatabase
 import com.example.today_seyebrowktver.room.MessageDatabase
 import com.google.firebase.auth.FirebaseAuth
 
-class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
+class ActivityMainViewModel(application: Application) : AndroidViewModel(application) {
 
     lateinit var eventsMapByDate:HashMap<String, MutableList<EventData>>
 
@@ -152,36 +153,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
 
-
-
-
-
-    //==========memo==================
-//    fun sendMemoData(title: String, content: String, date: String) {
-//        memoTitle.value = title
-//        memoContent.value = content
-//        memoDate.value = date
-//    }
-
-    fun getAll(): LiveData<List<MemoData>> {
-        return memoDB.getMemeDao().getAllMemos()
-    }
-
-    suspend fun insert(memoData: MemoData) {
-        memoDB.getMemeDao().insert(memoData)
-    }
-
-    suspend fun delete(memoData: MemoData) {
-        memoDB.getMemeDao().delete(memoData)
-    }
-
-    suspend fun findMemoByDate(date: String): MemoData {
-        val memoData = memoDB.getMemeDao().findByDate(date)
-        return memoData
-    }
-
-    suspend fun update(memoData: MemoData) {
-        memoDB.getMemeDao().update(memoData)
-    }
+    //repository version
+    private val totalRepository = TotalRepository.get()
 
 }

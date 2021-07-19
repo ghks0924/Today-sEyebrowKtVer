@@ -23,7 +23,7 @@ import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.data.EventData
 import com.example.today_seyebrowktver.databinding.*
 import com.example.today_seyebrowktver.viewmodel.FragmentCalendarViewModel
-import com.example.today_seyebrowktver.viewmodel.MainActivityViewModel
+import com.example.today_seyebrowktver.viewmodel.ActivityMainViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -127,13 +127,13 @@ class Example5Fragment : Fragment() {
     private lateinit var binding: Example5FragmentBinding
 
     //viewModel
-    private lateinit var mainViewModel: MainActivityViewModel
+    private lateinit var mainViewModel: ActivityMainViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel =
-            ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
+            ViewModelProvider(requireActivity()).get(ActivityMainViewModel::class.java)
 //        mapByDate = mainViewModel.eventsMapByDate
 
 //        Log.d("eventsList", "fromUtils : " + eventsListTest.toString())

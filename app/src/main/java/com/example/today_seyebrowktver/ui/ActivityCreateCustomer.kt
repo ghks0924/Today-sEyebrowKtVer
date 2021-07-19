@@ -6,8 +6,11 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.today_seyebrowktver.data.CustomersData
 import com.example.today_seyebrowktver.databinding.ActivityCreateCustomerBinding
+import com.example.today_seyebrowktver.viewmodel.ActivityCreateMemoViewModel
+import com.example.today_seyebrowktver.viewmodel.ActivityMainViewModel
 import com.google.firebase.database.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,6 +22,11 @@ class ActivityCreateCustomer : ActivityBase() {
     //viewBinding
     private lateinit var binding: ActivityCreateCustomerBinding
 
+    //viewModel
+    private val activityCreateMemoViewModel: ActivityCreateMemoViewModel by lazy {
+        ViewModelProvider(this).get(ActivityCreateMemoViewModel::class.java)
+    }
+
     val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     private lateinit var uid: String
 
@@ -29,6 +37,8 @@ class ActivityCreateCustomer : ActivityBase() {
     private var isValidNumber:Boolean= false
 
     private lateinit var checkOrgStr: String
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

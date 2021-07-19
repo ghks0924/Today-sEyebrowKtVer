@@ -5,19 +5,35 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.today_seyebrowktver.data.MemoData
 import com.example.today_seyebrowktver.databinding.ActivityUpdateMemoBinding
+import com.example.today_seyebrowktver.viewmodel.ActivityCreateMemoViewModel
+import com.example.today_seyebrowktver.viewmodel.ActivityUpdateMemoViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ActivityUpdateMemo : ActivityBase() {
 
+    interface
+
     //viewBinding
     private lateinit var binding: ActivityUpdateMemoBinding
+
+    //viewModel
+    private val activityUpdateMemoViewModel: ActivityUpdateMemoViewModel by lazy {
+        ViewModelProvider(this).get(ActivityUpdateMemoViewModel::class.java)
+    }
 
     //이전 액티비티에서 받아온 메모 객체의 데이터
     private lateinit var prevMemoTitle: String
     private lateinit var prevMemoContent: String
     private lateinit var prevMemoDate: String
+    private lateinit var memoId: String
+    private lateinit var prevMemoInstance:MemoData
 
     //update할 메모의 데이터
     private lateinit var newMemoTitle: String
@@ -29,15 +45,20 @@ class ActivityUpdateMemo : ActivityBase() {
         binding = ActivityUpdateMemoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         setLayout()
     }
 
-    private fun setLayout() {
+    private fun getIntentData(){
         val intent = intent
         prevMemoTitle = intent.getStringExtra("title").toString()
         prevMemoContent = intent.getStringExtra("content").toString()
         prevMemoDate = intent.getStringExtra("date").toString()
+        memoId = intent.getStringExtra("id").toString()
+    }
 
+    private fun setLayout() {
+        getIntentData()
         binding.memoTitleEt.setText(prevMemoTitle)
         binding.contentEdittext.setText(prevMemoContent)
 
@@ -105,13 +126,28 @@ class ActivityUpdateMemo : ActivityBase() {
             // nowDate 변수에 값을 저장한다.
             val formatDate = sdfNow.format(date)
 
-            val intent = Intent()
-            intent.putExtra("title", newMemoTitle)
-            intent.putExtra("content", newMemoContent)
-            intent.putExtra("newDate", formatDate)
-            intent.putExtra("oldDate", prevMemoDate)
-            setResult(RESULT_OK, intent)
+            //말이 없데이트지만 지우고 uuid만 같게해서 삭제했다가 지움
+
+            //이전 것 찾아서 지움
+
+            lifecycleScope.launch(Dispatchers.IO){
+                prevMemoInstance = activityUpdateMemoViewModel.findMemo(prevMemoDate)
+                activityUpdateMemoViewModel.deleteMemo(prevMemoInstance)
+            }
+
+
+            val newMemo = MemoData(formatDate, newMemoTitle, newMemoContent, memoId)
+            activityUpdateMemoViewModel.addMemo(newMemo)
+
             finish()
+
+//            val intent = Intent()
+//            intent.putExtra("title", newMemoTitle)
+//            intent.putExtra("content", newMemoContent)
+//            intent.putExtra("newDate", formatDate)
+//            intent.putExtra("oldDate", prevMemoDate)
+//            setResult(RESULT_OK, intent)
+//            finish()
 
         }
 
@@ -129,4 +165,6 @@ class ActivityUpdateMemo : ActivityBase() {
             mKeyboardDown()
         }
     }
+
+
 }

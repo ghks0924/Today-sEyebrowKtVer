@@ -12,10 +12,10 @@ interface MemoDao {
 
 
     @Query("SELECT * FROM memos WHERE date LIKE :date")
-    suspend fun findByDate(date: String) : MemoData
+    fun findByDate(date: String) : MemoData
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(memoEntity : MemoData)
+    fun insert(memoEntity : MemoData)
 
 
 //    @Query("UPDATE memos set date = :date, title = :title, content = :content WHERE idx = :idx")
@@ -25,9 +25,9 @@ interface MemoDao {
 //    fun delete(idx: Int)
 
     @Update
-    suspend fun update(memoEntity: MemoData)
+    fun update(memoEntity: MemoData)
 
     @Delete
-    suspend fun delete(memoEntity: MemoData)
+    fun delete(memoEntity: MemoData)
 
 }

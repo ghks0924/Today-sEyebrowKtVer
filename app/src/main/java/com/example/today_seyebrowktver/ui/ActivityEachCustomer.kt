@@ -1,5 +1,6 @@
 package com.example.today_seyebrowktver.ui
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -11,6 +12,9 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.today_seyebrowktver.data.CustomersData
 import com.example.today_seyebrowktver.data.PhotoData
@@ -42,6 +46,18 @@ class ActivityEachCustomer : ActivityBase() {
 
     //image Picker
     private var imageUri: Uri? = null
+
+    //onActivityResult가 deprecated돼서 대체 방법
+    private lateinit var getResultActivty : ActivityResultLauncher<Intent>
+
+    val activityForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            binding.customerNameTv.text = intent?.getStringExtra("edittedName")
+            binding.customerNumberTv.text = intent?.getStringExtra("edittedNumber")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,9 +144,13 @@ class ActivityEachCustomer : ActivityBase() {
         }
 
         binding.editIcon.setOnClickListener {
-            val intent = Intent(this, ActivityEditCustomer::class.java)
-            intent.putExtra("keyValue", customerKeyValue)
-            startActivityForResult(intent, REQUEST_EDIT)
+            activityForResult.launch(
+                Intent(this, ActivityEditCustomer::class.java)
+            )
+
+//            val intent = Intent(this, ActivityEditCustomer::class.java)
+//            intent.putExtra("keyValue", customerKeyValue)
+//            startActivityForResult(intent, REQUEST_EDIT)
 
         }
 
@@ -215,23 +235,23 @@ class ActivityEachCustomer : ActivityBase() {
         alertDialogObject.show()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode != RESULT_OK){
-            return
-        }
-
-        when(requestCode){
-            REQUEST_EDIT -> {
-                getCustomerData()
-                binding.customerNameTv.text = data!!.getStringExtra("edittedName")
-                binding.customerNumberTv.text = data!!.getStringExtra("edittedNumber")
-            }
-
-        }
-
-
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (resultCode != RESULT_OK){
+//            return
+//        }
+//
+//        when(requestCode){
+//            REQUEST_EDIT -> {
+//                getCustomerData()
+//                binding.customerNameTv.text = data!!.getStringExtra("edittedName")
+//                binding.customerNumberTv.text = data!!.getStringExtra("edittedNumber")
+//            }
+//
+//        }
+//
+//
+//    }
 
     private fun showSingleImage(uri: Uri) {
         if (imageUri != null){

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.today_seyebrowktver.data.MemoData
 
-@Database(entities = [MemoData::class], version = 3)
+@Database(entities = [MemoData::class], version = 4)
 abstract class MemoDatabase : RoomDatabase() {
 
     abstract fun getMemeDao(): MemoDao

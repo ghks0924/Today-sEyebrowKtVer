@@ -47,7 +47,7 @@ class ActivityEditCustomer : ActivityBase() {
                 eachCustomer = CustomersData(it.child("customerName").value.toString(),
                     it.child("customerNumber").value.toString(),
                     it.child("customerMemo").value.toString(),
-                    Integer.parseInt(it.child("history").value.toString()),
+                    it.child("history").value.toString(),
                     it.child("grade").value.toString(),
                     it.child("savedate").value.toString(),
                     Integer.parseInt(it.child("noshowCount").value.toString()),

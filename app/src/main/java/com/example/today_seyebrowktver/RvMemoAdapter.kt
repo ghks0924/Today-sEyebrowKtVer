@@ -96,7 +96,7 @@ class RvMemoAdapter: RecyclerView.Adapter<RvMemoAdapter.ViewHolder> {
             val memoYear = tmpDate.substring(0, 4)
             val memoMonthDay = tmpDate.substring(4, 8)
 
-            var dspDateStr: String? = null
+            var dspDateStr: String
             if (nowYear == memoYear) { //현재 년도와 메모의 저장된 년도가 같으면
                 if (nowMonthDay == memoMonthDay) { //월,일도 같으면
                     dspDateStr = tmpDate.substring(8, 10) + "시 " + tmpDate.substring(10, 12) + "분"
