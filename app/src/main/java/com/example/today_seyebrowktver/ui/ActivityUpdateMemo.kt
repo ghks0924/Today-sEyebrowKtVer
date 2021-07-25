@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -16,12 +17,16 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
+private const val TAG = "ActivityUpdateMemo"
+
 class ActivityUpdateMemo : ActivityBase() {
 
     interface
 
     //viewBinding
-    private lateinit var binding: ActivityUpdateMemoBinding
+    private
+
+    lateinit var binding: ActivityUpdateMemoBinding
 
     //viewModel
     private val activityUpdateMemoViewModel: ActivityUpdateMemoViewModel by lazy {
@@ -33,7 +38,7 @@ class ActivityUpdateMemo : ActivityBase() {
     private lateinit var prevMemoContent: String
     private lateinit var prevMemoDate: String
     private lateinit var memoId: String
-    private lateinit var prevMemoInstance:MemoData
+    private lateinit var prevMemoInstance: MemoData
 
     //update할 메모의 데이터
     private lateinit var newMemoTitle: String
@@ -49,7 +54,8 @@ class ActivityUpdateMemo : ActivityBase() {
         setLayout()
     }
 
-    private fun getIntentData(){
+
+    private fun getIntentData() {
         val intent = intent
         prevMemoTitle = intent.getStringExtra("title").toString()
         prevMemoContent = intent.getStringExtra("content").toString()
@@ -58,98 +64,139 @@ class ActivityUpdateMemo : ActivityBase() {
     }
 
     private fun setLayout() {
+        //memo Data 초기 세팅
         getIntentData()
         binding.memoTitleEt.setText(prevMemoTitle)
         binding.contentEdittext.setText(prevMemoContent)
 
+
         //backIv 클릭이벤트
+        backIvClickEvent()
+
+        //shareIv 클릭 이벤트
+        shareIvClickEvent()
+
+
+        //제목이 수정됐는지 확인해서 wasRevised = true로 바꿔줌
+        val titleWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                wasRevised = true
+                Log.d("wasRevised", "title : " + wasRevised)
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+        }
+
+        //내용이 수정됐는지 확인해서 wasRevised = true로 바꿔줌
+        val contentWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                wasRevised = true
+                Log.d("wasRevised", "content : " + wasRevised)
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+        }
+
+        binding.memoTitleEt.addTextChangedListener(titleWatcher)
+        binding.contentEdittext.addTextChangedListener(contentWatcher)
+    }
+
+    private fun shareIvClickEvent() {
+        binding.shareIv.setOnClickListener {
+
+            newMemoTitle = binding.memoTitleEt.text.toString().trim()
+            newMemoContent = binding.contentEdittext.text.toString().trim()
+
+            shareMemo(newMemoTitle, newMemoContent)
+        }
+
+
+    }
+
+    private fun backIvClickEvent() {
         binding.backIv.setOnClickListener(View.OnClickListener {
             newMemoTitle = binding.memoTitleEt.text.toString().trim()
             newMemoContent = binding.contentEdittext.text.toString().trim()
 
+            //내용이 수정된게 없으면 그냥 종료
             if (newMemoTitle == prevMemoTitle && newMemoContent == prevMemoContent) {
                 finish()
             } else {
-                mUpdateMemo()
+                if (wasRevised) {
+                    //키보드 내리고 포커스 클리어
+                    binding.contentEdittext.clearFocus()
+                    binding.memoTitleEt.clearFocus()
+                    binding.parentLayout.requestFocus() //기본 포커스 줘서 edittext에 포커스 안주기
+
+                    wasRevised = false
+                    mKeyboardDown()
+                } else {
+                    mUpdateMemo()
+                }
+
                 mKeyboardDown()
             }
         })
+    }
 
-        binding.memoTitleEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+    private fun shareMemo(title: String, content: String) {
+        //null check해주고
+        if (title.isNullOrEmpty() && content.isNullOrEmpty()) {
+            mShowShortToast("공유할 메모가 비어있습니다")
+        } else {
+            val Sharing_intent = Intent(Intent.ACTION_SEND)
+            Sharing_intent.type = "text/plain"
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                wasRevised = true
-            }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
+            val Test_Message = title + "\n\n" + content
 
-        })
+            Sharing_intent.putExtra(Intent.EXTRA_TEXT, Test_Message)
 
-        binding.contentEdittext.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+            val Sharing = Intent.createChooser(Sharing_intent, "메모 공유하기")
+            startActivity(Sharing)
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                wasRevised = true
-            }
+            mKeyboardDown()
+        }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-        })
     }
 
     //메모 생성시 처리
     private fun mUpdateMemo() {
+        //메인 액티비티로 저장할 메모 데이터와 RESULT_OK 보내기
+        // 현재시간을 msec 으로 구한다.
+        val now = System.currentTimeMillis()
+        // 현재시간을 date 변수에 저장한다.
+        val date = Date(now)
+        // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
+        val sdfNow = SimpleDateFormat("yyyyMMddHHmmss")
+        // nowDate 변수에 값을 저장한다.
+        val formatDate = sdfNow.format(date)
 
-        //무언가를 입력했음
-        if (wasRevised) {
-            //키보드 내리고 포커스 클리어
-            binding.contentEdittext.clearFocus()
-            binding.memoTitleEt.clearFocus()
-            binding.parentLayout.requestFocus() //기본 포커스 줘서 edittext에 포커스 안주기
+        //말이 없데이트지만 지우고 uuid만 같게해서 삭제했다가 지움
 
-            wasRevised = false
+        //이전 것 찾아서 지움
 
-        } else {
-
-            //메인 액티비티로 저장할 메모 데이터와 RESULT_OK 보내기
-            // 현재시간을 msec 으로 구한다.
-            val now = System.currentTimeMillis()
-            // 현재시간을 date 변수에 저장한다.
-            val date = Date(now)
-            // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
-            val sdfNow = SimpleDateFormat("yyyyMMddHHmmss")
-            // nowDate 변수에 값을 저장한다.
-            val formatDate = sdfNow.format(date)
-
-            //말이 없데이트지만 지우고 uuid만 같게해서 삭제했다가 지움
-
-            //이전 것 찾아서 지움
-
-            lifecycleScope.launch(Dispatchers.IO){
-                prevMemoInstance = activityUpdateMemoViewModel.findMemo(prevMemoDate)
-                activityUpdateMemoViewModel.deleteMemo(prevMemoInstance)
-            }
-
-
-            val newMemo = MemoData(formatDate, newMemoTitle, newMemoContent, memoId)
-            activityUpdateMemoViewModel.addMemo(newMemo)
-
-            finish()
-
-//            val intent = Intent()
-//            intent.putExtra("title", newMemoTitle)
-//            intent.putExtra("content", newMemoContent)
-//            intent.putExtra("newDate", formatDate)
-//            intent.putExtra("oldDate", prevMemoDate)
-//            setResult(RESULT_OK, intent)
-//            finish()
-
+        lifecycleScope.launch(Dispatchers.IO) {
+            prevMemoInstance = activityUpdateMemoViewModel.findMemo(prevMemoDate)
+            activityUpdateMemoViewModel.deleteMemo(prevMemoInstance)
         }
+
+
+        val newMemo = MemoData(formatDate, newMemoTitle, newMemoContent, memoId)
+        activityUpdateMemoViewModel.addMemo(newMemo)
+
+        finish()
+        Log.d(TAG, "memoUpdated")
 
     }
 
@@ -161,8 +208,17 @@ class ActivityUpdateMemo : ActivityBase() {
         if (newMemoTitle == prevMemoTitle && newMemoContent == prevMemoContent) {
             finish()
         } else {
-            mUpdateMemo()
-            mKeyboardDown()
+            if (wasRevised) {
+                //키보드 내리고 포커스 클리어
+                binding.contentEdittext.clearFocus()
+                binding.memoTitleEt.clearFocus()
+                binding.parentLayout.requestFocus() //기본 포커스 줘서 edittext에 포커스 안주기
+
+                wasRevised = false
+            } else {
+                mUpdateMemo()
+            }
+
         }
     }
 

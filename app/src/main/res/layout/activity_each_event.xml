@@ -375,7 +375,7 @@
                     android:gravity="center"
 
                     android:includeFontPadding="false"
-                    android:text="@string/memo_tv"
+                    android:text="@string/memo_title"
                     android:textColor="@color/mainGrey"
                     android:textSize="@dimen/textsize_default"
                     app:layout_constraintLeft_toLeftOf="parent"

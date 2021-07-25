@@ -26,7 +26,7 @@
 
     <string name="histroy_tv">방문이력</string>
     <string name="retouch">리터치</string>
-    <string name="memo_tv">메모</string>
+    <string name="memo_title">제목</string>
     <string name="new_reserve">신규</string>
     <string name="load_cus_btn">고객정보 불러오기</string>
     <string name="rsv_date_tv">예약날짜</string>
