@@ -1,6 +1,7 @@
 package com.example.today_seyebrowktver.data.remote
 
 import android.util.Log
+import com.example.today_seyebrowktver.R
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -20,7 +21,7 @@ class Api {
         val gson = GsonBuilder().setLenient().create()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://us-central1-today-s-eyebrow-kt-ver.cloudfunctions.net/")
+            .baseUrl(R.string.firebase_functions_base_url.toString())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()

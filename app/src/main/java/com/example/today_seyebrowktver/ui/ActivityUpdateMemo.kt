@@ -128,24 +128,36 @@ class ActivityUpdateMemo : ActivityBase() {
             newMemoTitle = binding.memoTitleEt.text.toString().trim()
             newMemoContent = binding.contentEdittext.text.toString().trim()
 
-            //내용이 수정된게 없으면 그냥 종료
-            if (newMemoTitle == prevMemoTitle && newMemoContent == prevMemoContent) {
-                finish()
-            } else {
-                if (wasRevised) {
-                    //키보드 내리고 포커스 클리어
-                    binding.contentEdittext.clearFocus()
-                    binding.memoTitleEt.clearFocus()
-                    binding.parentLayout.requestFocus() //기본 포커스 줘서 edittext에 포커스 안주기
+            //가장 먼저 focus clear
+            if(binding.memoTitleEt.isFocused || binding.contentEdittext.isFocused){
+                //키보드 내리고 포커스 클리어
+                binding.contentEdittext.clearFocus()
+                binding.memoTitleEt.clearFocus()
+                binding.parentLayout.requestFocus() //기본 포커스 줘서 edittext에 포커스 안주기
 
-                    wasRevised = false
-                    mKeyboardDown()
-                } else {
-                    mUpdateMemo()
-                }
-
+                wasRevised = false
                 mKeyboardDown()
+            } else { //포커스를 지운다음 액션
+                //내용이 수정된게 없으면 그냥 종료
+                if (newMemoTitle == prevMemoTitle && newMemoContent == prevMemoContent) {
+                    finish()
+                } else {
+                    if (wasRevised) {
+                        //키보드 내리고 포커스 클리어
+                        binding.contentEdittext.clearFocus()
+                        binding.memoTitleEt.clearFocus()
+                        binding.parentLayout.requestFocus() //기본 포커스 줘서 edittext에 포커스 안주기
+
+                        wasRevised = false
+                        mKeyboardDown()
+                    } else {
+                        mUpdateMemo()
+                    }
+
+                    mKeyboardDown()
+                }
             }
+
         })
     }
 

@@ -47,10 +47,10 @@
             android:includeFontPadding="false"
             android:inputType="text"
             android:maxLines="1"
-            android:textColor="@color/mainGreyFor50"
+            android:textColor="@color/mainGrey"
             android:textSize="17sp"
             android:hint="@string/memo_title"
-            android:textColorHint="@color/mainGreyFor50"
+            android:textColorHint="@color/mainGreyFor30"
             android:background="@null"/>
 
         <ImageView
@@ -80,9 +80,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_relative_layout"
 
-        android:fontFamily="@font/notosansmonocjkkrbold"
+        android:fontFamily="@font/notosanscjkkrregular"
         android:includeFontPadding="false"
-        android:textColor="@color/mainGreyFor50"
+        android:textColor="@color/mainGrey"
         android:textSize="15sp"
         android:background="@null"
 

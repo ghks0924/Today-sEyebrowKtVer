@@ -90,10 +90,7 @@ class ActivityLogin : ActivityBase() {
                     val intent = Intent(this, ActivityMain::class.java)
                     startActivity(intent)
 
-                    userId = mAuth.currentUser!!.uid
-                    val user = mAuth.currentUser
-                    user!!.uid
-                    Log.d("uid", user!!.uid+"?")
+                    this@ActivityLogin.finish()
 //                    updateUI(user)
 
 //                    currentUser = mAuth.getCurrentUser()
@@ -126,17 +123,17 @@ class ActivityLogin : ActivityBase() {
 
 
 //    로그인 유지상태 사용하는 메소드인데 나중에... activate
-    override fun onStart() {
-        super.onStart()
-        val currentUser = mAuth.currentUser
-        if(currentUser != null){
-//            reload();
-            Log.d("currentUser", currentUser?.uid+"널이 아닐때?")
-            val intent = Intent(this, ActivityMain::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent)
-        } else{
-            Log.d("currentUser", "null일 때")
-        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        val currentUser = mAuth.currentUser
+//        if(currentUser != null){
+////            reload();
+//            Log.d("currentUser", currentUser?.uid+"널이 아닐때?")
+//            val intent = Intent(this, ActivityMain::class.java)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//            startActivity(intent)
+//        } else{
+//            Log.d("currentUser", "null일 때")
+//        }
+//    }
 }

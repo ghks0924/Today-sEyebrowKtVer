@@ -42,15 +42,15 @@ class ActivityMain : ActivityBase() {
     }
 
     //bottomNavigationView를 위한 fragments
-    val fragmentCustomers = FragmentCustomers.newInstance()
-    val fragmentMemo = FragmentMemo.newInstance()
-    val fragmentMessage = FragmentMessage.newInstance()
-    val fragmentSales = FragmentSales.newInstance()
-    val fragmentCalendar = Example5Fragment.newInstance()
+    private var fragmentCustomers: FragmentCustomers? = null
+    private var fragmentMemo: FragmentMemo? = null
+    private var fragmentMessage: FragmentMessage? = null
+    private var fragmentSales: FragmentSales? = null
+    private var fragmentCalendar: Example5Fragment? = null
 
     private lateinit var lastSelectedFragment: Fragment
 
-    private lateinit var getResultActivty : ActivityResultLauncher<Intent>
+    private lateinit var getResultActivty: ActivityResultLauncher<Intent>
 
     val activityForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -71,8 +71,8 @@ class ActivityMain : ActivityBase() {
         Log.d(TAG, "onCreate")
 
         getResultActivty = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()){ result ->
-            if (result.resultCode == RESULT_OK){
+            ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
                 val mString = result.data?.getStringExtra("key")
                 Log.d(TAG, "goot To go${mString}")
             }
@@ -84,58 +84,51 @@ class ActivityMain : ActivityBase() {
          */
 
 
-//        //test login
-//        mAuth.signInWithEmailAndPassword("ngh_0925@naver.com", "dnswjs12!@")
-//            .addOnCompleteListener(this) { task ->
-//                if (task.isSuccessful) {
-//                    // Sign in success, update UI with the signed-in user's information
-//                    Log.d("LoginTest", "signInWithEmail:success")
-//
-//                    val user = mAuth.currentUser
-//                    user.uid
-//                    Log.d("uid", user.uid+"?")
-//
-//                } else {
-//                    try {
-//                        throw task.exception!!
-//                    } catch (e: FirebaseAuthInvalidUserException) {
-//                        mShowShortToast("존재하지 않는 계정 입니다")
-//                    } catch (e: FirebaseAuthInvalidCredentialsException) {
-//                        mShowShortToast("이메일 또는 비밀번호를 확인해주세요")
-//                    } catch (e: FirebaseNetworkException) {
-//                        mShowShortToast("네트워크 오류")
-//                    } catch (e: Exception) {
-//                        mShowShortToast("오류 : 잠시 후 다시 시도해주세요")
-//                    }
-//                }
-//            }
-
-
         setContentView(view)
-
-        setStatusBarColor(this, R.color.white)
+        initFragments()
         initNavigationBar()
-//        setFragments()//초기 프래그먼트 생성
+        setStatusBarColor(this, R.color.white)
 
 
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     //BottomNavigationView 관련
     private fun initNavigationBar() {
         //fragment hide&&show를 위해 일단 다 생성하고 숨김
-        initFragments()
+
+
         Log.d(TAG, "call initNavigationBar()")
+
+        //fragment hide&&show를 위해 일단 다 생성하고 숨김
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentMemo!!, FRAGMENT_TAG_MEMO).hide(fragmentMemo!!).commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentMessage!!, FRAGMENT_TAG_MESSAGE).hide(fragmentMessage!!)
+            .commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentCalendar!!, FRAGMENT_TAG_CALENDAR).show(fragmentCalendar!!)
+            .commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentSales!!, FRAGMENT_TAG_SALES).hide(fragmentSales!!)
+            .commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frame_container, fragmentCustomers!!, FRAGMENT_TAG_CUSTOMER).hide(fragmentCustomers!!)
+            .commit()
 
         //ItemSelectedListener 세팅
         binding.bottomNavigation.run {
             setOnNavigationItemSelectedListener {
                 when (it.itemId) {
 
-                    R.id.nav_memo -> changeFragment(fragmentMemo)
-                    R.id.nav_message -> changeFragment(fragmentMessage)
-                    R.id.nav_home -> changeFragment(fragmentCalendar)
-                    R.id.nav_sales -> changeFragment(fragmentSales)
-                    R.id.nav_customers -> changeFragment(fragmentCustomers)
+                    R.id.nav_memo -> changeFragment(fragmentMemo!!)
+                    R.id.nav_message -> changeFragment(fragmentMessage!!)
+                    R.id.nav_home -> changeFragment(fragmentCalendar!!)
+                    R.id.nav_sales -> changeFragment(fragmentSales!!)
+                    R.id.nav_customers -> changeFragment(fragmentCustomers!!)
                 }
                 true
             }
@@ -145,29 +138,17 @@ class ActivityMain : ActivityBase() {
     }
 
     private fun initFragments() {
-        //fragment hide&&show를 위해 일단 다 생성하고 숨김
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frame_container, fragmentMemo, FRAGMENT_TAG_MEMO)
-            .addToBackStack(FRAGMENT_TAG_MEMO).hide(fragmentMemo).commit()
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frame_container, fragmentMessage, FRAGMENT_TAG_MESSAGE)
-            .addToBackStack(FRAGMENT_TAG_MESSAGE).hide(fragmentMessage)
-            .commit()
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frame_container, fragmentCalendar, FRAGMENT_TAG_CALENDAR)
-            .addToBackStack(FRAGMENT_TAG_CALENDAR).show(fragmentCalendar)
-            .commit()
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frame_container, fragmentSales, FRAGMENT_TAG_SALES)
-            .addToBackStack(FRAGMENT_TAG_SALES).hide(fragmentSales)
-            .commit()
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frame_container, fragmentCustomers, FRAGMENT_TAG_CUSTOMER)
-            .addToBackStack(FRAGMENT_TAG_CUSTOMER).hide(fragmentCustomers)
-            .commit()
+        if (fragmentCalendar == null){
+            //fragment 생성
+            fragmentMemo = FragmentMemo.newInstance()
+            fragmentMessage = FragmentMessage.newInstance()
+            fragmentCalendar = Example5Fragment.newInstance()
+            fragmentSales = FragmentSales.newInstance()
+            fragmentCustomers = FragmentCustomers.newInstance()
 
-        //처음엔 fragmentCalendar로 저장
-        lastSelectedFragment = fragmentCalendar
+            lastSelectedFragment = fragmentCalendar!!
+        }
+
     }
 
     private fun changeFragment(showFragment: Fragment) {
@@ -471,10 +452,9 @@ class ActivityMain : ActivityBase() {
             Toast.makeText(applicationContext, "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT)
                 .show()
         } else if (System.currentTimeMillis() - time < 2000) {
-            finish()
+            this@ActivityMain.finish()
         }
     }
-
 
 
 }

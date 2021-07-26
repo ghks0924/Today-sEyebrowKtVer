@@ -9,10 +9,10 @@
     android:clickable="true"
     app:rippleColor="@color/weakGrey"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardElevation="0dp"
     android:backgroundTint="@color/mainGreyForLine"
     android:id="@+id/memo_item_cardview"
     app:cardCornerRadius="10dp"
+    app:cardElevation="0dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginBottom="5dp">

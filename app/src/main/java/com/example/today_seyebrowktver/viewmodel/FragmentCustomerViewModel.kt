@@ -8,5 +8,6 @@ class FragmentCustomerViewModel(application: Application) : AndroidViewModel(app
     private val TAG = "FragmentCustomerViewModel"
 
     private val totalRepository = TotalRepository.get()
+    var customerList = totalRepository.getCustomersList()
 
 }

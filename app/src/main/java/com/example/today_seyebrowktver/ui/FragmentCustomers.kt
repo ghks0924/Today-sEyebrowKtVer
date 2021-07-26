@@ -120,50 +120,53 @@ class FragmentCustomers : Fragment() {
     }
 
     private fun setData() {
-        database.child("users").child(uid).child("customers")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val newData: ArrayList<CustomersData> = ArrayList()
-                    for (ds in dataSnapshot.children) {
-                        val customersData: CustomersData? = ds.getValue(CustomersData::class.java)
-                        if (customersData != null) {
-                            newData.add(customersData)
-                        }
-                    }
-                    data.clear() //for문이 끝내기전까지 데이터를 유지하기 위해
-                    dataForSearch.clear()
-                    data.addAll(newData)
-                    dataForSearch.addAll(newData)
-
-                    database.child("users").child(uid).child("customersSort").get()
-                        .addOnSuccessListener {
-                            customersSort = it.value.toString()
-
-                            if (customersSort == "name"){
-                                data.sortBy { data1 -> data1.customerName }
-                                dataForSearch.sortBy { data1 -> data1.customerName }
-                                mBinding!!.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
-                                mBinding!!.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
-                            } else{
-                                data.sortByDescending { data1 -> data1.savedate }
-                                dataForSearch.sortByDescending { data1 -> data1.savedate }
-                                mBinding!!.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
-                                mBinding!!.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
-                            }
-
-                            setRv()
-                        }
-
-
-
-//                    setRv() //일반적인 위치는 아님..  db접근, 파일접근은 비동기처리 해야함. fb는 자동적으로 비동기적으로 돈다
-                }
-
-
-                //addListener sing은 한번만 불러오고
-                //addValue는 데이터가 바꿀때마다 datachage 돈다.
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
+        data = fragmentCustomerViewModel.customerList
+        dataForSearch = fragmentCustomerViewModel.customerList
+        setRv()
+//        database.child("users").child(uid).child("customers")
+//            .addValueEventListener(object : ValueEventListener {
+//                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                    val newData: ArrayList<CustomersData> = ArrayList()
+//                    for (ds in dataSnapshot.children) {
+//                        val customersData: CustomersData? = ds.getValue(CustomersData::class.java)
+//                        if (customersData != null) {
+//                            newData.add(customersData)
+//                        }
+//                    }
+//                    data.clear() //for문이 끝내기전까지 데이터를 유지하기 위해
+//                    dataForSearch.clear()
+//                    data.addAll(newData)
+//                    dataForSearch.addAll(newData)
+//
+//                    database.child("users").child(uid).child("customersSort").get()
+//                        .addOnSuccessListener {
+//                            customersSort = it.value.toString()
+//
+//                            if (customersSort == "name"){
+//                                data.sortBy { data1 -> data1.customerName }
+//                                dataForSearch.sortBy { data1 -> data1.customerName }
+//                                mBinding!!.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
+//                                mBinding!!.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+//                            } else{
+//                                data.sortByDescending { data1 -> data1.savedate }
+//                                dataForSearch.sortByDescending { data1 -> data1.savedate }
+//                                mBinding!!.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+//                                mBinding!!.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
+//                            }
+//
+//                            setRv()
+//                        }
+//
+//
+//
+////                    setRv() //일반적인 위치는 아님..  db접근, 파일접근은 비동기처리 해야함. fb는 자동적으로 비동기적으로 돈다
+//                }
+//
+//
+//                //addListener sing은 한번만 불러오고
+//                //addValue는 데이터가 바꿀때마다 datachage 돈다.
+//                override fun onCancelled(databaseError: DatabaseError) {}
+//            })
     }
 
     private fun setRv() {
