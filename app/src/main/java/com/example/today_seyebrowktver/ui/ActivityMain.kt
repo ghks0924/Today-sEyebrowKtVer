@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "ActivityMain"
 
 private const val FRAGMENT_TAG_MEMO = "FragmentMemo"
+
 private const val FRAGMENT_TAG_MESSAGE = "FragmentMessage"
 private const val FRAGMENT_TAG_CALENDAR = "FragmentCalendar"
 private const val FRAGMENT_TAG_SALES = "FragmentSales"
