@@ -81,34 +81,44 @@ class FragmentMessage : Fragment() {
     }
 
     private fun setGroupData() {
-        //그룹 받아오기
-        database.child("users").child(uid).child("messageGroups")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val newData: ArrayList<MessageGroupData> = ArrayList()
-                    for (ds in snapshot.children) {
-                        val messageGroupData: MessageGroupData? =
-                            ds.getValue(MessageGroupData::class.java)
-                        if (messageGroupData != null) {
-                            newData.add(messageGroupData)
-                        }
-                    }
-
-                    messageGroupList.clear()
-                    messageGroupList.addAll(newData)
-                    messageGroupList.sortBy {it.order}
-
-                    //메세지 데이터 받아오기
-                    setMessagData()
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e("messageGroup", error.message)
-                }
-
-
-            })
-
+        messageGroupList = fragmentMessageViewModel.groupList
+        Log.d(TAG, messageGroupList.toString())
+        setMessagData()
+//        //그룹 받아오기
+//        database.child("users").child(uid).child("messageGroups")
+//            .addValueEventListener(object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    val newData: ArrayList<MessageGroupData> = ArrayList()
+//                    for (ds in snapshot.children) {
+//                        val messageGroupData: MessageGroupData? =
+//                            ds.getValue(MessageGroupData::class.java)
+//                        if (messageGroupData != null) {
+//                            newData.add(messageGroupData)
+//                        }
+//                    }
+//
+//                    messageGroupList.clear()
+//                    messageGroupList.addAll(newData)
+//                    Log.d(TAG, messageGroupList.toString())
+//                    messageGroupList.sortBy {it.order}
+//
+//                    if (!messageGroupList.isNullOrEmpty()){
+//                        //메세지 데이터 받아오기
+//                        setMessagData()
+//                    } else {
+//
+//                    }
+//
+//
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                    Log.e("messageGroup", error.message)
+//                }
+//
+//
+//            })
+//
 
     }
 
@@ -126,11 +136,11 @@ class FragmentMessage : Fragment() {
                     messageDataList.clear()
                     messageDataList.addAll(newData)
 
-                    binding.messageGroupTv.text =
-                        messageGroupList[0].groupName
-
-                    //최초 초가화일때는 자동으로 제일 첫 번째 그릅 선택
-                    selectedMessageType = messageGroupList[0].groupName
+//                    binding.messageGroupTv.text =
+//                        messageGroupList[0].groupName
+//
+//                    //최초 초가화일때는 자동으로 제일 첫 번째 그릅 선택
+                    selectedMessageType = "1"
 
                     setRv()
 

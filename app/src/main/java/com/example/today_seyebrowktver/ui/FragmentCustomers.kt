@@ -263,5 +263,12 @@ class FragmentCustomers : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (adapter!=null){//새롭게 추가되면 adapter에 noti해주기 위해서
+            adapter!!.notifyDataSetChanged()
+        }
+    }
+
 
 }

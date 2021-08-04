@@ -8,5 +8,6 @@ class FragmentMessageViewModel(application: Application) : AndroidViewModel(appl
     private val TAG = "FragmentMessageViewModel"
 
     private val totalRepository = TotalRepository.get()
+    var groupList = totalRepository.getMessageGroupList()
 
 }

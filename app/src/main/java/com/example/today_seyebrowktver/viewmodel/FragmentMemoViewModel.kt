@@ -1,16 +1,12 @@
 package com.example.today_seyebrowktver.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import androidx.room.Room
 import com.example.today_seyebrowktver.TotalRepository
 import com.example.today_seyebrowktver.data.MemoData
-import com.example.today_seyebrowktver.room.MemoDao
-import com.example.today_seyebrowktver.room.MemoDatabase
-import com.example.today_seyebrowktver.ui.FragmentMemo
 
-private val TAG = "FragmentMemoViewModel"
+
+private const val TAG = "FragmentMemoViewModel"
 class FragmentMemoViewModel(application: Application) : AndroidViewModel(application) {
 
     var memos : List<MemoData>?=null

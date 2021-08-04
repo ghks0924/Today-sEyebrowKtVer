@@ -1,24 +1,35 @@
 package com.example.today_seyebrowktver
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.example.today_seyebrowktver.data.CustomersData
 import com.example.today_seyebrowktver.data.MemoData
 import com.example.today_seyebrowktver.room.MemoDatabase
+import com.example.today_seyebrowktver.ui.ActivityCreateEventNewCus
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.Executors
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 private const val MEMO_DATABASE = "memo-database"
+private const val TAG = "Total Respository"
 
 class TotalRepository private constructor(context: Context) {
 
-    //firebase database
-    val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    // firebase Auth
     val mAuth = FirebaseAuth.getInstance()
     val uid:String = mAuth.uid.toString()
 
+    //firebase Realtime database
+    val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+
+    //Customer Functions
     fun getCustomersList() : ArrayList<CustomersData>{
         val customersList: ArrayList<CustomersData> = ArrayList()
         database.child("users").child(uid).child("customers")
@@ -56,6 +67,86 @@ class TotalRepository private constructor(context: Context) {
             })
         return customersList
     }
+
+    //Message Functions
+    fun getMessageGroupList() : ArrayList<MessageGroupData>{
+        val messageGroupList: ArrayList<MessageGroupData> = ArrayList()
+        //그룹 받아오기
+        database.child("users").child(uid).child("messageGroups")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val newData: ArrayList<MessageGroupData> = ArrayList()
+                    for (ds in snapshot.children) {
+                        val messageGroupData: MessageGroupData? =
+                            ds.getValue(MessageGroupData::class.java)
+                        if (messageGroupData != null) {
+                            newData.add(messageGroupData)
+                        }
+                    }
+
+                    messageGroupList.clear()
+                    messageGroupList.addAll(newData)
+
+
+                    if (messageGroupList.isNullOrEmpty()){//초기 실행시 messageGroupList가 비어있으면 생성
+                        mInitMessageGroupList()
+                    } else {
+
+                    }
+
+                    //정렬
+                    messageGroupList.sortBy {it.order}
+
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("messageGroup", error.message)
+                }
+
+
+            })
+
+        return messageGroupList
+    }
+
+    fun mInitMessageGroupList(){
+        //기본 그룹의 keyValue 각각 생성
+        val keyForReserv = database.child("users").child(uid).child("messageGroup").push().key
+        val keyForRetouch = database.child("users").child(uid).child("messageGroup").push().key
+        val keyForAfter = database.child("users").child(uid).child("messageGroup").push().key
+        val keyForEtc = database.child("users").child(uid).child("messageGroup").push().key
+
+        //현재시각
+        val now = System.currentTimeMillis()
+        val date = Date(now)
+        val sdfNow = SimpleDateFormat("yyyyMMddHHmmss")
+        val saveDate = sdfNow.format(date)
+
+        val reservGroup = MessageGroupData("예약안내","0",0,saveDate,keyForReserv.toString(),false)
+        val retouchGroup = MessageGroupData("리터치","0",1,saveDate,keyForRetouch.toString(),false)
+        val afterGroup = MessageGroupData("시술후","0",2,saveDate,keyForAfter.toString(),false)
+        val etcGroup = MessageGroupData("기타","0",3,saveDate,keyForEtc.toString(),false)
+
+
+        var groupMap = HashMap<String, MessageGroupData>()
+        groupMap.put(keyForReserv.toString(), reservGroup)
+        groupMap.put(keyForRetouch.toString(), retouchGroup)
+        groupMap.put(keyForAfter.toString(), afterGroup)
+        groupMap.put(keyForEtc.toString(), etcGroup)
+
+        database.child("users").child(uid).child("messageGroups").setValue(groupMap)
+            .addOnSuccessListener {
+                Log.d(TAG, "messageGroup : init success")
+
+            }.addOnFailureListener {
+                Log.d("errorOfCustomerSave", it.message.toString())
+            }
+
+    }
+
+
+
 
     //retrofit2
 
