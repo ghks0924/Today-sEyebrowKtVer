@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
-import com.example.today_seyebrowktver.BottomSheetFragmentCheckSave
+import com.example.today_seyebrowktver.BottomSheetFragmentCustomerUpdateCheck
 import com.example.today_seyebrowktver.data.CustomersData
 import com.example.today_seyebrowktver.databinding.ActivityEditCustomerBinding
 import com.google.firebase.database.DatabaseReference
@@ -71,7 +71,7 @@ class ActivityEditCustomer : ActivityBase() {
 
         binding.saveBtn.setOnClickListener {
             //수정된게 있는지 확인
-            if (isAnythingEditted()){ //수정된게 있으면
+            if (isAnythingRevised()){ //수정된게 있으면
                 //saveData
                 saveUpdatedCustomerData()
 
@@ -158,8 +158,8 @@ class ActivityEditCustomer : ActivityBase() {
 
     override fun onBackPressed() {
         //수정사항이 있는지 체크
-        if (isAnythingEditted()){ //수정사항이 있으면
-            val frag = BottomSheetFragmentCheckSave()
+        if (isAnythingRevised()){ //수정사항이 있으면
+            val frag = BottomSheetFragmentCustomerUpdateCheck()
             frag.show(supportFragmentManager, frag.tag)
         } else{ //수정사항이 없으면
             finish()
@@ -168,7 +168,7 @@ class ActivityEditCustomer : ActivityBase() {
     }
 
     //수정된 항목이 있는지
-    private fun isAnythingEditted() : Boolean{
+    private fun isAnythingRevised() : Boolean{
         if (isNameEditted && orgName != binding.customerNameEt.text.toString().trim()){
             return true
         }

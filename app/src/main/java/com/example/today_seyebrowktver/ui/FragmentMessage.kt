@@ -19,8 +19,14 @@ import com.example.today_seyebrowktver.viewmodel.FragmentMessageViewModel
 import com.example.today_seyebrowktver.viewmodel.ActivityMainViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.LinkedHashMap
 
 private val TAG = "FragmentMessages"
+
 class FragmentMessage : Fragment() {
 
     val REQUEST_CREATE_MESSAGE = 1111
@@ -29,10 +35,9 @@ class FragmentMessage : Fragment() {
 
 
     private lateinit var binding: FragmentMessageBinding
-//    private val binding get() = _binding!!
 
     //viewModel
-    private val fragmentMessageViewModel : FragmentMessageViewModel by lazy {
+    private val fragmentMessageViewModel: FragmentMessageViewModel by lazy {
         ViewModelProvider(this).get(FragmentMessageViewModel::class.java)
     }
 
@@ -44,7 +49,8 @@ class FragmentMessage : Fragment() {
     //messageGroup 서버에서 받아오는 변수들
     private var adapter2: RvMessageGroupAdapter? = null
     private var messageGroupList = ArrayList<MessageGroupData>()
-    private var mapByGroup: LinkedHashMap<String, MutableList<EachMessageData>>?= null
+    private var isGroupListExisted = false
+    private var mapByGroup: LinkedHashMap<String, MutableList<EachMessageData>>? = null
 
     //RecyclerView를 위한 변수들
     private var messageDataList = ArrayList<EachMessageData>()
@@ -54,11 +60,13 @@ class FragmentMessage : Fragment() {
     private lateinit var messagesByGroupName: LinkedHashMap<String, MutableList<MessageData>>
 
     private lateinit var mainViewModel: ActivityMainViewModel
-    private lateinit var selectedMessageType: String
+    private var selectedMessageType = ""
     private lateinit var tempType: String
     private lateinit var tempTitle: String
     private lateinit var tempContent: String
     private lateinit var tempDate: String
+
+
 
 
     override fun onCreateView(
@@ -76,73 +84,138 @@ class FragmentMessage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setGroupData()
-        setMessagData()
+        setMessageData()
         setLayout()
     }
 
+    //messageGroup 데이터가 있는지 없는지 체크
+    fun checkMessageGroupAtFirst() {
+        database.child("users").child(uid).child("messageGroups")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        Log.d(TAG, "messageGroup data does not exist")
+                        mInitMessageGroupList()
+                    } else {
+                        Log.d(TAG, "messageGroup data exist!")
+                        isGroupListExisted = true
+                        setGroupData()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+            })
+    }
+
+    //초기 default messageGroup 생성
+    fun mInitMessageGroupList() : Boolean{
+        //기본 그룹의 keyValue 각각 생성
+        val keyForReserv = database.child("users").child(uid).child("messageGroup").push().key
+        val keyForRetouch = database.child("users").child(uid).child("messageGroup").push().key
+        val keyForAfter = database.child("users").child(uid).child("messageGroup").push().key
+        val keyForEtc = database.child("users").child(uid).child("messageGroup").push().key
+
+        //현재시각
+        val now = System.currentTimeMillis()
+        val date = Date(now)
+        val sdfNow = SimpleDateFormat("yyyyMMddHHmmss")
+        val saveDate = sdfNow.format(date)
+
+        val reservGroup = MessageGroupData("예약안내","0",0,saveDate,keyForReserv.toString(),false)
+        val retouchGroup = MessageGroupData("리터치","0",1,saveDate,keyForRetouch.toString(),false)
+        val afterGroup = MessageGroupData("시술후","0",2,saveDate,keyForAfter.toString(),false)
+        val etcGroup = MessageGroupData("기타","0",3,saveDate,keyForEtc.toString(),false)
+
+
+        var groupMap = HashMap<String, MessageGroupData>()
+        groupMap.put(keyForReserv.toString(), reservGroup)
+        groupMap.put(keyForRetouch.toString(), retouchGroup)
+        groupMap.put(keyForAfter.toString(), afterGroup)
+        groupMap.put(keyForEtc.toString(), etcGroup)
+
+        database.child("users").child(uid).child("messageGroups").setValue(groupMap)
+
+            .addOnSuccessListener {
+                Log.d(TAG, "messageGroup : init success")
+
+                getGroupList()
+
+            }.addOnFailureListener {
+                Log.d("errorOfCustomerSave", it.message.toString())
+            }
+
+        return isGroupListExisted
+    }
+
     private fun setGroupData() {
-        messageGroupList = fragmentMessageViewModel.groupList
-        Log.d(TAG, messageGroupList.toString())
-        setMessagData()
-//        //그룹 받아오기
-//        database.child("users").child(uid).child("messageGroups")
-//            .addValueEventListener(object : ValueEventListener {
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    val newData: ArrayList<MessageGroupData> = ArrayList()
-//                    for (ds in snapshot.children) {
-//                        val messageGroupData: MessageGroupData? =
-//                            ds.getValue(MessageGroupData::class.java)
-//                        if (messageGroupData != null) {
-//                            newData.add(messageGroupData)
-//                        }
-//                    }
-//
-//                    messageGroupList.clear()
-//                    messageGroupList.addAll(newData)
-//                    Log.d(TAG, messageGroupList.toString())
-//                    messageGroupList.sortBy {it.order}
-//
-//                    if (!messageGroupList.isNullOrEmpty()){
-//                        //메세지 데이터 받아오기
-//                        setMessagData()
-//                    } else {
-//
-//                    }
-//
-//
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                    Log.e("messageGroup", error.message)
-//                }
-//
-//
-//            })
-//
+        Log.d(TAG, "setGroupData Called")
+        //messageGroup data가 서버에 있는지 체크한 후 없으면 기본 생성 아니면 groupList 받아오기
+
+        getGroupList()
 
     }
 
-    private fun setMessagData() {
+    private fun getGroupList(){
+        //그룹 받아오기
+        database.child("users").child(uid).child("messageGroups")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val newData: ArrayList<MessageGroupData> = ArrayList()
+                    for (ds in snapshot.children) {
+                        val messageGroupData: MessageGroupData? =
+                            ds.getValue(MessageGroupData::class.java)
+                        if (messageGroupData != null) {
+                            newData.add(messageGroupData)
+                        }
+                    }
+
+                    messageGroupList.clear()
+                    messageGroupList.addAll(newData)
+
+                    messageGroupList.sortBy { it.order }
+
+                    selectedMessageType = messageGroupList[0].groupName
+                    Log.d(TAG, selectedMessageType+"?")
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("messageGroup", error.message)
+                }
+
+
+            })
+    }
+
+    private fun setMessageData() {
+        Log.d(TAG, "setMessageData Called")
+//        messageDataList.clear()
+//        messageDataList = fragmentMessageViewModel.messagesList
+//        Log.d(TAG, "messages" + fragmentMessageViewModel.getGroupList().toString())
+
+        //그룹 받아오기
         database.child("users").child(uid).child("messages")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val newData: ArrayList<EachMessageData> = ArrayList()
                     for (ds in snapshot.children) {
-                        val EachMessageData: EachMessageData? = ds.getValue(EachMessageData::class.java)
-                        if (EachMessageData != null) {
-                            newData.add(EachMessageData)
+                        val messageData: EachMessageData? =
+                            ds.getValue(EachMessageData::class.java)
+                        if (messageData != null) {
+                            newData.add(messageData)
                         }
                     }
+
                     messageDataList.clear()
                     messageDataList.addAll(newData)
 
-//                    binding.messageGroupTv.text =
-//                        messageGroupList[0].groupName
-//
-//                    //최초 초가화일때는 자동으로 제일 첫 번째 그릅 선택
-                    selectedMessageType = "1"
+                    //정렬
+                    messageDataList.sortBy {it.messageDate}
 
                     setRv()
+
 
                 }
 
@@ -153,24 +226,23 @@ class FragmentMessage : Fragment() {
 
             })
 
-
     }
 
 
     private fun setRv() {
+        Log.d(TAG, "setRv() Called")
         messageDisplayData.clear()
-        for (i in 0 until messageDataList.size){
-            if (messageDataList[i].messageType == selectedMessageType){
+        for (i in 0 until messageDataList.size) {
+            if (messageDataList[i].messageType == selectedMessageType) {
                 messageDisplayData.add(messageDataList[i])
             }
         }
-
         adapter = RvMessageAdapter(messageDisplayData) //adapter 생성
 
         //itemClick event
         adapter!!.itemClick = object : RvMessageAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-                val intent = Intent(context, ActivityUpdateMessage::class.java)
+                val intent = Intent(context, ActivityEachMessage::class.java)
                 intent.putExtra("title", messageDisplayData[position].messageTitle)
                 intent.putExtra("content", messageDisplayData[position].messageContent)
                 intent.putExtra("date", messageDisplayData[position].messageDate)
@@ -206,19 +278,24 @@ class FragmentMessage : Fragment() {
             }
         }
 
-        binding.messagesRv.layoutManager = GridLayoutManager(context,2)
+        binding.messagesRv.layoutManager = GridLayoutManager(context, 2)
         binding.messagesRv.adapter = adapter
+
     }
 
     private fun setLayout() {
         //fab click event
+        mSetPopMenu()
+
+        //더보기 event
+        binding.moreIcon.setOnClickListener {
+            ShowAlertDialogWithListview()
+        }
+    }
+
+    fun mSetPopMenu() {
         binding.fab.setOnClickListener(View.OnClickListener {
-//            val intent = Intent(context, ActivityCreateMessage::class.java)
-//            intent.putExtra("type", "new")
-//
-//            startActivityForResult(intent, REQUEST_CREATE_MESSAGE)
-
-
+            //group 선택 popmenu setting
             val popupMenu = PopupMenu(context, binding.fab, Gravity.BOTTOM)
             val menu = popupMenu.menu
             for (i in 0 until messageGroupList.size) {
@@ -236,75 +313,6 @@ class FragmentMessage : Fragment() {
             popupMenu.show()
 
         })
-
-
-//        send click event
-//        binding.filterCardview.setOnClickListener(View.OnClickListener {
-//            val intent = Intent("android.intent.action.MAIN")
-//            intent.addCategory("android.intent.category.DEFAULT")
-//            intent.type = "vnd.android-dir/mms-sms"
-//            startActivity(intent)
-//        })
-//
-//        binding.eventFixedLayout.setOnClickListener {
-//            if (binding.eventHidenView.visibility == View.VISIBLE) {
-////                TransitionManager.beginDelayedTransition(binding.cardview,
-////                    AutoTransition())
-//                binding.eventHidenView.visibility = View.GONE
-//                binding.eventHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-//            } else {
-////                TransitionManager.beginDelayedTransition(binding.cardview,
-////                    AutoTransition())
-//                binding.eventHidenView.visibility = View.VISIBLE
-//                binding.eventHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
-//            }
-//        }
-//
-//        binding.afterFixedLayout.setOnClickListener {
-//            if (binding.afterHidenView.visibility == View.VISIBLE) {
-////                TransitionManager.beginDelayedTransition(binding.cardview,
-////                    AutoTransition())
-//                binding.afterHidenView.visibility = View.GONE
-//                binding.afterHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-//            } else {
-////                TransitionManager.beginDelayedTransition(binding.cardview,
-////                    AutoTransition())
-//                binding.afterHidenView.visibility = View.VISIBLE
-//                binding.afterHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
-//            }
-//        }
-//
-//        binding.retouchFixedLayout.setOnClickListener {
-//            if (binding.retouchHidenView.visibility == View.VISIBLE) {
-////                TransitionManager.beginDelayedTransition(binding.cardview,
-////                    AutoTransition())
-//                binding.retouchHidenView.visibility = View.GONE
-//                binding.retouchHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-//            } else {
-////                TransitionManager.beginDelayedTransition(binding.cardview,
-////                    AutoTransition())
-//                binding.retouchHidenView.visibility = View.VISIBLE
-//                binding.retouchHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
-//            }
-//        }
-//
-//        binding.extraFixedLayout.setOnClickListener {
-//            if (binding.extraHidenView.visibility == View.VISIBLE) {
-////                TransitionManager.beginDelayedTransition(binding.cardview,
-////                    AutoTransition())
-//                binding.extraHidenView.visibility = View.GONE
-//                binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_more_black_36)
-//            } else {
-////                TransitionManager.beginDelayedTransition(binding.cardview,
-////                    AutoTransition())
-//                binding.extraHidenView.visibility = View.VISIBLE
-//                binding.extraHistoryExpandIv.setImageResource(com.example.today_seyebrowktver.R.drawable.outline_expand_less_black_36)
-//            }
-//        }
-//
-        binding.moreIcon.setOnClickListener {
-            ShowAlertDialogWithListview()
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -345,7 +353,7 @@ class FragmentMessage : Fragment() {
         dialogBuilder.setItems(Animals) { dialog, item ->
             val selectedText = Animals[item].toString() //Selected item in listview
             if (selectedText.contains("그룹")) {
-                Log.d("messageGroup", "추가 버튼")
+                Log.d("messageGroup", "수정 버튼")
 
                 val intent = Intent(context, ActivityEditMessageGroup::class.java)
                 startActivity(intent)
@@ -353,7 +361,7 @@ class FragmentMessage : Fragment() {
             } else {
                 val intent = Intent(context, ActivityCreateMessage::class.java)
                 startActivity(intent)
-                Log.d("messageGroup", "순서 수정 버튼")
+                Log.d("messageGroup", "추가  버튼")
             }
         }
         //Create alert dialog object via builder
@@ -363,8 +371,10 @@ class FragmentMessage : Fragment() {
     }
 
 
+
+
     companion object {
-        fun newInstance(): FragmentMessage{
+        fun newInstance(): FragmentMessage {
             return FragmentMessage()
         }
     }

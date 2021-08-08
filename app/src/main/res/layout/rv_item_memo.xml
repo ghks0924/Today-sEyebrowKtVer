@@ -72,7 +72,7 @@
             android:includeFontPadding="false"
             tools:text="메모내용"
             android:textColor="@color/mainGrey"
-            android:maxLines="4"
+            android:maxLines="3"
             android:ellipsize="end"/>
 
 

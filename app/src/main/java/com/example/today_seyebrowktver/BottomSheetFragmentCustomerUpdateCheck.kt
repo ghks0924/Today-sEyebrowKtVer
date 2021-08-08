@@ -9,7 +9,7 @@ import com.example.today_seyebrowktver.ui.ActivityEditCustomer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class BottomSheetFragmentCheckSave : BottomSheetDialogFragment() {
+class BottomSheetFragmentCustomerUpdateCheck : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

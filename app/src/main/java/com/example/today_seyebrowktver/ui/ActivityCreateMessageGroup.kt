@@ -10,6 +10,7 @@ import com.google.firebase.database.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+private const val TAG = "CreateMessageGroup"
 class ActivityCreateMessageGroup : ActivityBase() {
 
     //viewBinding
@@ -36,6 +37,7 @@ class ActivityCreateMessageGroup : ActivityBase() {
         val user = mAuth.currentUser
         uid = user!!.uid
 
+        //현재 문자 유형개수 세기
         checkMessageGroupsNum()
 
 
@@ -60,13 +62,9 @@ class ActivityCreateMessageGroup : ActivityBase() {
     }
 
     private fun mCreateMessageGroup() {
-        // 현재시간을 msec 으로 구한다.
         val now = System.currentTimeMillis()
-        // 현재시간을 date 변수에 저장한다.
         val date = Date(now)
-        // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
         val sdfNow = SimpleDateFormat("yyyyMMddHHmmss")
-        // nowDate 변수에 값을 저장한다.
         val formatDate = sdfNow.format(date) //시간
 
         val key = database.child("users").child(uid).child("messageGroups").push().key
@@ -87,12 +85,13 @@ class ActivityCreateMessageGroup : ActivityBase() {
             }
     }
 
+    //현재 저장되어있는 문자 그룹의 개수를 센다.
     private fun checkMessageGroupsNum() {
         database.child("users").child(uid).child("messageGroups").orderByChild("order")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     numOfGroups = snapshot.childrenCount.toInt()
-                    Log.d("checkMessagesNumber", snapshot.childrenCount.toString())
+                    Log.d(TAG, snapshot.childrenCount.toString()+"?")
 
                 }
 

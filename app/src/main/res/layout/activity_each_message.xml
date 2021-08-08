@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ActivityEachMessage">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
+            android:fitsSystemWindows="true"
+            app:srcCompat="@drawable/ic_chevron_left"
+            app:tint="@color/black"/>
+
+        <ImageView
+            android:id="@+id/edit_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="@dimen/_15dp"
+            android:adjustViewBounds="true"
+            android:fitsSystemWindows="true"
+            android:padding="@dimen/_6dp"
+            app:srcCompat="@drawable/outline_edit_black_24"
+            app:tint="@color/black"/>
+
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1dp"
+            android:background="@color/mainGreyForLine"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/header_relative_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/send_message_button">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/message_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_10dp"
+
+                android:fontFamily="@font/notosanscjkkrblack"
+                android:includeFontPadding="false"
+                tools:text="문자 제목"
+                android:textColor="@color/mainBlack"
+                android:textSize="@dimen/_20sp" />
+
+
+
+            <TextView
+                android:id="@+id/message_content_tv"
+                android:background="@drawable/edittext_frame_grey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/message_title_tv"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="5dp"
+
+                android:fontFamily="@font/notosanscjkkrmedium"
+                android:includeFontPadding="false"
+                android:text="문자 내용"
+                android:textColor="@color/mainGrey"
+                android:textSize="15sp"
+                android:padding="5dp"/>
+
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/send_message_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:text="보내기"
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:includeFontPadding="false"
+        android:textSize="15sp"
+        android:layout_marginLeft="@dimen/_20dp"
+        android:layout_marginRight="@dimen/_20dp"
+        android:layout_marginBottom="@dimen/_10dp"
+        android:backgroundTint="@color/mainBlue"/>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>

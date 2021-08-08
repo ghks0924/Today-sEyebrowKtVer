@@ -30,15 +30,16 @@
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            tools:text="메모 제목"
-            android:textColor="@color/mainBlue"/>
+            tools:text="문자 제목"
+            android:textColor="@color/mainBlue"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
 
         <TextView
             android:id="@+id/message_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
             android:maxLines="3"
             android:ellipsize="end"
 
@@ -48,8 +49,9 @@
 
             android:fontFamily="@font/notosanscjkkrregular"
             android:includeFontPadding="false"
-            tools:text="메모내용"
-            android:textColor="@color/mainBlue"/>
+            tools:text="문자내용"
+            android:textColor="@color/mainBlue"
+            />
 
 
 

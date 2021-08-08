@@ -1,10 +1,13 @@
 package com.example.today_seyebrowktver.ui
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.today_seyebrowktver.DialogCreateMessageGroup
 import com.example.today_seyebrowktver.MessageGroupData
@@ -28,6 +31,19 @@ class ActivitySelectMessageGroup : ActivityBase() {
     private var messageGroupList = ArrayList<MessageGroupData>()
 
     private var numOfGroups : Int = 0
+
+    //onActivityResult 대체
+    val activityForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            val type = intent?.getStringExtra("type")
+
+            if (type == "new"){
+
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

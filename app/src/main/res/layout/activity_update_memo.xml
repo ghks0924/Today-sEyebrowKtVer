@@ -67,6 +67,14 @@
             app:srcCompat="@drawable/outline_share_black_24"
             app:tint="@color/black"/>
 
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/mainGreyForLine"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText

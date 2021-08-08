@@ -6,7 +6,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.example.today_seyebrowktver.data.CustomersData
+import com.example.today_seyebrowktver.data.EachMessageData
 import com.example.today_seyebrowktver.data.MemoData
+import com.example.today_seyebrowktver.data.MessageData
 import com.example.today_seyebrowktver.room.MemoDatabase
 import com.example.today_seyebrowktver.ui.ActivityCreateEventNewCus
 import com.google.firebase.auth.FirebaseAuth
@@ -35,7 +37,6 @@ class TotalRepository private constructor(context: Context) {
         database.child("users").child(uid).child("customers")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-
                     for (ds in dataSnapshot.children) {
                         val customersData: CustomersData? = ds.getValue(CustomersData::class.java)
                         if (customersData != null) {
@@ -68,48 +69,28 @@ class TotalRepository private constructor(context: Context) {
         return customersList
     }
 
-    //Message Functions
-    fun getMessageGroupList() : ArrayList<MessageGroupData>{
-        val messageGroupList: ArrayList<MessageGroupData> = ArrayList()
-        //그룹 받아오기
+    //================================================== 2. Message Functions=======================================
+
+    //messageGroup 데이터가 있는지 없는지 체크
+    fun checkMessageGroupAtFirst() {
         database.child("users").child(uid).child("messageGroups")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val newData: ArrayList<MessageGroupData> = ArrayList()
-                    for (ds in snapshot.children) {
-                        val messageGroupData: MessageGroupData? =
-                            ds.getValue(MessageGroupData::class.java)
-                        if (messageGroupData != null) {
-                            newData.add(messageGroupData)
-                        }
-                    }
-
-                    messageGroupList.clear()
-                    messageGroupList.addAll(newData)
-
-
-                    if (messageGroupList.isNullOrEmpty()){//초기 실행시 messageGroupList가 비어있으면 생성
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        Log.d(TAG, "messageGroup data does not exist")
                         mInitMessageGroupList()
                     } else {
-
+                        Log.d(TAG, "messageGroup data exist!")
                     }
-
-                    //정렬
-                    messageGroupList.sortBy {it.order}
-
-
                 }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e("messageGroup", error.message)
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
                 }
-
-
             })
-
-        return messageGroupList
     }
 
+    //초기 default messageGroup 생성
     fun mInitMessageGroupList(){
         //기본 그룹의 keyValue 각각 생성
         val keyForReserv = database.child("users").child(uid).child("messageGroup").push().key
@@ -136,6 +117,7 @@ class TotalRepository private constructor(context: Context) {
         groupMap.put(keyForEtc.toString(), etcGroup)
 
         database.child("users").child(uid).child("messageGroups").setValue(groupMap)
+
             .addOnSuccessListener {
                 Log.d(TAG, "messageGroup : init success")
 
@@ -144,6 +126,91 @@ class TotalRepository private constructor(context: Context) {
             }
 
     }
+
+    //messageGroupList 받아오기
+    fun getMessageGroupList() : ArrayList<MessageGroupData>{
+        Log.d(TAG, "getMessageGroups working")
+        val messageGroupList: ArrayList<MessageGroupData> = ArrayList()
+        //그룹 받아오기
+        database.child("users").child(uid).child("messageGroups")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val newData: ArrayList<MessageGroupData> = ArrayList()
+                    for (ds in snapshot.children) {
+                        val messageGroupData: MessageGroupData? =
+                            ds.getValue(MessageGroupData::class.java)
+                        if (messageGroupData != null) {
+                            newData.add(messageGroupData)
+                        }
+                    }
+
+                    messageGroupList.clear()
+                    messageGroupList.addAll(newData)
+                    Log.d(TAG,messageGroupList.toString())
+
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("messageGroup", error.message)
+                }
+
+
+            })
+
+        return messageGroupList
+    }
+
+    //messageList 받아오기
+    fun getMessagesList() : ArrayList<EachMessageData>{
+        Log.d(TAG, "getMessages working")
+        val messagesList: ArrayList<EachMessageData> = ArrayList()
+        //그룹 받아오기
+        database.child("users").child(uid).child("messages")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val newData: ArrayList<EachMessageData> = ArrayList()
+                    for (ds in snapshot.children) {
+                        val messageData: EachMessageData? =
+                            ds.getValue(EachMessageData::class.java)
+                        if (messageData != null) {
+                            newData.add(messageData)
+                        }
+                    }
+
+                    messagesList.clear()
+                    messagesList.addAll(newData)
+                    Log.d(TAG, messagesList.toString())
+
+                    //정렬
+                    messagesList.sortBy {it.messageDate}
+
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("messageGroup", error.message)
+                }
+
+
+            })
+
+        return messagesList
+    }
+
+    //message delete
+    fun deleteMessage(keyValue:String){
+        database.child("users").child(uid).child("messages")
+            .child(keyValue).removeValue()
+            .addOnSuccessListener {
+                Log.d("removeValue", "삭제 성공")
+            }.addOnCanceledListener {
+                Log.d("removeValue", "삭제 실패")
+            }
+    }
+
+
+
 
 
 
@@ -156,7 +223,7 @@ class TotalRepository private constructor(context: Context) {
     //Background Thread executor
     private val executor = Executors.newSingleThreadExecutor()
 
-    //memo RoomDB
+    //======================================== 1. memo RoomDB =======================
     private val memoDB: MemoDatabase = Room.databaseBuilder(
         context.applicationContext,
         MemoDatabase::class.java,

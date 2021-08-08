@@ -59,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@id/header_relative_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@+id/save_message_button">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -169,7 +169,6 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/message_title_display_tv"
-                app:layout_constraintBottom_toTopOf="@+id/save_message_button"
 
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
@@ -186,27 +185,30 @@
                 android:hint="문자 내용을 입력하세요"
                 android:inputType="textMultiLine"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/save_message_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                android:text="저장"
-                android:fontFamily="@font/notosanscjkkrmedium"
-                android:includeFontPadding="false"
-                android:textSize="15sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:backgroundTint="@color/mainBlue"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/save_message_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:text="저장"
+        android:fontFamily="@font/notosanscjkkrmedium"
+        android:includeFontPadding="false"
+        android:textSize="15sp"
+        android:layout_marginStart="@dimen/_20dp"
+        android:layout_marginEnd="@dimen/_20dp"
+        android:layout_marginBottom="@dimen/_10dp"
+        android:backgroundTint="@color/mainBlue"/>
 
 
 
