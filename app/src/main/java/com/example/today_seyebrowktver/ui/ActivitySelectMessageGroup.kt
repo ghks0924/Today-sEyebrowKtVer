@@ -117,6 +117,7 @@ class ActivitySelectMessageGroup : ActivityBase() {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent()
                 intent.putExtra("type", messageGroupList[position].groupName)
+                intent.putExtra("keyValue",  messageGroupList[position].keyValue)
                 setResult(RESULT_OK, intent)
                 finish()
                 overridePendingTransition(R.anim.fadein, R.anim.fadeout)

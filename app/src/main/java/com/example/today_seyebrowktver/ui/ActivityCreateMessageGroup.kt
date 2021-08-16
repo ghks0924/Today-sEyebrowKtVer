@@ -61,6 +61,7 @@ class ActivityCreateMessageGroup : ActivityBase() {
 
     }
 
+
     private fun mCreateMessageGroup() {
         val now = System.currentTimeMillis()
         val date = Date(now)
@@ -77,6 +78,7 @@ class ActivityCreateMessageGroup : ActivityBase() {
 
                 val intent = Intent()
                 intent.putExtra("newGroupName", newGroupName)
+                intent.putExtra("newGroupKey", key.toString())
                 setResult(RESULT_OK, intent)
                 finish()
 

@@ -61,13 +61,11 @@ class FragmentMessage : Fragment() {
 
     private lateinit var mainViewModel: ActivityMainViewModel
     private var selectedMessageType = ""
+    private var selectedMessageGroupKeyValue = ""
     private lateinit var tempType: String
     private lateinit var tempTitle: String
     private lateinit var tempContent: String
     private lateinit var tempDate: String
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -109,7 +107,7 @@ class FragmentMessage : Fragment() {
             })
     }
 
-    //초기 default messageGroup 생성
+    //앱 초기 실행시 default messageGroup 생성
     fun mInitMessageGroupList() : Boolean{
         //기본 그룹의 keyValue 각각 생성
         val keyForReserv = database.child("users").child(uid).child("messageGroup").push().key
@@ -152,7 +150,6 @@ class FragmentMessage : Fragment() {
     private fun setGroupData() {
         Log.d(TAG, "setGroupData Called")
         //messageGroup data가 서버에 있는지 체크한 후 없으면 기본 생성 아니면 groupList 받아오기
-
         getGroupList()
 
     }
@@ -177,6 +174,7 @@ class FragmentMessage : Fragment() {
                     messageGroupList.sortBy { it.order }
 
                     selectedMessageType = messageGroupList[0].groupName
+                    selectedMessageGroupKeyValue = messageGroupList[0].keyValue
                     Log.d(TAG, selectedMessageType+"?")
 
                 }
@@ -184,8 +182,6 @@ class FragmentMessage : Fragment() {
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("messageGroup", error.message)
                 }
-
-
             })
     }
 
@@ -260,9 +256,12 @@ class FragmentMessage : Fragment() {
         adapter!!.itemLongClick = object : RvMessageAdapter.ItemLongClick {
             override fun onLongClick(view: View, position: Int) {
 
+                val selectedMessage = messageDisplayData[position]
+
                 val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
                 ab.setMessage("해당 문자를 삭제 하시겠습니까?")
                 ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                    //message 삭제
                     database.child("users").child(uid).child("messages")
                         .child(messageDisplayData[position].keyValue).removeValue()
                         .addOnSuccessListener {
@@ -270,6 +269,25 @@ class FragmentMessage : Fragment() {
                         }.addOnCanceledListener {
                             Log.d("removeValue", "삭제 실패")
                         }
+
+
+                    //그룹 key Value값 구하기
+                    database.child("users").child(uid).child("messageGroups")
+                        .orderByChild("order")
+                        .equalTo(selectedMessage.messageType).get()
+                        .addOnSuccessListener {
+                        val groupKeyValue:String = it.child("keyValue").toString()
+                            Log.d(TAG, groupKeyValue)
+                            //그룹별 메세지 숫자 업데이트 하기
+                            database.child("users").child(uid).child("messageGroups").child(selectedMessageGroupKeyValue)
+                                .child("numberOfMessages")
+                                .setValue(messageDisplayData.size.toString()).addOnSuccessListener {//메세지가 삭제된 다음에 해당 메서드가 돌기 때문에 current수로 해도 됨
+                                    Log.d("updateMessagesNumber", "success")
+                                }.addOnFailureListener {
+                                    Log.d("updateMessagesNumber", "fail")
+                                }
+                    }
+
 
                 })
                 ab.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which -> })
@@ -293,6 +311,7 @@ class FragmentMessage : Fragment() {
         }
     }
 
+    //fab 클릭시 뜨는 메뉴
     fun mSetPopMenu() {
         binding.fab.setOnClickListener(View.OnClickListener {
             //group 선택 popmenu setting
@@ -303,6 +322,7 @@ class FragmentMessage : Fragment() {
             }
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 selectedMessageType = it.toString().trim()
+                selectedMessageGroupKeyValue = messageGroupList[it.itemId].keyValue //그룹별 메시지수 업데이트를 위해서
 
                 setRv()
                 binding.messageGroupTv.text =
