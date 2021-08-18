@@ -41,6 +41,8 @@ class ActivityUpdateMessage : ActivityBase() {
     private lateinit var newMsgType: String
     private lateinit var newMsgTitle: String
     private lateinit var newMsgContent: String
+
+
     private var wasRevised = false
 
     //onActivityResult 대체
@@ -194,6 +196,7 @@ class ActivityUpdateMessage : ActivityBase() {
     //변경된 내용이 실제로 있늕지 체크
     private fun isAnythingRevised(): Boolean {
         if (prevMessageType != binding.selectedTypeTv.text) {
+            selectedGroupKey =
             return true
         }
         if (prevMessageTitle != binding.messageTitleEt.text.toString()) {
@@ -231,7 +234,6 @@ class ActivityUpdateMessage : ActivityBase() {
                 }
 
             val intent = intent
-
             intent.putExtra("edittedType", newMsgType)
             intent.putExtra("edittedTitle", newMsgTitle)
             intent.putExtra("edittedContent", newMsgContent)

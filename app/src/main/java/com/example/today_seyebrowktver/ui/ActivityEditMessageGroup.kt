@@ -17,6 +17,7 @@ import com.google.firebase.database.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+private const val TAG = "EDIT_MESSAGE_GROUP"
 class ActivityEditMessageGroup : ActivityBase() {
 
     //viewBinding
@@ -28,6 +29,7 @@ class ActivityEditMessageGroup : ActivityBase() {
     //for recycelrView
     private var adapter: RvMessageGroupEditAdapter? = null
     private var messageGroupList = ArrayList<MessageGroupData>()
+    private var deletedGroupList = ArrayList<String>()
 
     //drag & drop
     private var callback : RvItemMoveCallback?= null
@@ -77,17 +79,44 @@ class ActivityEditMessageGroup : ActivityBase() {
 //                    }
 
                 } else { //삭제 되는애
+                    //삭제되는 그룹의 이름들만 모음
+                    deletedGroupList.clear()
+                    deletedGroupList.add(messageGroupList[i].groupName)
+
+                    //해당 그룹 삭제
                     database.child("users").child(uid).child("messageGroups").child(messageGroupList[i].keyValue).removeValue()
                         .addOnSuccessListener {
                             Log.d("removeValue", "삭제 성공")
                         }.addOnCanceledListener {
                             Log.d("removeValue", "삭제 실패")
                         }
+
+                    //해당 그룹에 있는 메세지 삭제
+                    database.child("users").child(uid).child("messages").orderByChild("messageType").equalTo(messageGroupList[i].groupName)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                if (dataSnapshot.exists()) {
+
+                                } else {
+                                    mShowShortToast("이미 등록된 번호입니다")
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                Log.d(TAG,databaseError.message)
+
+                            }
+                        })
+
                 }
             }
 
             finish()
         }
+
+    }
+
+    private fun mDeleteMessages(){
 
     }
 
@@ -148,7 +177,8 @@ class ActivityEditMessageGroup : ActivityBase() {
                 if (!isFinishing) {
                     val ab: android.app.AlertDialog.Builder =
                         android.app.AlertDialog.Builder(this@ActivityEditMessageGroup)
-                    ab.setMessage(messageGroupList[position].groupName + " 그룹을 삭제 하시겠습니까?")
+                    ab.setTitle(messageGroupList[position].groupName + " 문자 그룹 삭제")
+                    ab.setMessage("위 그룹에 포함된 모든 메세지가 함께 삭제됩니다")
                     ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
 
                         // "예" 버튼 클릭시

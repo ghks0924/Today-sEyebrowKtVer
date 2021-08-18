@@ -1,5 +1,6 @@
 package com.example.today_seyebrowktver.ui
 
+import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -8,6 +9,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -30,7 +33,7 @@ private val TAG = "FragmentMessages"
 class FragmentMessage : Fragment() {
 
     val REQUEST_CREATE_MESSAGE = 1111
-    val REQUEST_UPDATE_MEMO = 3333
+    val REQUEST_UPDATE_MESSAGE = 3333
     val REQUEST_SEND_MESSAGE = 2222
 
 
@@ -66,6 +69,14 @@ class FragmentMessage : Fragment() {
     private lateinit var tempTitle: String
     private lateinit var tempContent: String
     private lateinit var tempDate: String
+
+    //setRv를 돌려줘야 selectedType이랑 실제 보여주는 messagelist랑 차이가 없음
+    val activityForCreateMessageResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,7 +119,7 @@ class FragmentMessage : Fragment() {
     }
 
     //앱 초기 실행시 default messageGroup 생성
-    fun mInitMessageGroupList() : Boolean{
+    fun mInitMessageGroupList(): Boolean {
         //기본 그룹의 keyValue 각각 생성
         val keyForReserv = database.child("users").child(uid).child("messageGroup").push().key
         val keyForRetouch = database.child("users").child(uid).child("messageGroup").push().key
@@ -121,10 +132,11 @@ class FragmentMessage : Fragment() {
         val sdfNow = SimpleDateFormat("yyyyMMddHHmmss")
         val saveDate = sdfNow.format(date)
 
-        val reservGroup = MessageGroupData("예약안내","0",0,saveDate,keyForReserv.toString(),false)
-        val retouchGroup = MessageGroupData("리터치","0",1,saveDate,keyForRetouch.toString(),false)
-        val afterGroup = MessageGroupData("시술후","0",2,saveDate,keyForAfter.toString(),false)
-        val etcGroup = MessageGroupData("기타","0",3,saveDate,keyForEtc.toString(),false)
+        val reservGroup = MessageGroupData("예약안내", "0", 0, saveDate, keyForReserv.toString(), false)
+        val retouchGroup =
+            MessageGroupData("리터치", "0", 1, saveDate, keyForRetouch.toString(), false)
+        val afterGroup = MessageGroupData("시술후", "0", 2, saveDate, keyForAfter.toString(), false)
+        val etcGroup = MessageGroupData("기타", "0", 3, saveDate, keyForEtc.toString(), false)
 
 
         var groupMap = HashMap<String, MessageGroupData>()
@@ -154,8 +166,9 @@ class FragmentMessage : Fragment() {
 
     }
 
-    private fun getGroupList(){
-        //그룹 받아오기
+    //그룹 받아오기
+    private fun getGroupList() {
+
         database.child("users").child(uid).child("messageGroups")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -175,7 +188,6 @@ class FragmentMessage : Fragment() {
 
                     selectedMessageType = messageGroupList[0].groupName
                     selectedMessageGroupKeyValue = messageGroupList[0].keyValue
-                    Log.d(TAG, selectedMessageType+"?")
 
                 }
 
@@ -191,7 +203,7 @@ class FragmentMessage : Fragment() {
 //        messageDataList = fragmentMessageViewModel.messagesList
 //        Log.d(TAG, "messages" + fragmentMessageViewModel.getGroupList().toString())
 
-        //그룹 받아오기
+        //메세지 받아오기
         database.child("users").child(uid).child("messages")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -208,7 +220,7 @@ class FragmentMessage : Fragment() {
                     messageDataList.addAll(newData)
 
                     //정렬
-                    messageDataList.sortBy {it.messageDate}
+                    messageDataList.sortBy { it.messageDate }
 
                     setRv()
 
@@ -227,9 +239,10 @@ class FragmentMessage : Fragment() {
 
     private fun setRv() {
         Log.d(TAG, "setRv() Called")
+        //그룹별로 보여주기 위해 보여줄 메세지만 담는 list가 필요
         messageDisplayData.clear()
         for (i in 0 until messageDataList.size) {
-            if (messageDataList[i].messageType == selectedMessageType) {
+            if (messageDataList[i].messageType == selectedMessageType) { //선택된 그룹의 메세지만 담아서 보여주기
                 messageDisplayData.add(messageDataList[i])
             }
         }
@@ -245,7 +258,7 @@ class FragmentMessage : Fragment() {
                 intent.putExtra("type", messageDisplayData[position].messageType)
                 intent.putExtra("key", messageDisplayData[position].keyValue)
 
-                startActivityForResult(intent, REQUEST_UPDATE_MEMO)
+                startActivityForResult(intent, REQUEST_UPDATE_MESSAGE)
                 Log.d("messageClick", "dd")
 
             }
@@ -255,8 +268,6 @@ class FragmentMessage : Fragment() {
         //itemLongClick event
         adapter!!.itemLongClick = object : RvMessageAdapter.ItemLongClick {
             override fun onLongClick(view: View, position: Int) {
-
-                val selectedMessage = messageDisplayData[position]
 
                 val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
                 ab.setMessage("해당 문자를 삭제 하시겠습니까?")
@@ -271,22 +282,17 @@ class FragmentMessage : Fragment() {
                         }
 
 
-                    //그룹 key Value값 구하기
+                    //삭제시 그룹별 메세지 숫자 업데이트 하기
                     database.child("users").child(uid).child("messageGroups")
-                        .orderByChild("order")
-                        .equalTo(selectedMessage.messageType).get()
-                        .addOnSuccessListener {
-                        val groupKeyValue:String = it.child("keyValue").toString()
-                            Log.d(TAG, groupKeyValue)
-                            //그룹별 메세지 숫자 업데이트 하기
-                            database.child("users").child(uid).child("messageGroups").child(selectedMessageGroupKeyValue)
-                                .child("numberOfMessages")
-                                .setValue(messageDisplayData.size.toString()).addOnSuccessListener {//메세지가 삭제된 다음에 해당 메서드가 돌기 때문에 current수로 해도 됨
-                                    Log.d("updateMessagesNumber", "success")
-                                }.addOnFailureListener {
-                                    Log.d("updateMessagesNumber", "fail")
-                                }
-                    }
+                        .child(selectedMessageGroupKeyValue)
+                        .child("numberOfMessages")
+                        .setValue(messageDisplayData.size.toString())
+                        .addOnSuccessListener {//메세지가 삭제된 다음에 해당 메서드가 돌기 때문에 current수로 해도 됨
+                            Log.d("updateMessagesNumber", "success")
+                            Log.d(TAG, "messageDisplayData.size" + messageDisplayData.size)
+                        }.addOnFailureListener {
+                            Log.d("updateMessagesNumber", "fail")
+                        }
 
 
                 })
@@ -322,7 +328,9 @@ class FragmentMessage : Fragment() {
             }
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 selectedMessageType = it.toString().trim()
-                selectedMessageGroupKeyValue = messageGroupList[it.itemId].keyValue //그룹별 메시지수 업데이트를 위해서
+                selectedMessageGroupKeyValue =
+                    messageGroupList[it.itemId].keyValue //그룹별 메시지수 업데이트를 위해서 선택된 그룹의 keyValue값을 받아옴
+                Log.d(TAG, selectedMessageGroupKeyValue)
 
                 setRv()
                 binding.messageGroupTv.text =
@@ -333,24 +341,6 @@ class FragmentMessage : Fragment() {
             popupMenu.show()
 
         })
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode != RESULT_OK) {
-            return
-        }
-
-        when (requestCode) {
-            REQUEST_CREATE_MESSAGE -> {
-
-            }
-
-            REQUEST_UPDATE_MEMO -> {
-
-            }
-        }
     }
 
 
@@ -376,12 +366,11 @@ class FragmentMessage : Fragment() {
                 Log.d("messageGroup", "수정 버튼")
 
                 val intent = Intent(context, ActivityEditMessageGroup::class.java)
-                startActivity(intent)
+                activityForCreateMessageResult.launch(intent)
 
             } else {
                 val intent = Intent(context, ActivityCreateMessage::class.java)
-                startActivity(intent)
-                Log.d("messageGroup", "추가  버튼")
+                activityForCreateMessageResult.launch(intent)
             }
         }
         //Create alert dialog object via builder
@@ -389,8 +378,6 @@ class FragmentMessage : Fragment() {
         //Show the dialog
         alertDialogObject.show()
     }
-
-
 
 
     companion object {

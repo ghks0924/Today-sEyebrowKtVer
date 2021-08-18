@@ -1,168 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical">
-
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-
-    <ImageView
-        android:id="@+id/previousMonthImage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintRight_toLeftOf="@+id/month_tv"
-        app:layout_constraintTop_toTopOf="@+id/month_tv"
-        app:layout_constraintBottom_toBottomOf="@+id/month_tv"
-        android:layout_marginRight="30dp"
-        app:srcCompat="@drawable/ic_chevron_left"
-        app:tint="@color/mainGrey" />
-
-    <TextView
-        android:id="@+id/month_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/notosanscjkkrbold"
-        android:includeFontPadding="false"
-        android:text="2021년 4월"
-
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/nextMonthImage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintLeft_toRightOf="@+id/month_tv"
-        app:layout_constraintTop_toTopOf="@+id/month_tv"
-        app:layout_constraintBottom_toBottomOf="@+id/month_tv"
-        android:layout_marginLeft="30dp"
-        app:srcCompat="@drawable/ic_chevron_right"
-        app:tint="@color/mainGrey" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/new_customer_list_cardview"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_height="match_parent">
 
-        app:layout_constraintTop_toBottomOf="@id/month_tv">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/previous_month_iv"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="30dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/act_detailed_perform_month_tv"
+            app:layout_constraintRight_toLeftOf="@+id/act_detailed_perform_month_tv"
+            app:layout_constraintTop_toTopOf="@+id/act_detailed_perform_month_tv"
+            app:srcCompat="@drawable/ic_chevron_left"
+            app:tint="@color/mainGrey" />
+
+        <TextView
+            android:id="@+id/act_detailed_perform_month_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:fontFamily="@font/notosanscjkkrbold"
+            android:includeFontPadding="false"
+            android:text="2021년 4월"
+
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/nextMonthImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/act_detailed_perform_month_tv"
+            app:layout_constraintLeft_toRightOf="@+id/act_detailed_perform_month_tv"
+            app:layout_constraintTop_toTopOf="@+id/act_detailed_perform_month_tv"
+            app:srcCompat="@drawable/ic_chevron_right"
+            app:tint="@color/mainGrey" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/new_customer_list_cardview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+
+            app:layout_constraintTop_toBottomOf="@id/act_detailed_perform_month_tv">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:fontFamily="@font/notosanscjkkrmedium"
+                    android:includeFontPadding="false"
+                    android:text="신규고객리스트"
+                    android:textColor="@color/mainGrey"
+
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/more_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    app:srcCompat="@drawable/outline_expand_more_black_36"
+                    app:tint="@color/mainGrey" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <RelativeLayout
+            android:id="@+id/performance_bycus_cardview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_customer_list_cardview"
+            android:layout_marginStart="@dimen/_20dp"
+            android:layout_marginTop="@dimen/_15dp"
+            android:layout_marginEnd="@dimen/_20dp">
 
             <TextView
+               android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="신규고객리스트"
-                android:textSize="15sp"
-                android:textColor="@color/mainGrey"
                 android:fontFamily="@font/notosanscjkkrmedium"
-                android:includeFontPadding="false"
-
-                android:layout_margin="10dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:text="고객별 매출"
+                android:textColor="@color/mainGrey"/>
 
             <ImageView
-                android:id="@+id/more_iv"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/more_icon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="@dimen/_10dp"
+                android:adjustViewBounds="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                app:srcCompat="@drawable/outline_more_vert_black_36"
+                app:tint="@color/mainGrey"/>
 
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                app:srcCompat="@drawable/outline_expand_more_black_36"
-                app:tint="@color/mainGrey" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
 
 
 
 
 
 
-    </com.google.android.material.card.MaterialCardView>
-
-   <TextView
-        android:id="@+id/performance_bycus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:text="고객별 매출"
-       android:padding="10dp"
-       android:fontFamily="@font/notosanscjkkrmedium"
-       android:textColor="@color/mainGrey"
-
-        app:layout_constraintTop_toBottomOf="@+id/new_customer_list_cardview"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="15dp"
-       android:layout_marginEnd="20dp"
-       android:layout_marginStart="20dp"/>
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/act_detailed_perform_bycus_barchart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:minHeight="150dp"
+            app:layout_constraintTop_toBottomOf="@id/performance_bycus_cardview" />
 
 
+        <TextView
+            android:id="@+id/performance_bymenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/notosanscjkkrmedium"
 
-    <TextView
-        android:id="@+id/temp_customer_graph"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:background="#dfdf00"
-        android:text="두 개의 막대 신규/기존 고객/리터치"
+            android:padding="10dp"
+            android:text="메뉴별 매출"
+            android:textColor="@color/mainGrey"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/act_detailed_perform_bycus_barchart" />
 
-        app:layout_constraintTop_toBottomOf="@+id/performance_bycus"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="15dp"/>
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/act_detailed_perform_bymenu_barchart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:minHeight="150dp"
+            app:layout_constraintTop_toBottomOf="@id/performance_bymenu" />
 
-    <TextView
-        android:id="@+id/performance_bymenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:text="메뉴별 매출"
-        android:padding="10dp"
-        android:fontFamily="@font/notosanscjkkrmedium"
-        android:textColor="@color/mainGrey"
-
-        app:layout_constraintTop_toBottomOf="@+id/temp_customer_graph"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"/>
-
-    <TextView
-        android:id="@+id/temp_menu_graph"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:background="#dfdf00"
-        android:text="두 개의 막대 신규/기존 고객/리터치"
-
-        app:layout_constraintTop_toBottomOf="@+id/performance_bymenu"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="15dp"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

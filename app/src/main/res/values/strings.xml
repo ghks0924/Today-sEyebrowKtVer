@@ -13,7 +13,9 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    //========================UI========================
 
+    <string name="fragment_sales_title">월 매출 요약</string>
 
     //Title
     <string name="title_create_evt_activity">예약생성</string>
@@ -38,4 +40,5 @@
     //============================================firebase functions==============================
     <string name="firebase_functions_base_url">https://us-central1-today-s-eyebrow-kt-ver.cloudfunctions.net/</string>
 <!--    <string name="default_web_client_id">337629695035-nrjagt683ucr715dgc9hlqe891gijqif.apps.googleusercontent.com</string>-->
+
 </resources>

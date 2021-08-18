@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -11,134 +11,157 @@
         android:layout_height="match_parent">
 
 
+        <TextView
+            android:id="@+id/fragment_sales_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/notosanscjkkrbold"
+            android:includeFontPadding="false"
+            android:text="@string/fragment_sales_title"
 
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/notosanscjkkrregular"
-        android:includeFontPadding="false"
-        android:text="이 달의 매출"
+            android:textColor="@color/mainBlack"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        android:textColor="@color/mainGrey"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/calendar_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="20dp"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:fitsSystemWindows="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/outline_date_range_black_36"
+            app:tint="@color/mainGrey" />
 
-    <ImageView
-        android:id="@+id/monthly_iv"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="20dp"
-        android:adjustViewBounds="true"
-        android:fitsSystemWindows="true"
-        app:srcCompat="@drawable/outline_date_range_black_36"
-        app:tint="@color/mainGrey"/>
-
-
-
-    <ImageView
-        android:id="@+id/previousMonthImage"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintRight_toLeftOf="@+id/performance_tv"
-        app:layout_constraintTop_toTopOf="@+id/performance_tv"
-        app:layout_constraintBottom_toBottomOf="@+id/performance_tv"
-        android:layout_marginRight="30dp"
-        app:srcCompat="@drawable/ic_chevron_left"
-        app:tint="@color/mainGrey" />
-
-    <TextView
-        android:id="@+id/performance_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/notosanscjkkrbold"
-        android:includeFontPadding="false"
-        android:text="2,000,000"
-
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_tv" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginLeft="3dp"
-        android:fontFamily="@font/notosanscjkkrregular"
-        android:includeFontPadding="false"
-        android:text="원"
+        <TextView
+            android:id="@+id/fragment_sales_month_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40dp"
+            android:layout_marginBottom="@dimen/_10dp"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_sales_monthly_sales_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sales_title_tv"
+            android:text="8월"
+            android:textSize="@dimen/_20sp"
+            android:fontFamily="@font/notosanscjkkrmedium"
+            android:includeFontPadding="false"/>
 
 
-        android:textColor="@color/mainGrey"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/performance_tv"
-        app:layout_constraintLeft_toRightOf="@+id/performance_tv"
-        app:layout_constraintTop_toTopOf="@+id/performance_tv" />
+        <ImageView
+            android:id="@+id/previousMonthImage"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="30dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_sales_monthly_sales_tv"
+            app:layout_constraintRight_toLeftOf="@+id/fragment_sales_monthly_sales_tv"
+            app:layout_constraintTop_toTopOf="@+id/fragment_sales_monthly_sales_tv"
+            app:srcCompat="@drawable/ic_chevron_left"
+            app:tint="@color/mainGrey" />
 
-    <ImageView
-        android:id="@+id/nextMonthImage"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintLeft_toRightOf="@+id/performance_tv"
-        app:layout_constraintTop_toTopOf="@+id/performance_tv"
-        app:layout_constraintBottom_toBottomOf="@+id/performance_tv"
-        android:layout_marginLeft="30dp"
-        app:srcCompat="@drawable/ic_chevron_right"
-        app:tint="@color/mainGrey" />
+        <TextView
+            android:id="@+id/fragment_sales_monthly_sales_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/temp_performance_graph"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:background="#dfdf"
-        android:text="파이 차트 그래프만(현금, 카드"
+            android:layout_marginTop="@dimen/_20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:fontFamily="@font/notosanscjkkrbold"
+            android:includeFontPadding="false"
+            android:textColor="@color/black"
 
-        app:layout_constraintTop_toBottomOf="@+id/performance_tv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="15dp"/>
+            android:textSize="24sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sales_month_tv"
+            android:text="2,000,000" />
 
-    <TextView
-        android:id="@+id/customer_analysis_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@+id/temp_performance_graph"
-        app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="3dp"
+            android:fontFamily="@font/notosanscjkkrregular"
+            android:includeFontPadding="false"
+            android:text="원"
 
 
-        android:text="고객분석"
-        android:fontFamily="@font/notosanscjkkrmedium"
-        android:includeFontPadding="false"
-        android:textColor="@color/mainGrey"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"/>
+            android:textColor="@color/mainGrey"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_sales_monthly_sales_tv"
+            app:layout_constraintLeft_toRightOf="@+id/fragment_sales_monthly_sales_tv"
+            app:layout_constraintTop_toTopOf="@+id/fragment_sales_monthly_sales_tv" />
 
-    <TextView
-        android:id="@+id/temp_customer_graph"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:background="#dfdf00"
-        android:text="두 개의 막대 신규/기존 고객/리터치"
+        <ImageView
+            android:id="@+id/nextMonthImage"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="30dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_sales_monthly_sales_tv"
+            app:layout_constraintLeft_toRightOf="@+id/fragment_sales_monthly_sales_tv"
+            app:layout_constraintTop_toTopOf="@+id/fragment_sales_monthly_sales_tv"
+            app:srcCompat="@drawable/ic_chevron_right"
+            app:tint="@color/mainGrey" />
 
-        app:layout_constraintTop_toBottomOf="@+id/customer_analysis_tv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="15dp"/>
+        <TextView
+            android:id="@+id/fragment_sales_payment_analysis_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+
+
+            android:fontFamily="@font/notosanscjkkrmedium"
+            android:includeFontPadding="false"
+            android:text="결제분석"
+            android:textColor="@color/mainGrey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sales_monthly_sales_tv" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/fragment_sales_cashcard_barchart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:minHeight="150dp"
+            app:layout_constraintTop_toBottomOf="@id/fragment_sales_payment_analysis_tv"/>
+
+
+
+        <TextView
+            android:id="@+id/fragment_sales_customer_analysis_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+
+
+            android:fontFamily="@font/notosanscjkkrmedium"
+            android:includeFontPadding="false"
+            android:text="고객분석"
+            android:textColor="@color/mainGrey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sales_cashcard_barchart" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/fragment_sales_customer_barchart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="150dp"
+            android:layout_marginTop="@dimen/_20dp"
+            app:layout_constraintTop_toBottomOf="@id/fragment_sales_customer_analysis_tv"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

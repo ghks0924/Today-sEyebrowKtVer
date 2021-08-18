@@ -4,6 +4,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io'} //For MPAndroid chart
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'

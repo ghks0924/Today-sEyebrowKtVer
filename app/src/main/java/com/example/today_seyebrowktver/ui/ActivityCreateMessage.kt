@@ -160,6 +160,8 @@ class ActivityCreateMessage : ActivityBase() {
                 mShowShortToast("새로운 메세지가 생성되었습니다")
 
                 checkMessagesNum()
+                val intent = intent
+                setResult(RESULT_OK, intent)
                 finish()
 
             }.addOnFailureListener {

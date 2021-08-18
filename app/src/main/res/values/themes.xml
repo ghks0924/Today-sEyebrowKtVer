@@ -82,5 +82,23 @@
         <item name="colorControlActivated">@color/mainBlue</item>
     </style>
 
+    //============= Custom AlertDialot theme ==========
+    <style name="CustomDialog_Simple" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+
+<!--        //background-->
+<!--        <item name="android:background">#ffffff</item>-->
+<!--        -->
+
+        //title color
+        <item name="android:textColor">@color/mainBlack</item>
+
+        //content color
+        <item name="android:textColorPrimary">@color/mainGrey</item>
+
+
+    </style>
+
+
+
 
 </resources>
