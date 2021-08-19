@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/act_monthly_detailed_sales_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
+            android:fitsSystemWindows="true"
+            app:srcCompat="@drawable/ic_chevron_left"
+            app:tint="@color/black"/>
+
+        <TextView
+            android:id="@+id/act_detailed_perform_month_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:fontFamily="@font/notosanscjkkrbold"
+            android:includeFontPadding="false"
+            android:text="2021년 4월"
+
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/act_monthly_detailed_sales_toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/performance_bymenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/notosanscjkkrmedium"
+                android:includeFontPadding="false"
+
+                android:text="메뉴별 매출"
+                android:textColor="@color/mainGrey"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/act_detailed_perform_bymenu_barchart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_20dp"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:minHeight="150dp"
+                app:layout_constraintTop_toBottomOf="@id/performance_bymenu" />
+
+            <View
+                android:id="@+id/act_monthly_detailed_sales_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1dp"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_30dp"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:background="@color/mainGreyForLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/act_detailed_perform_bymenu_barchart" />
+
+            <TextView
+                android:id="@+id/detailed_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/notosanscjkkrmedium"
+                android:includeFontPadding="false"
+
+                android:text="매출상세"
+                android:textColor="@color/mainGrey"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/act_monthly_detailed_sales_line" />
+
+            <TextView
+                android:id="@+id/cash_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="현금"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_tv"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cash_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cash_tv">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/surgery_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="시술"
+                        android:layout_marginTop="@dimen/_10dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/surgery_value_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50000원"
+                        android:layout_marginStart="@dimen/_10dp"
+                        app:layout_constraintStart_toEndOf="@+id/membership_tv"
+                        app:layout_constraintTop_toTopOf="@id/surgery_tv"/>
+
+                    <TextView
+                        android:id="@+id/membership_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="정액권결제"
+                        app:layout_constraintTop_toBottomOf="@+id/surgery_tv"
+                        app:layout_constraintStart_toStartOf="@+id/surgery_tv"/>
+
+                    <TextView
+                        android:id="@+id/membership_value_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50000원"
+                        android:layout_marginStart="@dimen/_10dp"
+                        app:layout_constraintStart_toEndOf="@+id/membership_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/surgery_tv" />
+
+                    <TextView
+                        android:id="@+id/etc_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="기타매출"
+                        app:layout_constraintTop_toBottomOf="@+id/membership_tv"
+                        app:layout_constraintStart_toStartOf="@+id/surgery_tv"/>
+
+                    <TextView
+                        android:id="@+id/etc_value_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50000원"
+                        android:layout_marginStart="@dimen/_10dp"
+                        app:layout_constraintStart_toEndOf="@+id/membership_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/membership_tv" />
+
+                    <TextView
+                        android:id="@+id/cash_sum_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50000원"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/cash_sum_iv"/>
+
+                    <ImageView
+                        android:id="@+id/cash_sum_iv"
+                        android:layout_width="@dimen/_30dp"
+                        android:layout_height="@dimen/_30dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:srcCompat="@drawable/ic_chevron_right"
+                        app:tint="@color/mainGreyFor30" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/card_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="카드"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cash_cardview"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_tv">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/card_surgery_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="시술"
+                        android:layout_marginTop="@dimen/_10dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/card_surgery_value_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50000원"
+                        android:layout_marginStart="@dimen/_10dp"
+                        app:layout_constraintStart_toEndOf="@+id/card_membership_tv"
+                        app:layout_constraintTop_toTopOf="@id/card_surgery_tv"/>
+
+                    <TextView
+                        android:id="@+id/card_membership_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="정액권결제"
+                        app:layout_constraintTop_toBottomOf="@+id/card_surgery_tv"
+                        app:layout_constraintStart_toStartOf="@+id/card_surgery_tv"/>
+
+                    <TextView
+                        android:id="@+id/card_membership_value_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50000원"
+                        android:layout_marginStart="@dimen/_10dp"
+                        app:layout_constraintStart_toEndOf="@+id/card_membership_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/card_surgery_tv" />
+
+                    <TextView
+                        android:id="@+id/card_etc_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="기타매출"
+                        app:layout_constraintTop_toBottomOf="@+id/card_membership_tv"
+                        app:layout_constraintStart_toStartOf="@+id/card_surgery_tv"/>
+
+                    <TextView
+                        android:id="@+id/card_etc_value_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50000원"
+                        android:layout_marginStart="@dimen/_10dp"
+                        app:layout_constraintStart_toEndOf="@+id/card_membership_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/card_membership_tv" />
+
+                    <TextView
+                        android:id="@+id/card_sum_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50000원"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/card_sum_iv"/>
+
+                    <ImageView
+                        android:id="@+id/card_sum_iv"
+                        android:layout_width="@dimen/_30dp"
+                        android:layout_height="@dimen/_30dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:srcCompat="@drawable/ic_chevron_right"
+                        app:tint="@color/mainGreyFor30" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

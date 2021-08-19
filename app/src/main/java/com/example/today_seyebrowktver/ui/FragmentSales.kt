@@ -10,18 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.databinding.FragmentSalesBinding
-import com.example.today_seyebrowktver.viewmodel.FragmentMemoViewModel
 import com.example.today_seyebrowktver.viewmodel.FragmentSalesViewModel
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
-import com.google.android.material.slider.LabelFormatter
 
 private val TAG = "FragmentSales"
 
@@ -65,7 +60,7 @@ class FragmentSales : Fragment() {
         }
 
         binding.fragmentSalesMonthlySalesTv.setOnClickListener {
-            val intent = Intent(context, ActivityDetailedPerformance::class.java)
+            val intent = Intent(context, ActivityMonthlyDetailedSales::class.java)
             startActivity(intent)
         }
         binding.nextMonthImage.setOnClickListener {
@@ -73,7 +68,13 @@ class FragmentSales : Fragment() {
         }
 
         binding.calendarIv.setOnClickListener {
-            val intent = Intent(context, ActivityMonthlyPerformance::class.java)
+            val intent = Intent(context, ActivityMonthlySales::class.java)
+            startActivity(intent)
+        }
+
+        binding.fragSalesCuslistTv.setOnClickListener {
+            val intent = Intent(context, ActivityMonthlyCustomerList::class.java)
+            intent.putExtra("date", "date")
             startActivity(intent)
         }
 
@@ -91,9 +92,9 @@ class FragmentSales : Fragment() {
         val labels = arrayOf("현금", "카드")
 
         val colorList = listOf(
-            Color.rgb(192, 255, 140),
-            Color.rgb(255, 247, 97),
-            Color.rgb(255, 140, 157)
+            Color.rgb(100, 205, 140),
+            Color.rgb(180, 127, 97),
+            Color.rgb(149, 140, 157)
         )
 
         val barDataSet = BarDataSet(entryList, "No Of Employee")

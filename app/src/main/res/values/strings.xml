@@ -39,6 +39,6 @@
 
     //============================================firebase functions==============================
     <string name="firebase_functions_base_url">https://us-central1-today-s-eyebrow-kt-ver.cloudfunctions.net/</string>
-<!--    <string name="default_web_client_id">337629695035-nrjagt683ucr715dgc9hlqe891gijqif.apps.googleusercontent.com</string>-->
+    <!--    <string name="default_web_client_id">337629695035-nrjagt683ucr715dgc9hlqe891gijqif.apps.googleusercontent.com</string>-->
 
 </resources>

@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.today_seyebrowktver.R
 
-class ActivityMonthlyPerformance : AppCompatActivity() {
+class ActivityMonthlySales : ActivityBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_monthly_performance)
+        setContentView(R.layout.activity_monthly_sales)
     }
 }
