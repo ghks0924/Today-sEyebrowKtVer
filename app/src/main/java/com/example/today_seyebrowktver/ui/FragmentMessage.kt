@@ -37,6 +37,7 @@ class FragmentMessage : Fragment() {
     val REQUEST_SEND_MESSAGE = 2222
 
 
+    //viewbinding
     private lateinit var binding: FragmentMessageBinding
 
     //viewModel
@@ -381,8 +382,11 @@ class FragmentMessage : Fragment() {
 
 
     companion object {
-        fun newInstance(): FragmentMessage {
-            return FragmentMessage()
+        fun newInstance(): FragmentMessage{
+            val args = Bundle()
+            val fragment = FragmentMessage()
+            fragment.arguments = args
+            return fragment
         }
     }
 }

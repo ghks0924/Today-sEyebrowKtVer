@@ -161,7 +161,11 @@ class FragmentMemo : Fragment() {
 
     companion object {
         fun newInstance(): FragmentMemo{
-            return FragmentMemo()
+            val args = Bundle()
+
+            val fragment = FragmentMemo()
+            fragment.arguments = args
+            return fragment
         }
     }
 }

@@ -259,7 +259,11 @@ class FragmentCustomers : Fragment() {
 
     companion object {
         fun newInstance(): FragmentCustomers{
-            return FragmentCustomers()
+            val args = Bundle()
+
+            val fragment = FragmentCustomers()
+            fragment.arguments = args
+            return fragment
         }
     }
 

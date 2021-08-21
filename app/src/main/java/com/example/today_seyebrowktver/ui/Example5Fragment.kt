@@ -643,10 +643,16 @@ class Example5Fragment : Fragment() {
 //        return events
 
     companion object {
-        fun newInstance(): Example5Fragment{
-            return Example5Fragment()
+       fun newInstance(): Example5Fragment{
+            val args = Bundle()
+
+            val fragment = Example5Fragment()
+            fragment.arguments = args
+            return fragment
         }
     }
+
+
 
 }
 

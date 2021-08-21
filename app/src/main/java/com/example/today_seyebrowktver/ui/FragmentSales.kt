@@ -8,8 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.databinding.FragmentSalesBinding
 import com.example.today_seyebrowktver.viewmodel.FragmentSalesViewModel
 import com.github.mikephil.charting.components.XAxis
@@ -21,8 +23,9 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 private val TAG = "FragmentSales"
 
 class FragmentSales : Fragment() {
-    private var _binding: FragmentSalesBinding? = null
-    private val binding get() = _binding!!
+
+
+    private lateinit var binding:FragmentSalesBinding
 
     private var NoOfEmp = mutableListOf<BarEntry>()
     private var xAxisValue = ArrayList<String>()
@@ -32,10 +35,6 @@ class FragmentSales : Fragment() {
         ViewModelProvider(this).get(FragmentSalesViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +42,8 @@ class FragmentSales : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        _binding = FragmentSalesBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate<FragmentSalesBinding>(inflater, R.layout.fragment_sales,
+            container, false)
         Log.d(TAG, "onCreateView")
 
         return binding.root
@@ -268,15 +268,13 @@ class FragmentSales : Fragment() {
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d(TAG, "onDestroyView")
-        _binding = null
-    }
 
     companion object {
-        fun newInstance(): FragmentSales {
-            return FragmentSales()
+        fun newInstance(): FragmentSales{
+            val args = Bundle()
+            val fragment = FragmentSales()
+            fragment.arguments = args
+            return fragment
         }
     }
 
