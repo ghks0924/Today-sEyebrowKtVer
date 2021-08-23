@@ -24,7 +24,6 @@ private val TAG = "FragmentSales"
 
 class FragmentSales : Fragment() {
 
-
     private lateinit var binding:FragmentSalesBinding
 
     private var NoOfEmp = mutableListOf<BarEntry>()
@@ -42,7 +41,7 @@ class FragmentSales : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        binding = DataBindingUtil.inflate<FragmentSalesBinding>(inflater, R.layout.fragment_sales,
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sales,
             container, false)
         Log.d(TAG, "onCreateView")
 

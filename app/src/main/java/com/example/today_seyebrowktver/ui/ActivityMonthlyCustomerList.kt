@@ -24,7 +24,9 @@ class ActivityMonthlyCustomerList : FragmentActivity() {
     }
 
     private fun setLayout() {
-
+        binding.backIv.setOnClickListener {
+            finish()
+        }
         setViewPagerTabLayout()
     }
 

@@ -1,77 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="@dimen/margin_four_dp"
-    android:layout_marginBottom="4dp"
-    android:clickable="true"
-    app:rippleColor="@color/weakGrey"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardElevation="0dp"
-    android:id="@+id/parent_cardview">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.today_seyebrowktver.ui.CustomerViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/parent_cardview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardElevation="0dp"
+        app:rippleColor="@color/weakGrey">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/profile_cardview"
-            android:layout_width="@dimen/profile_iv_background_width"
-            android:layout_height="@dimen/profile_iv_background_height"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            android:backgroundTint="@color/ivory"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="@dimen/half_profile_iv_background_height"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/profile_cardview"
+                android:layout_width="@dimen/profile_iv_background_width"
+                android:layout_height="@dimen/profile_iv_background_height"
+
+                android:backgroundTint="@color/ivory"
+                app:cardCornerRadius="@dimen/half_profile_iv_background_height"
+                app:cardElevation="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:layout_width="@dimen/profile_iv_width"
+                    android:layout_height="@dimen/profile_iv_height"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/thick_pink_profile_iv" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/customer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_small_vertical_margin"
+                app:layout_constraintLeft_toRightOf="@+id/profile_cardview"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="고객이름"
+                android:text="@{viewModel.name}"/>
+
+            <TextView
+                android:id="@+id/customer_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginBottom="@dimen/activity_small_vertical_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/customer_name"
+                app:layout_constraintTop_toBottomOf="@+id/customer_name"
+                tools:text="010-3077-3637"
+                android:text="@{viewModel.number}"/>
+
+            <TextView
+                android:id="@+id/customer_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/customer_number"
+                tools:text="0회 방문"
+                android:text="@{viewModel.history}"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@color/mainGreyForLine"/>
 
 
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:layout_width="@dimen/profile_iv_width"
-                android:layout_height="@dimen/profile_iv_height"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/thick_pink_profile_iv" />
-
-        </com.google.android.material.card.MaterialCardView>
-        
-        <TextView
-            android:id="@+id/customer_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/profile_cardview"
-            android:layout_marginTop="@dimen/activity_small_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
-            tools:text="고객이름"/>
-
-        <TextView
-            android:id="@+id/customer_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            app:layout_constraintTop_toBottomOf="@+id/customer_name"
-            app:layout_constraintLeft_toLeftOf="@+id/customer_name"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="@dimen/activity_small_vertical_margin"
-            tools:text="010-3077-3637"/>
-
-        <TextView
-            android:id="@+id/customer_history"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/customer_number"
-            tools:text="0회 방문"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
-
-</androidx.cardview.widget.CardView>
+</layout>

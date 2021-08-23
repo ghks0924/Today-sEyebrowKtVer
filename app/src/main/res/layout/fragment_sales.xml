@@ -20,11 +20,9 @@
                 android:id="@+id/fragment_sales_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:fontFamily="@font/notosanscjkkrbold"
                 android:includeFontPadding="false"
                 android:text="@string/fragment_sales_title"
-
                 android:textColor="@color/mainBlack"
                 android:textSize="@dimen/_20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -179,6 +177,7 @@
                     android:text="고객리스트"
                     android:textColor="@color/mainGreyFor30"
                     android:textSize="12sp"
+                    android:paddingLeft="@dimen/_20dp"
                     app:layout_constraintBottom_toBottomOf="@+id/fragment_sales_customer_analysis_tv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/frag_sales_cuslist_iv" />

@@ -1,5 +1,6 @@
 package com.example.today_seyebrowktver.ui
 
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
@@ -10,27 +11,33 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.today_seyebrowktver.BottomSheetFragmentCustomer
+import com.example.today_seyebrowktver.R
 import com.example.today_seyebrowktver.data.CustomersData
 import com.example.today_seyebrowktver.RvCustomerAdapter
 import com.example.today_seyebrowktver.databinding.FragmentCustomersBinding
+import com.example.today_seyebrowktver.databinding.RvItemCustomersBinding
 import com.example.today_seyebrowktver.viewmodel.FragmentCustomerViewModel
-import com.example.today_seyebrowktver.viewmodel.FragmentMessageViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 private val TAG = "FragmentCustomers"
+
 class FragmentCustomers : Fragment() {
 
     //dataBinding
-    private var mBinding: FragmentCustomersBinding?= null
-
+    private lateinit var binding: FragmentCustomersBinding
 
     //viewModel
-    private val fragmentCustomerViewModel : FragmentCustomerViewModel by lazy {
+    private val fragmentCustomerViewModel: FragmentCustomerViewModel by lazy {
         ViewModelProvider(this).get(FragmentCustomerViewModel::class.java)
     }
 
@@ -38,22 +45,35 @@ class FragmentCustomers : Fragment() {
     val mAuth = FirebaseAuth.getInstance()
     var data = ArrayList<CustomersData>()
     var dataForSearch = ArrayList<CustomersData>()
-    private lateinit var customersSort:String
+    private lateinit var customersSort: String
     var adapter: RvCustomerAdapter? = null
+    private lateinit var adapter2 : CustomerAdapter
 
     private lateinit var uid: String
+
+    //Message Group Create activity를 위한 처리
+    val activityForNewCustomerResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            adapter2.notifyDataSetChanged()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        mBinding = FragmentCustomersBinding.inflate(inflater)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_customers,
+            container, false)
+
+        setData()
 
         val user = mAuth.currentUser
         uid = user!!.uid
 
-        return mBinding!!.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,41 +83,44 @@ class FragmentCustomers : Fragment() {
     }
 
     private fun setLayout() {
-        mBinding!!.abcTv.setOnClickListener(
+        binding!!.abcTv.setOnClickListener(
             View.OnClickListener
             //가나다순 버튼
             {
-                mBinding!!.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
-                mBinding!!.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+                binding!!.abcTv.setTextColor(Color.parseColor("#4f4f4f"))
+                binding!!.savedTv.setTextColor(Color.parseColor("#4D4f4f4f"))
                 data.sortBy { data1 -> data1.customerName }
                 adapter!!.notifyDataSetChanged()
-                database.child("users").child(uid).child("customersSort").setValue("name").addOnSuccessListener {
+                database.child("users").child(uid).child("customersSort").setValue("name")
+                    .addOnSuccessListener {
                     }.addOnFailureListener {
                     }
             })
 
-        mBinding!!.savedTv.setOnClickListener(View.OnClickListener
+        binding!!.savedTv.setOnClickListener(View.OnClickListener
         //저장순
         {
-            mBinding!!.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
-            mBinding!!.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
+            binding!!.abcTv.setTextColor(Color.parseColor("#4D4f4f4f"))
+            binding!!.savedTv.setTextColor(Color.parseColor("#4f4f4f"))
             data.sortByDescending { data1 -> data1.savedate }
 //            data.sortBy { data1 -> data1.savedate }
             adapter!!.notifyDataSetChanged()
-            database.child("users").child(uid).child("customersSort").setValue("date").addOnSuccessListener {
-            }.addOnFailureListener {
-            }
+            database.child("users").child(uid).child("customersSort").setValue("date")
+                .addOnSuccessListener {
+                }.addOnFailureListener {
+                }
         })
 
-        mBinding!!.edittext.clearFocus()
+        binding!!.edittext.clearFocus()
 
-        mBinding!!.fab.setOnClickListener(View.OnClickListener {
-
-            (activity as ActivityMain).mSelectHowToCreateCustomer()
-
+        binding!!.fab.setOnClickListener(View.OnClickListener {
+            val frag = BottomSheetFragmentCustomer()
+            frag.show(parentFragmentManager, frag.tag)
+//            (activity as ActivityMain).mSelectHowToCreateCustomer()
+            activityForNewCustomerResult
         })
 
-        mBinding!!.edittext.addTextChangedListener(object : TextWatcher {
+        binding!!.edittext.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -105,13 +128,13 @@ class FragmentCustomers : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                var searchText: String = mBinding!!.edittext.text.toString().toLowerCase()
+                var searchText: String = binding!!.edittext.text.toString().toLowerCase()
                 search(searchText)
 
                 if (searchText.isEmpty()) {
-                    setClickListener(data)
+//                    setClickListener(data)
                 } else {
-                    setClickListener(dataForSearch)
+//                    setClickListener(dataForSearch)
                 }
 
             }
@@ -170,62 +193,57 @@ class FragmentCustomers : Fragment() {
     }
 
     private fun setRv() {
-        adapter = RvCustomerAdapter(data)
+        binding.recyclerview.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = CustomerAdapter(data)
+        }
+//        adapter = RvCustomerAdapter(data)
 
-        mBinding!!.recyclerview.layoutManager = LinearLayoutManager(context)
-        mBinding!!.recyclerview.adapter = adapter
 
-        val dividerDecoration: DividerItemDecoration =
-            DividerItemDecoration(
-                mBinding!!.recyclerview.context,
-                LinearLayoutManager(context).orientation
-            )
+//        binding!!.recyclerview.adapter = adapter
 
-        mBinding!!.recyclerview.addItemDecoration(dividerDecoration)
 
-        setClickListener(data)
+//        setClickListener(data)
 
-//        val decoration_height = RecyclerDecorationHeight(5)
-//        binding.recyclerview.addItemDecoration(decoration_height)
 
     }
 
-    private fun setClickListener(data: ArrayList<CustomersData>) {
-        adapter!!.itemClick = object : RvCustomerAdapter.ItemClick {
-            override fun onClick(view: View, position: Int) {
-                val intent = Intent(context, ActivityEachCustomer::class.java)
-                intent.putExtra("keyValue", data[position].keyValue)
-                startActivity(intent)
-                Log.d("click?", "click OK" + data[position].keyValue)
-
-            }
-
-        }
-
-        adapter!!.itemLongClick = object : RvCustomerAdapter.ItemLongClick {
-            override fun onClick(view: View, position: Int) {
-                val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
-                ab.setTitle(data[position].customerName)
-                ab.setMessage("고객을 삭제 하시겠습니까?")
-                ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
-
-                    database.child("users").child(uid).child("customers")
-                        .child(data[position].keyValue).removeValue()
-                        .addOnSuccessListener {
-                            Log.d("removeValue", "삭제 성공")
-                        }.addOnCanceledListener {
-                            Log.d("removeValue", "삭제 실패")
-                        }
-
-                })
-                ab.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which -> })
-                ab.setCancelable(true)
-                ab.show()
-                Log.d("click?", "LongClick OK")
-            }
-
-        }
-    }
+//    private fun setClickListener(data: ArrayList<CustomersData>) {
+//        adapter!!.itemClick = object : RvCustomerAdapter.ItemClick {
+//            override fun onClick(view: View, position: Int) {
+//                val intent = Intent(context, ActivityEachCustomer::class.java)
+//                intent.putExtra("keyValue", data[position].keyValue)
+//                startActivity(intent)
+//                Log.d("click?", "click OK" + data[position].keyValue)
+//
+//            }
+//
+//        }
+//
+//        adapter!!.itemLongClick = object : RvCustomerAdapter.ItemLongClick {
+//            override fun onClick(view: View, position: Int) {
+//                val ab: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
+//                ab.setTitle(data[position].customerName)
+//                ab.setMessage("고객을 삭제 하시겠습니까?")
+//                ab.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+//
+//                    database.child("users").child(uid).child("customers")
+//                        .child(data[position].keyValue).removeValue()
+//                        .addOnSuccessListener {
+//                            Log.d("removeValue", "삭제 성공")
+//                        }.addOnCanceledListener {
+//                            Log.d("removeValue", "삭제 실패")
+//                        }
+//
+//                })
+//                ab.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which -> })
+//                ab.setCancelable(true)
+//                ab.show()
+//                Log.d("click?", "LongClick OK")
+//            }
+//
+//        }
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -238,7 +256,7 @@ class FragmentCustomers : Fragment() {
         //문자입력이 없을때는 모든 데이터를 보여준다.
         if (charText.length == 0) {
             adapter = RvCustomerAdapter(data)
-            mBinding!!.recyclerview.adapter = adapter
+            binding!!.recyclerview.adapter = adapter
         } else { //문자입력시
             for (i in data.indices) { //리소스의 모든 데이터를 검색한다.
                 if (data.get(i).customerName!!.toLowerCase().contains(charText)
@@ -252,13 +270,13 @@ class FragmentCustomers : Fragment() {
 
 
             adapter = RvCustomerAdapter(dataForSearch)
-            mBinding!!.recyclerview.adapter = adapter
+            binding!!.recyclerview.adapter = adapter
         }
 
     }
 
     companion object {
-        fun newInstance(): FragmentCustomers{
+        fun newInstance(): FragmentCustomers {
             val args = Bundle()
 
             val fragment = FragmentCustomers()
@@ -269,9 +287,49 @@ class FragmentCustomers : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (adapter!=null){//새롭게 추가되면 adapter에 noti해주기 위해서
-            adapter!!.notifyDataSetChanged()
+    }
+
+    private inner class CustomerHolder(private val binding: RvItemCustomersBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.viewModel = CustomerViewModel()
         }
+
+        fun bind(customer: CustomersData){
+            binding.apply {
+                viewModel?.customer = customer
+                executePendingBindings()
+            }
+        }
+
+    }
+
+    private inner class CustomerAdapter(private val customers: List<CustomersData>) :
+        RecyclerView.Adapter<CustomerHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
+                CustomerHolder {
+            val binding = DataBindingUtil.inflate<RvItemCustomersBinding>(
+                layoutInflater,
+                R.layout.rv_item_customers,
+                parent,
+                false
+            )
+            return CustomerHolder(binding)
+
+        }
+
+        override fun onBindViewHolder(holder: CustomerHolder, position: Int) {
+            val customer = customers[position]
+            holder.bind(customer)
+        }
+
+        override fun getItemCount(): Int = customers.size
+
+    }
+
+    fun test(){
+
     }
 
 

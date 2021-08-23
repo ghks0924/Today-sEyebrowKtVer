@@ -1,20 +1,22 @@
 package com.example.today_seyebrowktver
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.today_seyebrowktver.ui.ActivityCreateCustomer
 import com.example.today_seyebrowktver.ui.ActivityCreateCustomerFromBook
+import com.example.today_seyebrowktver.ui.FragmentSales
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 
 
 class BottomSheetFragmentCustomer : BottomSheetDialogFragment() {
-
-    private val mContext: Context? = context
 
 
 
