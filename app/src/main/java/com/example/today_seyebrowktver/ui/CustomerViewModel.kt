@@ -1,12 +1,14 @@
 package com.example.today_seyebrowktver.ui
 
+import androidx.databinding.BaseObservable
 import com.example.today_seyebrowktver.data.CustomersData
 
-class CustomerViewModel {
+class CustomerViewModel :BaseObservable() {
 
     var customer: CustomersData?= null
         set(customer) {
             field = customer
+            notifyChange()
         }
 
     //각 리스트에 보여줄 항목들

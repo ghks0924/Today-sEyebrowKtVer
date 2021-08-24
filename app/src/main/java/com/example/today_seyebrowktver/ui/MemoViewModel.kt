@@ -1,5 +1,6 @@
 package com.example.today_seyebrowktver.ui
 
+import androidx.databinding.BaseObservable
 import com.example.today_seyebrowktver.data.MemoData
 import java.text.SimpleDateFormat
 import java.util.*
