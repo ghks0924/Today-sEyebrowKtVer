@@ -30,7 +30,7 @@ private const val FRAGMENT_TAG_CUSTOMER = "FragmentCustomer"
 
 class ActivityMain : ActivityBase() {
 
-    private val REQUEST_CREATE_MEMO = 1111
+    private val REQUEST_CREATE_MEMO = 11112
     private val REQUEST_UPDATE_MEMO = 2222
     private val REQUEST_SEND_MESSAGE = 3333
 
