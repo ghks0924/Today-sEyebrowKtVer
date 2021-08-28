@@ -104,10 +104,10 @@ class TotalRepository private constructor(context: Context) {
         val sdfNow = SimpleDateFormat("yyyyMMddHHmmss")
         val saveDate = sdfNow.format(date)
 
-        val reservGroup = MessageGroupData("예약안내","0",0,saveDate,keyForReserv.toString(),false)
-        val retouchGroup = MessageGroupData("리터치","0",1,saveDate,keyForRetouch.toString(),false)
-        val afterGroup = MessageGroupData("시술후","0",2,saveDate,keyForAfter.toString(),false)
-        val etcGroup = MessageGroupData("기타","0",3,saveDate,keyForEtc.toString(),false)
+        val reservGroup = MessageGroupData("예약안내",0,0,saveDate,keyForReserv.toString(),false)
+        val retouchGroup = MessageGroupData("리터치",0,1,saveDate,keyForRetouch.toString(),false)
+        val afterGroup = MessageGroupData("시술후",0,2,saveDate,keyForAfter.toString(),false)
+        val etcGroup = MessageGroupData("기타",0,3,saveDate,keyForEtc.toString(),false)
 
 
         var groupMap = HashMap<String, MessageGroupData>()

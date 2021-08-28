@@ -70,7 +70,7 @@ class ActivityCreateMessageGroup : ActivityBase() {
 
         val key = database.child("users").child(uid).child("messageGroups").push().key
         val newGroup =
-            MessageGroupData(newGroupName, "0", numOfGroups, formatDate, key.toString(), false)
+            MessageGroupData(newGroupName, 0, numOfGroups, formatDate, key.toString(), false)
 
         database.child("users").child(uid).child("messageGroups").child(key!!)
             .setValue(newGroup).addOnSuccessListener {

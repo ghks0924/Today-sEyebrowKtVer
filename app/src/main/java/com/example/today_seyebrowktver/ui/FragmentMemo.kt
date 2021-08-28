@@ -55,6 +55,8 @@ class FragmentMemo : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_memo,
         container, false)
 
+        setMemoData()
+
         return binding.root
     }
 
@@ -65,6 +67,17 @@ class FragmentMemo : Fragment() {
 
         setLayout()
 
+
+
+
+
+    }
+
+    private fun setLayout() {
+        createMemo()
+    }
+
+    private fun setMemoData(){
         //현재 memoDB에서 가지고 있는 memos 가져오기
         fragmentMemoViewModel.memoListLiveData.observe(
             viewLifecycleOwner,
@@ -77,13 +90,6 @@ class FragmentMemo : Fragment() {
                 }
             }
         )
-
-
-
-    }
-
-    private fun setLayout() {
-        createMemo()
     }
 
     private fun createMemo() {

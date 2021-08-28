@@ -36,7 +36,6 @@ class FragmentMessage : Fragment() {
     val REQUEST_UPDATE_MESSAGE = 3333
     val REQUEST_SEND_MESSAGE = 2222
 
-
     //viewbinding
     private lateinit var binding: FragmentMessageBinding
 
@@ -76,6 +75,29 @@ class FragmentMessage : Fragment() {
         ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data
+            selectedMessageType = intent?.getStringExtra("type").toString() //새로 생성된 메세지 그룹 이름 받아오기
+            selectedMessageGroupKeyValue =
+                intent?.getStringExtra("keyValue").toString() //새로 생성된 메세지 그룹 key값 받아오기
+
+            //view에 뿌려주기
+            binding.messageGroupTv.text = selectedMessageType
+            setRv()
+        }
+    }
+
+    //setRv를 돌려줘야 selectedType이랑 실제 보여주는 messagelist랑 차이가 없음
+    val activityForEditMessageGroupResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            //순서든, 삭제든 messageGroup의 Edit event가 발생했으면 초기값으로 돌려주기
+            val intent = result.data
+            selectedMessageType = intent?.getStringExtra("type").toString() //새로 생성된 메세지 그룹 이름 받아오기
+            selectedMessageGroupKeyValue =
+                intent?.getStringExtra("keyValue").toString() //새로 생성된 메세지 그룹 key값 받아오기
+
+            //view에 뿌려주기
+            binding.messageGroupTv.text = selectedMessageType
+            setRv()
         }
     }
 
@@ -86,6 +108,9 @@ class FragmentMessage : Fragment() {
     ): View? {
         binding = FragmentMessageBinding.inflate(inflater, container, false)
 
+        setGroupData()
+        setMessageData()
+
         return binding.root
     }
 
@@ -93,8 +118,7 @@ class FragmentMessage : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity()).get(ActivityMainViewModel::class.java)
         super.onViewCreated(view, savedInstanceState)
 
-        setGroupData()
-        setMessageData()
+
         setLayout()
     }
 
@@ -133,11 +157,11 @@ class FragmentMessage : Fragment() {
         val sdfNow = SimpleDateFormat("yyyyMMddHHmmss")
         val saveDate = sdfNow.format(date)
 
-        val reservGroup = MessageGroupData("예약안내", "0", 0, saveDate, keyForReserv.toString(), false)
+        val reservGroup = MessageGroupData("예약안내", 0, 0, saveDate, keyForReserv.toString(), false)
         val retouchGroup =
-            MessageGroupData("리터치", "0", 1, saveDate, keyForRetouch.toString(), false)
-        val afterGroup = MessageGroupData("시술후", "0", 2, saveDate, keyForAfter.toString(), false)
-        val etcGroup = MessageGroupData("기타", "0", 3, saveDate, keyForEtc.toString(), false)
+            MessageGroupData("리터치", 0, 1, saveDate, keyForRetouch.toString(), false)
+        val afterGroup = MessageGroupData("시술후", 0, 2, saveDate, keyForAfter.toString(), false)
+        val etcGroup = MessageGroupData("기타", 0, 3, saveDate, keyForEtc.toString(), false)
 
 
         var groupMap = HashMap<String, MessageGroupData>()
@@ -147,7 +171,6 @@ class FragmentMessage : Fragment() {
         groupMap.put(keyForEtc.toString(), etcGroup)
 
         database.child("users").child(uid).child("messageGroups").setValue(groupMap)
-
             .addOnSuccessListener {
                 Log.d(TAG, "messageGroup : init success")
 
@@ -169,7 +192,6 @@ class FragmentMessage : Fragment() {
 
     //그룹 받아오기
     private fun getGroupList() {
-
         database.child("users").child(uid).child("messageGroups")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -181,14 +203,17 @@ class FragmentMessage : Fragment() {
                             newData.add(messageGroupData)
                         }
                     }
-
+                    Log.e(TAG, "getGroupList() called")
                     messageGroupList.clear()
                     messageGroupList.addAll(newData)
-
                     messageGroupList.sortBy { it.order }
 
-                    selectedMessageType = messageGroupList[0].groupName
-                    selectedMessageGroupKeyValue = messageGroupList[0].keyValue
+                    //초기에만 값 설정해주기
+                    if (selectedMessageType == "") {
+                        selectedMessageType = messageGroupList[0].groupName
+                        selectedMessageGroupKeyValue = messageGroupList[0].keyValue
+                    }
+
 
                 }
 
@@ -200,9 +225,6 @@ class FragmentMessage : Fragment() {
 
     private fun setMessageData() {
         Log.d(TAG, "setMessageData Called")
-//        messageDataList.clear()
-//        messageDataList = fragmentMessageViewModel.messagesList
-//        Log.d(TAG, "messages" + fragmentMessageViewModel.getGroupList().toString())
 
         //메세지 받아오기
         database.child("users").child(uid).child("messages")
@@ -247,6 +269,7 @@ class FragmentMessage : Fragment() {
                 messageDisplayData.add(messageDataList[i])
             }
         }
+
         adapter = RvMessageAdapter(messageDisplayData) //adapter 생성
 
         //itemClick event
@@ -284,16 +307,8 @@ class FragmentMessage : Fragment() {
 
 
                     //삭제시 그룹별 메세지 숫자 업데이트 하기
-                    database.child("users").child(uid).child("messageGroups")
-                        .child(selectedMessageGroupKeyValue)
-                        .child("numberOfMessages")
-                        .setValue(messageDisplayData.size.toString())
-                        .addOnSuccessListener {//메세지가 삭제된 다음에 해당 메서드가 돌기 때문에 current수로 해도 됨
-                            Log.d("updateMessagesNumber", "success")
-                            Log.d(TAG, "messageDisplayData.size" + messageDisplayData.size)
-                        }.addOnFailureListener {
-                            Log.d("updateMessagesNumber", "fail")
-                        }
+                    checkMessagesNum()
+                    setRv()
 
 
                 })
@@ -350,6 +365,11 @@ class FragmentMessage : Fragment() {
 //        _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume")
+    }
+
 
     //more Icon 클릭스 띄우는 대화상자, alertDialog
     fun ShowAlertDialogWithListview() {
@@ -367,9 +387,10 @@ class FragmentMessage : Fragment() {
                 Log.d("messageGroup", "수정 버튼")
 
                 val intent = Intent(context, ActivityEditMessageGroup::class.java)
-                activityForCreateMessageResult.launch(intent)
+                activityForEditMessageGroupResult.launch(intent)
 
             } else {
+                //문자 생성
                 val intent = Intent(context, ActivityCreateMessage::class.java)
                 activityForCreateMessageResult.launch(intent)
             }
@@ -380,9 +401,36 @@ class FragmentMessage : Fragment() {
         alertDialogObject.show()
     }
 
+    //현재 동일한 메세지 타입의 갯수를 구한다.
+    private fun checkMessagesNum() {
+        database.child("users").child(uid).child("messages").orderByChild("messageType")
+            .equalTo(selectedMessageType)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d(TAG, "chxeckMessagesNumber" + snapshot.childrenCount.toString())
+                    val currentNumOfMsgs = snapshot.childrenCount.toInt()
+
+                    //그룹별 메세지 수 업데이트 하기
+                    database.child("users").child(uid).child("messageGroups")
+                        .child(selectedMessageGroupKeyValue)
+                        .child("numberOfMessages")
+                        .setValue(currentNumOfMsgs)
+                        .addOnSuccessListener {//새로운 메시지를 생성한 다음에 해당 메서드가 돌기 때문에 current수로 해도 됨
+                            Log.d("updateMessagesNumber", "success")
+                        }.addOnFailureListener {
+                            Log.d("updateMessagesNumber", "fail")
+                        }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
+    }
+
 
     companion object {
-        fun newInstance(): FragmentMessage{
+        fun newInstance(): FragmentMessage {
             val args = Bundle()
             val fragment = FragmentMessage()
             fragment.arguments = args

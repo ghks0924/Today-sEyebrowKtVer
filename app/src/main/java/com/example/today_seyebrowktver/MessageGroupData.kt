@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 @Keep
 class MessageGroupData (
     var groupName: String = "",
-    var numberOfMessages : String = "",
+    var numberOfMessages : Int = 0,
     var order : Int = 0,
     var savedate : String = "",
     var keyValue : String = "",

@@ -2,7 +2,6 @@ package com.example.today_seyebrowktver.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -29,7 +28,7 @@ class ActivityCreateMessage : ActivityBase() {
 
     private var messageGroupList = ArrayList<MessageGroupData>()
 
-    private lateinit var tempType: String
+    private lateinit var selectedType: String
     private lateinit var tempTitle: String
     private lateinit var tempContent: String
     private lateinit var selectedGroupKey:String
@@ -45,16 +44,16 @@ class ActivityCreateMessage : ActivityBase() {
         ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data
-            val type = intent?.getStringExtra("type")
-            val keyValue = intent?.getStringExtra("keyValue") //key값도 받아와야 그룹별 메세지 수를 업데이트 할 수 있음
-            selectedGroupKey = keyValue.toString()
+            selectedType = intent?.getStringExtra("type").toString()
+            selectedGroupKey = intent?.getStringExtra("keyValue").toString()//key값도 받아와야 그룹별 메세지 수를 업데이트 할 수 있음
 
-            if (type == "new") { // 새로운 타입을 만들면
+
+            if (selectedType == "new") { // 새로운 타입을 만들면
                 mShowShortToast("새로운 그룹 만들거고")
                 mCreateMessageGroup()
             }
             else {
-                binding.selectedTypeTv.text = type //view에 새로운 그룹이름 적용
+                binding.selectedTypeTv.text = selectedType //view에 새로운 그룹이름 적용
             }
         }
     }
@@ -64,14 +63,13 @@ class ActivityCreateMessage : ActivityBase() {
         ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data
-            val newGroupName = intent?.getStringExtra("newGroupName")
-            val newGroupKey = intent?.getStringExtra("newGroupKey")
+            selectedType = intent?.getStringExtra("newGroupName").toString() //새로운 그룹 이름
+            selectedGroupKey = intent?.getStringExtra("newGroupKey").toString() //새로운 그룹 키 가져와서
 
             //새로 생성된 그룹의 이름이 있으면 view에 적용한다
-            if (!newGroupName.isNullOrEmpty()){
+            if (!selectedType.isNullOrEmpty()){
                 mShowShortToast("새로운 그룹이 생성됐고")
-                binding.selectedTypeTv.text = newGroupName
-                selectedGroupKey = newGroupKey.toString() //새로운 그룹 키 가져와서 ㄱㄱ
+                binding.selectedTypeTv.text = selectedType
             }
         }
     }
@@ -132,7 +130,7 @@ class ActivityCreateMessage : ActivityBase() {
 
         //save button event
         binding.saveMessageButton.setOnClickListener(View.OnClickListener {
-            tempType = binding.selectedTypeTv.text.toString().trim()//유형
+            selectedType = binding.selectedTypeTv.text.toString().trim()//유형
             tempTitle = binding.messageTitleEt.text.toString().trim() //제목
             tempContent = binding.messageContentEt.text.toString().trim()
 
@@ -153,7 +151,7 @@ class ActivityCreateMessage : ActivityBase() {
 
         val key = database.child("users").child(uid).child("messages").push().key
         val newMessage = EachMessageData(
-            tempType, tempTitle, tempContent, formatDate, key.toString())
+            selectedType, tempTitle, tempContent, formatDate, key.toString())
         //새로운 메세지를 생성
         database.child("users").child(uid).child("messages").child(key!!)
             .setValue(newMessage).addOnSuccessListener {
@@ -161,6 +159,8 @@ class ActivityCreateMessage : ActivityBase() {
 
                 checkMessagesNum()
                 val intent = intent
+                intent.putExtra("type",selectedType)
+                intent.putExtra("keyValue",selectedGroupKey)
                 setResult(RESULT_OK, intent)
                 finish()
 
@@ -172,7 +172,7 @@ class ActivityCreateMessage : ActivityBase() {
     //현재 동일한 메세지 타입의 갯수를 구한다.
     private fun checkMessagesNum() {
         database.child("users").child(uid).child("messages").orderByChild("messageType")
-            .equalTo(tempType)
+            .equalTo(selectedType)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     Log.d(TAG, "checkMessagesNumber" + snapshot.childrenCount.toString())
@@ -181,7 +181,7 @@ class ActivityCreateMessage : ActivityBase() {
                     //그룹별 메세지 수 업데이트 하기
                     database.child("users").child(uid).child("messageGroups").child(selectedGroupKey)
                         .child("numberOfMessages")
-                        .setValue(currentNumOfMsgs.toString()).addOnSuccessListener {//새로운 메시지를 생성한 다음에 해당 메서드가 돌기 때문에 current수로 해도 됨
+                        .setValue(currentNumOfMsgs).addOnSuccessListener {//새로운 메시지를 생성한 다음에 해당 메서드가 돌기 때문에 current수로 해도 됨
                             Log.d("updateMessagesNumber", "success")
                         }.addOnFailureListener {
                             Log.d("updateMessagesNumber", "fail")
@@ -196,7 +196,7 @@ class ActivityCreateMessage : ActivityBase() {
 
     //문자 생성을 위한 유효성 체크
     private fun vaildCheck(): Boolean {
-        if (tempType.isNullOrEmpty()) {
+        if (selectedType.isNullOrEmpty()) {
             mShowShortToast("문자유형을 선택해주세요")
             return false
         }
